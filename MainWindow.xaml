@@ -112,8 +112,8 @@
             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
                 <TextBlock x:Name="DropIcon" Text="📌" FontSize="44" HorizontalAlignment="Center" Margin="0,0,0,10" />
                 <TextBlock x:Name="DropTitle" Text="이미지를 여기에 드래그 &amp; 드롭" FontSize="15" FontWeight="Bold" Foreground="#F1F5F9" HorizontalAlignment="Center" />
-                <TextBlock Text="또는 클립보드 붙여넣기 (Ctrl+V) / 클릭하여 파일 열기" FontSize="12" Foreground="#94A3B8" HorizontalAlignment="Center" Margin="0,6,0,0" />
-                <TextBlock Text="마우스 휠: 투명도 조절  |  Ctrl+휠: 창 크기 조절" FontSize="11" Foreground="#64748B" HorizontalAlignment="Center" Margin="0,10,0,0" />
+                <TextBlock Text="또는 붙여넣기 (Ctrl+V)  |  화면 캡처해서 바로 넣기 (Ctrl+Alt+X)" FontSize="12" Foreground="#94A3B8" HorizontalAlignment="Center" Margin="0,6,0,0" />
+                <TextBlock Text="마우스 휠: 투명도 조절  |  Ctrl+휠: 창 크기 조절  |  클릭하여 파일 열기" FontSize="11" Foreground="#64748B" HorizontalAlignment="Center" Margin="0,8,0,0" />
             </StackPanel>
         </Border>
 
