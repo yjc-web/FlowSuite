@@ -1,7 +1,9 @@
 param(
+    [string]$PackageName = "FlowSuiteYJC.OverlayPic",
     [string]$Version = "1.0.0.0",
-    [string]$Publisher = "CN=YJC",
-    [string]$PublisherDisplayName = "YJC"
+    [string]$Publisher = "CN=8EFD2812-10C1-4962-8D35-5EFCA941AC84",
+    [string]$PublisherDisplayName = "FlowSuiteYJC",
+    [string]$DisplayName = "OverlayPic"
 )
 
 $ErrorActionPreference = "Stop"
@@ -9,7 +11,7 @@ $ErrorActionPreference = "Stop"
 $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 Set-Location $scriptDir
 
-Write-Host "=== MSIX Packaging for OverlayPic v$Version ===" -ForegroundColor Cyan
+Write-Host "=== MSIX Packaging for MS Store: $PackageName v$Version ===" -ForegroundColor Cyan
 
 # 1. Paths
 $makeAppx = "C:\Program Files (x86)\Windows Kits\10\bin\10.0.19041.0\x64\makeappx.exe"
@@ -72,13 +74,13 @@ $manifestContent = @"
   IgnorableNamespaces="uap rescap">
 
   <Identity
-    Name="OverlayPic"
+    Name="$PackageName"
     Publisher="$Publisher"
     Version="$Version"
     ProcessorArchitecture="neutral" />
 
   <Properties>
-    <DisplayName>OverlayPic</DisplayName>
+    <DisplayName>$DisplayName</DisplayName>
     <PublisherDisplayName>$PublisherDisplayName</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
     <Description>초경량 화면 오버레이 투명 이미지 뷰어 (Lightweight Screen Overlay Transparent Image Viewer)</Description>
