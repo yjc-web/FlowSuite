@@ -35,39 +35,19 @@ namespace OverlayPic
         private const int HOTKEY_ID_ESCAPE_RELEASE = 9002; // Esc (Registered only during Click-Through)
         private const int HOTKEY_ID_GLOBAL_SNIP = 9003;   // Ctrl+Alt+X (Always registered for screen snip)
 
-        [DllImport("user32.dll", EntryPoint = "GetWindowLong", SetLastError = true, ExactSpelling = true)]
-        private static extern int GetWindowLong32(IntPtr hwnd, int index);
+        [DllImport("user32.dll", EntryPoint = "GetWindowLong", SetLastError = true)]
+        private static extern int GetWindowLong(IntPtr hwnd, int index);
 
-        [DllImport("user32.dll", EntryPoint = "GetWindowLongPtr", SetLastError = true, ExactSpelling = true)]
-        private static extern IntPtr GetWindowLongPtr64(IntPtr hwnd, int index);
+        [DllImport("user32.dll", EntryPoint = "SetWindowLong", SetLastError = true)]
+        private static extern int SetWindowLong(IntPtr hwnd, int index, int newStyle);
 
-        [DllImport("user32.dll", EntryPoint = "SetWindowLong", SetLastError = true, ExactSpelling = true)]
-        private static extern int SetWindowLong32(IntPtr hwnd, int index, int newStyle);
-
-        [DllImport("user32.dll", EntryPoint = "SetWindowLongPtr", SetLastError = true, ExactSpelling = true)]
-        private static extern IntPtr SetWindowLongPtr64(IntPtr hwnd, int index, IntPtr newStyle);
-
-        [DllImport("user32.dll", SetLastError = true, ExactSpelling = true)]
+        [DllImport("user32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
 
-        [DllImport("user32.dll", SetLastError = true, ExactSpelling = true)]
+        [DllImport("user32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
-
-        private static int GetWindowLong(IntPtr hwnd, int index)
-        {
-            if (IntPtr.Size == 8)
-                return unchecked((int)GetWindowLongPtr64(hwnd, index).ToInt64());
-            return GetWindowLong32(hwnd, index);
-        }
-
-        private static int SetWindowLong(IntPtr hwnd, int index, int newStyle)
-        {
-            if (IntPtr.Size == 8)
-                return unchecked((int)SetWindowLongPtr64(hwnd, index, new IntPtr(newStyle)).ToInt64());
-            return SetWindowLong32(hwnd, index, newStyle);
-        }
 
         #endregion
 
