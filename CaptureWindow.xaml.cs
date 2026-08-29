@@ -20,10 +20,12 @@ namespace OverlayPic
 
         public BitmapSource CapturedBitmapSource { get; private set; }
         public Rect SelectedScreenRect { get; private set; }
+        private bool _isEnglish = false;
 
-        public CaptureWindow()
+        public CaptureWindow(bool isEnglish = false)
         {
             InitializeComponent();
+            _isEnglish = isEnglish;
 
             // Cover all monitors (Virtual Screen)
             Left = SystemParameters.VirtualScreenLeft;
@@ -34,6 +36,12 @@ namespace OverlayPic
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            if (_isEnglish)
+            {
+                HintMainText.Text = "✂️ Drag area to snip screen";
+                HintSubText.Text = "(Cancel: Esc / Right Click)";
+            }
+
             // Position the Hint Banner in the center top of the PRIMARY screen (not virtual screen center)
             HintBanner.Measure(new System.Windows.Size(double.PositiveInfinity, double.PositiveInfinity));
             double bannerW = HintBanner.DesiredSize.Width > 0 ? HintBanner.DesiredSize.Width : 340;

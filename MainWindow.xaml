@@ -112,8 +112,8 @@
             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
                 <TextBlock x:Name="DropIcon" Text="📌" FontSize="44" HorizontalAlignment="Center" Margin="0,0,0,10" />
                 <TextBlock x:Name="DropTitle" Text="이미지를 여기에 드래그 &amp; 드롭" FontSize="15" FontWeight="Bold" Foreground="#F1F5F9" HorizontalAlignment="Center" />
-                <TextBlock Text="또는 붙여넣기 (Ctrl+V)  |  화면 캡처해서 바로 넣기 (Ctrl+Alt+X)" FontSize="12" Foreground="#94A3B8" HorizontalAlignment="Center" Margin="0,6,0,0" />
-                <TextBlock Text="마우스 휠: 투명도 조절  |  Ctrl+휠: 창 크기 조절  |  클릭하여 파일 열기" FontSize="11" Foreground="#64748B" HorizontalAlignment="Center" Margin="0,8,0,0" />
+                <TextBlock x:Name="DropSubtitle" Text="또는 붙여넣기 (Ctrl+V)  |  화면 캡처해서 바로 넣기 (Ctrl+Alt+X)" FontSize="12" Foreground="#94A3B8" HorizontalAlignment="Center" Margin="0,6,0,0" />
+                <TextBlock x:Name="DropHint" Text="마우스 휠: 투명도 조절  |  Ctrl+휠: 창 크기 조절  |  클릭하여 파일 열기" FontSize="11" Foreground="#64748B" HorizontalAlignment="Center" Margin="0,8,0,0" />
             </StackPanel>
         </Border>
 
@@ -140,8 +140,8 @@
 
                 <!-- Left: Opacity slider & Percentage -->
                 <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
-                    <TextBlock Text="⊞" FontSize="13" Foreground="#94A3B8" VerticalAlignment="Center" Margin="2,0,6,0" ToolTip="드래그하여 창 이동" />
-                    <TextBlock Text="투명도:" FontSize="11" Foreground="#CBD5E1" VerticalAlignment="Center" Margin="0,0,4,0" />
+                    <TextBlock x:Name="DragHintIcon" Text="⊞" FontSize="13" Foreground="#94A3B8" VerticalAlignment="Center" Margin="2,0,6,0" ToolTip="드래그하여 창 이동" />
+                    <TextBlock x:Name="OpacityTitle" Text="투명도:" FontSize="11" Foreground="#CBD5E1" VerticalAlignment="Center" Margin="0,0,4,0" />
                     <Slider x:Name="OpacitySlider" Width="90" Minimum="0.05" Maximum="1.0" Value="1.0" 
                             VerticalAlignment="Center" Cursor="Hand"
                             ValueChanged="OpacitySlider_ValueChanged"
@@ -170,15 +170,17 @@
                                              Content="🏁" Style="{StaticResource BarToggle}" 
                                              ToolTip="체커보드 배경 토글 (Space)" Margin="0,0,3,0"
                                              Checked="CheckerToggle_Changed" Unchecked="CheckerToggle_Changed" />
-                    <Button Content="✂" Style="{StaticResource BarBtn}" Click="Snip_Click" 
+                    <Button x:Name="SnipBtn" Content="✂" Style="{StaticResource BarBtn}" Click="Snip_Click" 
                             ToolTip="화면 영역 드래그 캡처 (Ctrl+Alt+X)" Margin="0,0,3,0" />
-                    <Button Content="📋" Style="{StaticResource BarBtn}" Click="Paste_Click" 
+                    <Button x:Name="PasteBtn" Content="📋" Style="{StaticResource BarBtn}" Click="Paste_Click" 
                             ToolTip="클립보드 이미지 붙여넣기 (Ctrl+V)" Margin="0,0,3,0" />
-                    <Button Content="📂" Style="{StaticResource BarBtn}" Click="Open_Click" 
+                    <Button x:Name="OpenBtn" Content="📂" Style="{StaticResource BarBtn}" Click="Open_Click" 
                             ToolTip="이미지 파일 열기 (Ctrl+O)" Margin="0,0,3,0" />
-                    <Button Content="ℹ" Style="{StaticResource BarBtn}" Click="About_Click" 
+                    <Button x:Name="LangBtn" Content="🌐" Style="{StaticResource BarBtn}" Click="Lang_Click" 
+                            ToolTip="Language / 언어 전환 (한국어 ↔ English)" Margin="0,0,3,0" />
+                    <Button x:Name="AboutBtn" Content="ℹ" Style="{StaticResource BarBtn}" Click="About_Click" 
                             ToolTip="프로그램 정보 / 블로그 / 단축키 안내" Margin="0,0,3,0" />
-                    <Button Content="✕" Style="{StaticResource BarBtn}" Click="Close_Click" 
+                    <Button x:Name="CloseBtn" Content="✕" Style="{StaticResource BarBtn}" Click="Close_Click" 
                             ToolTip="닫기 (Esc)" Background="#88EF4444" />
                 </StackPanel>
             </Grid>
@@ -199,8 +201,8 @@
                     <!-- Title & Header with Close Button -->
                     <Grid Grid.Row="0" Margin="0,0,0,10">
                         <StackPanel VerticalAlignment="Center">
-                            <TextBlock Text="📌 OverlayPic v1.0" FontSize="15" FontWeight="Bold" Foreground="#38BDF8" />
-                            <TextBlock Text="화면 오버레이 투명 뷰어 | Made by YJC" FontSize="11" Foreground="#94A3B8" Margin="0,1,0,0" />
+                            <TextBlock x:Name="AboutHeaderTitle" Text="📌 OverlayPic v1.0" FontSize="15" FontWeight="Bold" Foreground="#38BDF8" />
+                            <TextBlock x:Name="AboutSubtitle" Text="화면 오버레이 투명 뷰어 | Made by YJC" FontSize="11" Foreground="#94A3B8" Margin="0,1,0,0" />
                         </StackPanel>
                         <Button Content="✕" HorizontalAlignment="Right" VerticalAlignment="Top"
                                 Width="24" Height="24" Background="#334155" Foreground="#CBD5E1"
@@ -222,24 +224,24 @@
 
                         <!-- Left Column: Shortcuts List -->
                         <Border Grid.Column="0" Background="#0F172A" CornerRadius="6" Padding="10" Margin="0,0,8,0">
-                            <StackPanel>
-                                <TextBlock Text="⌨️ 주요 단축키" FontWeight="Bold" FontSize="11" Foreground="#F1F5F9" Margin="0,0,0,6" />
-                                <TextBlock Text="• Ctrl+Alt+X : ✂️ 화면 영역 드래그 캡처" FontSize="10.5" Foreground="#38BDF8" FontWeight="SemiBold" Margin="0,1.5" />
-                                <TextBlock Text="• Ctrl+V : 클립보드 이미지/파일 붙여넣기" FontSize="10.5" Foreground="#CBD5E1" Margin="0,1.5" />
-                                <TextBlock Text="• Ctrl+Shift+T / Ctrl+T : 클릭 통과 토글" FontSize="10.5" Foreground="#CBD5E1" Margin="0,1.5" />
-                                <TextBlock Text="• Esc : 클릭 통과 해제 (일반 시 창 닫기)" FontSize="10.5" Foreground="#F59E0B" Margin="0,1.5" />
-                                <TextBlock Text="• 마우스 휠 / +, - : 투명도 조절" FontSize="10.5" Foreground="#CBD5E1" Margin="0,1.5" />
-                                <TextBlock Text="• Ctrl + 휠 / Ctrl+(+,-) : 창 크기 조절" FontSize="10.5" Foreground="#CBD5E1" Margin="0,1.5" />
-                                <TextBlock Text="• Ctrl+L : 위치/크기 고정 토글" FontSize="10.5" Foreground="#CBD5E1" Margin="0,1.5" />
-                                <TextBlock Text="• Ctrl+R : 원본 해상도 크기로 리셋" FontSize="10.5" Foreground="#CBD5E1" Margin="0,1.5" />
-                                <TextBlock Text="• Space : 체커보드 배경 토글" FontSize="10.5" Foreground="#CBD5E1" Margin="0,1.5" />
+                            <StackPanel x:Name="ShortcutsStackPanel">
+                                <TextBlock x:Name="ShortcutsTitle" Text="⌨️ 주요 단축키" FontWeight="Bold" FontSize="11" Foreground="#F1F5F9" Margin="0,0,0,6" />
+                                <TextBlock x:Name="ShortcutSnip" Text="• Ctrl+Alt+X : ✂️ 화면 영역 드래그 캡처" FontSize="10.5" Foreground="#38BDF8" FontWeight="SemiBold" Margin="0,1.5" />
+                                <TextBlock x:Name="ShortcutPaste" Text="• Ctrl+V : 클립보드 이미지/파일 붙여넣기" FontSize="10.5" Foreground="#CBD5E1" Margin="0,1.5" />
+                                <TextBlock x:Name="ShortcutToggle" Text="• Ctrl+Shift+T / Ctrl+T : 클릭 통과 토글" FontSize="10.5" Foreground="#CBD5E1" Margin="0,1.5" />
+                                <TextBlock x:Name="ShortcutEsc" Text="• Esc : 클릭 통과 해제 (일반 시 창 닫기)" FontSize="10.5" Foreground="#F59E0B" Margin="0,1.5" />
+                                <TextBlock x:Name="ShortcutOpacity" Text="• 마우스 휠 / +, - : 투명도 조절" FontSize="10.5" Foreground="#CBD5E1" Margin="0,1.5" />
+                                <TextBlock x:Name="ShortcutResize" Text="• Ctrl + 휠 / Ctrl+(+,-) : 창 크기 조절" FontSize="10.5" Foreground="#CBD5E1" Margin="0,1.5" />
+                                <TextBlock x:Name="ShortcutLock" Text="• Ctrl+L : 위치/크기 고정 토글" FontSize="10.5" Foreground="#CBD5E1" Margin="0,1.5" />
+                                <TextBlock x:Name="ShortcutReset" Text="• Ctrl+R : 원본 해상도 크기로 리셋" FontSize="10.5" Foreground="#CBD5E1" Margin="0,1.5" />
+                                <TextBlock x:Name="ShortcutSpace" Text="• Space : 체커보드 배경 토글" FontSize="10.5" Foreground="#CBD5E1" Margin="0,1.5" />
                             </StackPanel>
                         </Border>
 
                         <!-- Right Column: Blog & KakaoPay Donation QR -->
                         <StackPanel Grid.Column="1">
                             <!-- Blog Button -->
-                            <Button Content="🌐 공식 블로그 방문 (nds-macro)" 
+                            <Button x:Name="BlogBtn" Content="🌐 공식 블로그 방문 (nds-macro)" 
                                     Background="#2563EB" Foreground="White" FontWeight="SemiBold" FontSize="11"
                                     Padding="6,5" BorderThickness="0" Cursor="Hand" Margin="0,0,0,8"
                                     Click="OpenBlog_Click" ToolTip="https://blog.naver.com/nds-macro">
@@ -253,11 +255,11 @@
                             <!-- Donation Card -->
                             <Border Background="#0F172A" CornerRadius="6" Padding="8">
                                 <StackPanel HorizontalAlignment="Center">
-                                    <TextBlock Text="☕ 커피 한 잔 후원 (카카오페이)" FontWeight="Bold" FontSize="10.5" Foreground="#FCD34D" HorizontalAlignment="Center" Margin="0,0,0,4" />
+                                    <TextBlock x:Name="DonationTitle" Text="☕ 커피 한 잔 후원 (카카오페이)" FontWeight="Bold" FontSize="10.5" Foreground="#FCD34D" HorizontalAlignment="Center" Margin="0,0,0,4" />
                                     <Border Background="White" CornerRadius="6" HorizontalAlignment="Center" Padding="5" Width="105" Height="105">
                                         <Image Source="Resources/kakaopay_qr.png" Stretch="Uniform" RenderOptions.BitmapScalingMode="HighQuality" />
                                     </Border>
-                                    <TextBlock Text="카카오페이 앱으로 QR 스캔" FontSize="9.5" Foreground="#64748B" HorizontalAlignment="Center" Margin="0,4,0,0" />
+                                    <TextBlock x:Name="DonationSubtitle" Text="카카오페이 앱으로 QR 스캔" FontSize="9.5" Foreground="#64748B" HorizontalAlignment="Center" Margin="0,4,0,0" />
                                 </StackPanel>
                             </Border>
                         </StackPanel>

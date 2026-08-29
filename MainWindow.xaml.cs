@@ -45,6 +45,8 @@ namespace OverlayPic
         public static extern bool UnregisterHotKey(IntPtr hWnd, int id);
     }
 
+    public enum AppLanguage { Korean, English }
+
     public partial class MainWindow : Window
     {
         private IntPtr _hwnd;
@@ -54,6 +56,7 @@ namespace OverlayPic
         private double _imageNativeHeight;
         private bool _hasImage;
         private bool _isEscHotKeyRegistered;
+        private AppLanguage _currentLanguage = AppLanguage.Korean;
 
         public MainWindow()
         {
@@ -74,6 +77,11 @@ namespace OverlayPic
 
             // Register global shortcut Ctrl+Alt+X for instant screen snippet capture
             NativeMethods.RegisterHotKey(_hwnd, NativeMethods.HOTKEY_ID_GLOBAL_SNIP, NativeMethods.MOD_CONTROL | NativeMethods.MOD_ALT | NativeMethods.MOD_NOREPEAT, NativeMethods.VK_X);
+
+            // Detect system language (Korean vs English)
+            bool isKo = System.Globalization.CultureInfo.CurrentUICulture.Name.StartsWith("ko", StringComparison.OrdinalIgnoreCase);
+            _currentLanguage = isKo ? AppLanguage.Korean : AppLanguage.English;
+            ApplyLanguage(_currentLanguage);
 
             // Check if clipboard already has an image on startup
             TryLoadFromClipboard();
@@ -389,7 +397,9 @@ namespace OverlayPic
                 NativeMethods.SetWindowLong(_hwnd, NativeMethods.GWL_EXSTYLE, _originalExStyle | NativeMethods.WS_EX_TRANSPARENT);
                 ControlBar.Opacity = 0.45;
                 OutlineBorder.BorderBrush = Brushes.OrangeRed;
-                InfoLabel.Text = "👆 클릭 통과 활성 (해제: Esc 또는 Ctrl+Shift+T)";
+                InfoLabel.Text = (_currentLanguage == AppLanguage.English)
+                    ? "👆 Click-Through Active (Esc / Ctrl+Shift+T to exit)"
+                    : "👆 클릭 통과 활성 (해제: Esc 또는 Ctrl+Shift+T)";
 
                 // Register global Esc hotkey so pressing Esc anywhere disables click-through
                 if (!_isEscHotKeyRegistered)
@@ -530,7 +540,7 @@ namespace OverlayPic
 
                 System.Threading.Thread.Sleep(60);
 
-                var snipWin = new CaptureWindow();
+                var snipWin = new CaptureWindow(_currentLanguage == AppLanguage.English);
                 bool? result = snipWin.ShowDialog();
 
                 // Restore opacity
@@ -557,8 +567,63 @@ namespace OverlayPic
             catch (Exception ex)
             {
                 Opacity = 1.0;
-                MessageBox.Show($"캡처 실행 실패: {ex.Message}", "OverlayPic", MessageBoxButton.OK, MessageBoxImage.Warning);
+                string errMsg = _currentLanguage == AppLanguage.English ? $"Screen capture failed: {ex.Message}" : $"캡처 실행 실패: {ex.Message}";
+                MessageBox.Show(errMsg, "OverlayPic", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
+        }
+
+        private void Lang_Click(object sender, RoutedEventArgs e)
+        {
+            _currentLanguage = (_currentLanguage == AppLanguage.Korean) ? AppLanguage.English : AppLanguage.Korean;
+            ApplyLanguage(_currentLanguage);
+        }
+
+        private void ApplyLanguage(AppLanguage lang)
+        {
+            bool isEn = (lang == AppLanguage.English);
+
+            // Window Title
+            Title = isEn ? "OverlayPic — Screen Overlay Transparent Image Viewer" : "OverlayPic — 화면 오버레이 투명 뷰어";
+
+            // Control Bar
+            DragHintIcon.ToolTip = isEn ? "Drag to move window" : "드래그하여 창 이동";
+            OpacityTitle.Text = isEn ? "Opacity:" : "투명도:";
+            OpacitySlider.ToolTip = isEn ? "Adjust opacity (Mouse Wheel supported)" : "투명도 조절 (마우스 휠로도 가능)";
+
+            ClickThroughToggle.ToolTip = isEn ? "Click-Through Mode (Click windows beneath / Esc to exit)" : "클릭 통과 모드 (뒤쪽 프로그램 클릭 가능 / 해제: Esc 또는 Ctrl+Shift+T)";
+            LockToggle.ToolTip = isEn ? "Lock Position & Size (Ctrl+L)" : "위치 및 크기 고정 토글 (Ctrl+L)";
+            CheckerToggle.ToolTip = isEn ? "Toggle Checkerboard Background (Space)" : "체커보드 배경 토글 (Space)";
+
+            SnipBtn.ToolTip = isEn ? "Screen Snipping (Ctrl+Alt+X)" : "화면 영역 드래그 캡처 (Ctrl+Alt+X)";
+            PasteBtn.ToolTip = isEn ? "Paste Image from Clipboard (Ctrl+V)" : "클립보드 이미지 붙여넣기 (Ctrl+V)";
+            OpenBtn.ToolTip = isEn ? "Open Image File (Ctrl+O)" : "이미지 파일 열기 (Ctrl+O)";
+            LangBtn.ToolTip = isEn ? "Language / 언어 전환 (English ➔ 한국어)" : "Language / 언어 전환 (한국어 ➔ English)";
+            AboutBtn.ToolTip = isEn ? "About / Shortcuts / Website" : "프로그램 정보 / 블로그 / 단축키 안내";
+            CloseBtn.ToolTip = isEn ? "Close (Esc)" : "닫기 (Esc)";
+
+            // DropZone
+            DropTitle.Text = isEn ? "Drag & Drop Image Here" : "이미지를 여기에 드래그 & 드롭";
+            DropSubtitle.Text = isEn ? "or Paste (Ctrl+V)  |  Screen Snip (Ctrl+Alt+X)" : "또는 붙여넣기 (Ctrl+V)  |  화면 캡처해서 바로 넣기 (Ctrl+Alt+X)";
+            DropHint.Text = isEn ? "Mouse Wheel: Opacity  |  Ctrl+Wheel: Resize  |  Click to Open" : "마우스 휠: 투명도 조절  |  Ctrl+휠: 창 크기 조절  |  클릭하여 파일 열기";
+
+            // About Modal
+            AboutSubtitle.Text = isEn ? "Screen Overlay Image Viewer | Made by YJC" : "화면 오버레이 투명 뷰어 | Made by YJC";
+            ShortcutsTitle.Text = isEn ? "⌨️ Keyboard Shortcuts" : "⌨️ 주요 단축키";
+            ShortcutSnip.Text = isEn ? "• Ctrl+Alt+X : ✂️ Screen Snipping" : "• Ctrl+Alt+X : ✂️ 화면 영역 드래그 캡처";
+            ShortcutPaste.Text = isEn ? "• Ctrl+V : Paste Clipboard Image/File" : "• Ctrl+V : 클립보드 이미지/파일 붙여넣기";
+            ShortcutToggle.Text = isEn ? "• Ctrl+Shift+T / Ctrl+T : Toggle Click-Through" : "• Ctrl+Shift+T / Ctrl+T : 클릭 통과 토글";
+            ShortcutEsc.Text = isEn ? "• Esc : Release Click-Through / Close Window" : "• Esc : 클릭 통과 해제 (일반 시 창 닫기)";
+            ShortcutOpacity.Text = isEn ? "• Mouse Wheel / +, - : Adjust Opacity" : "• 마우스 휠 / +, - : 투명도 조절";
+            ShortcutResize.Text = isEn ? "• Ctrl + Wheel / Ctrl+(+,-) : Resize Window" : "• Ctrl + 휠 / Ctrl+(+,-) : 창 크기 조절";
+            ShortcutLock.Text = isEn ? "• Ctrl+L : Lock/Unlock Position & Size" : "• Ctrl+L : 위치/크기 고정 토글";
+            ShortcutReset.Text = isEn ? "• Ctrl+R : Reset to 1:1 Native Resolution" : "• Ctrl+R : 원본 해상도 크기로 리셋";
+            ShortcutSpace.Text = isEn ? "• Space : Toggle Checkerboard Grid" : "• Space : 체커보드 배경 토글";
+
+            BlogBtn.Content = isEn ? "🌐 Official Website (Blog)" : "🌐 공식 블로그 방문 (nds-macro)";
+            DonationTitle.Text = isEn ? "☕ Buy Developer a Coffee" : "☕ 커피 한 잔 후원 (카카오페이)";
+            DonationSubtitle.Text = isEn ? "Scan QR with KakaoPay app" : "카카오페이 앱으로 QR 스캔";
+
+            UpdateInfoLabel();
         }
 
         private void About_Click(object sender, RoutedEventArgs e)
@@ -594,7 +659,8 @@ namespace OverlayPic
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"블로그 링크 열기 실패: {ex.Message}", "OverlayPic", MessageBoxButton.OK, MessageBoxImage.Warning);
+                string errMsg = _currentLanguage == AppLanguage.English ? $"Failed to open website: {ex.Message}" : $"블로그 링크 열기 실패: {ex.Message}";
+                MessageBox.Show(errMsg, "OverlayPic", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 
@@ -631,15 +697,17 @@ namespace OverlayPic
             if (InfoLabel == null) return;
             if (ClickThroughToggle?.IsChecked == true) return;
 
+            bool isEn = (_currentLanguage == AppLanguage.English);
             int w = (int)ActualWidth;
             int h = (int)ActualHeight;
             int x = (int)Left;
             int y = (int)Top;
-            string lockStatus = LockToggle?.IsChecked == true ? " [🔒고정]" : "";
+            string lockStatus = LockToggle?.IsChecked == true ? (isEn ? " [🔒Locked]" : " [🔒고정]") : "";
+            string origText = isEn ? "Native" : "원본";
 
             if (_hasImage && _imageNativeWidth > 0)
             {
-                InfoLabel.Text = $"{w}×{h} @ ({x},{y}){lockStatus} • 원본 {_imageNativeWidth:F0}×{_imageNativeHeight:F0}";
+                InfoLabel.Text = $"{w}×{h} @ ({x},{y}){lockStatus} • {origText} {_imageNativeWidth:F0}×{_imageNativeHeight:F0}";
             }
             else
             {
