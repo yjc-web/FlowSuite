@@ -7,7 +7,6 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
-[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
 $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 Set-Location $scriptDir
@@ -36,10 +35,7 @@ if (Test-Path "bin\Release\OverlayPic.pdb") { Copy-Item "bin\Release\OverlayPic.
 # 3. Generate Asset Logos from icon source
 Add-Type -AssemblyName System.Drawing
 
-$srcIconPath = "C:\Users\yjc\.gemini\antigravity\brain\eed2e06f-1b93-43ed-a7a3-581a1e968930\overlaypic_icon_1787974675823.jpg"
-if (!(Test-Path $srcIconPath)) {
-    $srcIconPath = "Resources\app.ico"
-}
+$srcIconPath = "Resources\app.ico"
 $srcImg = [System.Drawing.Image]::FromFile($srcIconPath)
 
 function Save-ResizedImage($img, $w, $h, $dest) {
@@ -84,7 +80,7 @@ $manifestContent = @"
     <DisplayName>$DisplayName</DisplayName>
     <PublisherDisplayName>$PublisherDisplayName</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
-    <Description>초경량 화면 오버레이 투명 이미지 뷰어 (Lightweight Screen Overlay Transparent Image Viewer)</Description>
+    <Description>Lightweight Screen Overlay Transparent Image Viewer</Description>
   </Properties>
 
   <Resources>
@@ -107,7 +103,7 @@ $manifestContent = @"
       EntryPoint="Windows.FullTrustApplication">
       <uap:VisualElements
         DisplayName="OverlayPic"
-        Description="화면 오버레이 투명 이미지 뷰어"
+        Description="Screen Overlay Transparent Image Viewer"
         BackgroundColor="#0F172A"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png">
@@ -124,7 +120,7 @@ $manifestPath = Join-Path $buildLayout "AppxManifest.xml"
 
 Write-Host "AppxManifest.xml created." -ForegroundColor Green
 
-# 5. Pack Store MSIX (Unsigned - Pure Store Package)
+# 5. Pack Store MSIX (Unsigned)
 $storeMsixPath = Join-Path $distDir "OverlayPic_v$Version`_Store.msix"
 $sideloadMsixPath = Join-Path $distDir "OverlayPic_v$Version`_Sideload.msix"
 
@@ -138,15 +134,12 @@ if (!(Test-Path $storeMsixPath)) {
     throw "MakeAppx failed to create MSIX package."
 }
 
-# Copy as Sideload version to be signed
 Copy-Item $storeMsixPath $sideloadMsixPath
-
-# Also copy as default OverlayPic_v1.0.0.0.msix (Unsigned for Store)
 Copy-Item $storeMsixPath $msixPath -Force
 
 Write-Host "Store MSIX package (Unsigned) created: $storeMsixPath" -ForegroundColor Green
 
-# 6. Sign Sideload version with Self-Signed Certificate for local testing
+# 6. Sign Sideload version
 $certPath = Join-Path $distDir "OverlayPic_Dev.pfx"
 $cerPath = Join-Path $distDir "OverlayPic_InstallCert.cer"
 $pfxPassword = ConvertTo-SecureString "1234" -AsPlainText -Force
@@ -166,28 +159,13 @@ if (-not $existingCert) {
     $existingCert = $newCert
 }
 
-# Export PFX and CER
 Export-PfxCertificate -Cert $existingCert -FilePath $certPath -Password $pfxPassword | Out-Null
 Export-Certificate -Cert $existingCert -FilePath $cerPath | Out-Null
 
-# Sign the Sideload MSIX package
 Write-Host "Signing Sideload MSIX package for local installation..." -ForegroundColor Yellow
 & $signTool sign /fd SHA256 /a /f $certPath /p "1234" $sideloadMsixPath
 
-# 7. Build Inno Setup Installer for GitHub Releases
-$isccPath = "C:\Program Files\Inno Setup 7\ISCC.exe"
-if (-not (Test-Path $isccPath)) {
-    $isccPath = "C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
-}
-$innoSetupExe = Join-Path $distDir "OverlayPic_v1.0.1_Setup.exe"
-
-if (Test-Path $isccPath) {
-    Write-Host "`nBuilding Inno Setup Installer for GitHub Releases..." -ForegroundColor Yellow
-    & $isccPath "OverlayPic_Installer.iss"
-}
-
 Write-Host "`n=== Packaging Complete ===" -ForegroundColor Cyan
-Write-Host "🛒 [MS Store 업로드용 MSIX] : $storeMsixPath" -ForegroundColor Green
-Write-Host "💻 [로컬 직접 설치용 MSIX] : $sideloadMsixPath" -ForegroundColor Yellow
-Write-Host "🚀 [GitHub 배포용 설치파일 (Inno Setup)] : $innoSetupExe" -ForegroundColor Cyan
-Write-Host "📜 [로컬 인증서 파일] : $cerPath" -ForegroundColor Gray
+Write-Host "[MS Store MSIX]     : $storeMsixPath" -ForegroundColor Green
+Write-Host "[Local Sideload MSIX]: $sideloadMsixPath" -ForegroundColor Yellow
+Write-Host "[Local Certificate]  : $cerPath" -ForegroundColor Gray
