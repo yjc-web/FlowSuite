@@ -35,22 +35,24 @@ namespace OverlayPic
         private const int HOTKEY_ID_ESCAPE_RELEASE = 9002; // Esc (Registered only during Click-Through)
         private const int HOTKEY_ID_GLOBAL_SNIP = 9003;   // Ctrl+Alt+X (Always registered for screen snip)
 
-        [DllImport("user32.dll", EntryPoint = "GetWindowLong")]
+        [DllImport("user32.dll", EntryPoint = "GetWindowLong", SetLastError = true, ExactSpelling = true)]
         private static extern int GetWindowLong32(IntPtr hwnd, int index);
 
-        [DllImport("user32.dll", EntryPoint = "GetWindowLongPtr")]
+        [DllImport("user32.dll", EntryPoint = "GetWindowLongPtr", SetLastError = true, ExactSpelling = true)]
         private static extern IntPtr GetWindowLongPtr64(IntPtr hwnd, int index);
 
-        [DllImport("user32.dll", EntryPoint = "SetWindowLong")]
+        [DllImport("user32.dll", EntryPoint = "SetWindowLong", SetLastError = true, ExactSpelling = true)]
         private static extern int SetWindowLong32(IntPtr hwnd, int index, int newStyle);
 
-        [DllImport("user32.dll", EntryPoint = "SetWindowLongPtr")]
+        [DllImport("user32.dll", EntryPoint = "SetWindowLongPtr", SetLastError = true, ExactSpelling = true)]
         private static extern IntPtr SetWindowLongPtr64(IntPtr hwnd, int index, IntPtr newStyle);
 
-        [DllImport("user32.dll", SetLastError = true)]
+        [DllImport("user32.dll", SetLastError = true, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
 
-        [DllImport("user32.dll", SetLastError = true)]
+        [DllImport("user32.dll", SetLastError = true, ExactSpelling = true)]
+        [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
 
         private static int GetWindowLong(IntPtr hwnd, int index)
