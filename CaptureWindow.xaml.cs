@@ -34,8 +34,18 @@ namespace OverlayPic
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            // Position the Hint Banner in the center top of primary screen
-            Canvas.SetLeft(HintBanner, (Width - 320) / 2);
+            // Position the Hint Banner in the center top of the PRIMARY screen (not virtual screen center)
+            HintBanner.Measure(new System.Windows.Size(double.PositiveInfinity, double.PositiveInfinity));
+            double bannerW = HintBanner.DesiredSize.Width > 0 ? HintBanner.DesiredSize.Width : 340;
+
+            double primaryLeftInCanvas = -SystemParameters.VirtualScreenLeft;
+            double primaryTopInCanvas = -SystemParameters.VirtualScreenTop;
+
+            double bannerLeft = primaryLeftInCanvas + (SystemParameters.PrimaryScreenWidth - bannerW) / 2;
+            double bannerTop = primaryTopInCanvas + 40;
+
+            Canvas.SetLeft(HintBanner, bannerLeft);
+            Canvas.SetTop(HintBanner, bannerTop);
 
             // Get DPI scaling
             var source = PresentationSource.FromVisual(this);

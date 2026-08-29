@@ -34,7 +34,7 @@
             </Border>
 
             <!-- Guide Hint Banner -->
-            <Border x:Name="HintBanner" Canvas.Top="30" HorizontalAlignment="Center" 
+            <Border x:Name="HintBanner" 
                     Background="#EE0F172A" BorderBrush="#38BDF8" BorderThickness="1" CornerRadius="6" Padding="14,8">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="✂️ 캡처할 영역을 드래그하세요" FontSize="13" FontWeight="Bold" Foreground="White" Margin="0,0,12,0" />
