@@ -8,8 +8,10 @@
 *.sln.docstates
 *.cache
 
-## Temporary scripts
+## Temporary scripts & layouts
 Resources/convert_ico.ps1
+msix_layout/
+dist/*.pfx
 
 ## OS generated files
 Thumbs.db
