@@ -123,23 +123,34 @@ $manifestPath = Join-Path $buildLayout "AppxManifest.xml"
 
 Write-Host "AppxManifest.xml created." -ForegroundColor Green
 
-# 5. Pack MSIX with MakeAppx.exe
-Write-Host "Packing MSIX with MakeAppx..." -ForegroundColor Yellow
-if (Test-Path $msixPath) { Remove-Item -Force $msixPath }
+# 5. Pack Store MSIX (Unsigned - Pure Store Package)
+$storeMsixPath = Join-Path $distDir "OverlayPic_v$Version`_Store.msix"
+$sideloadMsixPath = Join-Path $distDir "OverlayPic_v$Version`_Sideload.msix"
 
-& $makeAppx pack /d $buildLayout /p $msixPath /nv
+if (Test-Path $storeMsixPath) { Remove-Item -Force $storeMsixPath }
+if (Test-Path $sideloadMsixPath) { Remove-Item -Force $sideloadMsixPath }
 
-if (!(Test-Path $msixPath)) {
+Write-Host "Packing Unsigned MSIX for Microsoft Store..." -ForegroundColor Yellow
+& $makeAppx pack /d $buildLayout /p $storeMsixPath /nv
+
+if (!(Test-Path $storeMsixPath)) {
     throw "MakeAppx failed to create MSIX package."
 }
-Write-Host "MSIX package created: $msixPath" -ForegroundColor Green
 
-# 6. Create Self-Signed Certificate and Sign
+# Copy as Sideload version to be signed
+Copy-Item $storeMsixPath $sideloadMsixPath
+
+# Also copy as default OverlayPic_v1.0.0.0.msix (Unsigned for Store)
+Copy-Item $storeMsixPath $msixPath -Force
+
+Write-Host "Store MSIX package (Unsigned) created: $storeMsixPath" -ForegroundColor Green
+
+# 6. Sign Sideload version with Self-Signed Certificate for local testing
 $certPath = Join-Path $distDir "OverlayPic_Dev.pfx"
 $cerPath = Join-Path $distDir "OverlayPic_InstallCert.cer"
 $pfxPassword = ConvertTo-SecureString "1234" -AsPlainText -Force
 
-Write-Host "Creating/Signing Certificate for $Publisher..." -ForegroundColor Yellow
+Write-Host "Creating/Exporting Certificate for $Publisher..." -ForegroundColor Yellow
 
 $existingCert = Get-ChildItem Cert:\CurrentUser\My | Where-Object { $_.Subject -eq $Publisher } | Select-Object -First 1
 
@@ -158,10 +169,11 @@ if (-not $existingCert) {
 Export-PfxCertificate -Cert $existingCert -FilePath $certPath -Password $pfxPassword | Out-Null
 Export-Certificate -Cert $existingCert -FilePath $cerPath | Out-Null
 
-# Sign the MSIX package
-Write-Host "Signing MSIX package..." -ForegroundColor Yellow
-& $signTool sign /fd SHA256 /a /f $certPath /p "1234" $msixPath
+# Sign the Sideload MSIX package
+Write-Host "Signing Sideload MSIX package for local installation..." -ForegroundColor Yellow
+& $signTool sign /fd SHA256 /a /f $certPath /p "1234" $sideloadMsixPath
 
-Write-Host "=== MSIX Build & Sign Completed Successfully! ===" -ForegroundColor Cyan
-Write-Host "MSIX File: $msixPath" -ForegroundColor Green
-Write-Host "Install Certificate (.cer): $cerPath" -ForegroundColor Green
+Write-Host "`n=== Packaging Complete ===" -ForegroundColor Cyan
+Write-Host "🛒 [MS Store 업로드용 (서명 없음)] : $storeMsixPath" -ForegroundColor Green
+Write-Host "💻 [로컬 직접 설치용 (자체 서명)] : $sideloadMsixPath" -ForegroundColor Yellow
+Write-Host "📜 [로컬 인증서 파일] : $cerPath" -ForegroundColor Gray
