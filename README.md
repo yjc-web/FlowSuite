@@ -7,7 +7,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-v1.0.0-blue.svg" alt="Version" />
+  <img src="https://img.shields.io/badge/Version-v1.0.1-blue.svg" alt="Version" />
   <img src="https://img.shields.io/badge/.NET_Framework-4.8.1-512BD4.svg" alt=".NET" />
   <img src="https://img.shields.io/badge/Platform-Windows-0078D6.svg" alt="Platform" />
   <img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License" />
@@ -62,8 +62,8 @@
 
 ## 🚀 다운로드 및 실행 방법 (Download & Run)
 
-1. [Releases](../../releases) 페이지에서 최신 버전의 `OverlayPic_v1.0.0.zip` 파일을 다운로드합니다.
-2. 압축을 푼 후 `OverlayPic.exe`를 실행합니다. (별도 설치 불필요)
+1. [FlowSuite Releases](https://github.com/yjc-web/FlowSuite/releases/tag/OverlayPic) 페이지에서 `OverlayPic_v1.0.1_Setup.exe` (설치형) 또는 `OverlayPic_v1.0.1.zip` (무설치 포터블)을 다운로드합니다.
+2. 설치 후 실행하거나, 압축을 푼 후 `OverlayPic.exe`를 실행합니다.
 3. 원하는 이미지를 드래그 앤 드롭하거나, 캡처 후 `Ctrl + V`를 누르면 즉시 사용할 수 있습니다.
 
 ---

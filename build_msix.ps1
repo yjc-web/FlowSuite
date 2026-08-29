@@ -1,12 +1,13 @@
 param(
     [string]$PackageName = "FlowSuiteYJC.OverlayPic",
-    [string]$Version = "1.0.0.0",
+    [string]$Version = "1.0.1.0",
     [string]$Publisher = "CN=8EFD2B12-10C1-4962-8D35-5EFCA941AC84",
     [string]$PublisherDisplayName = "FlowSuiteYJC",
     [string]$DisplayName = "OverlayPic"
 )
 
 $ErrorActionPreference = "Stop"
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
 $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 Set-Location $scriptDir
@@ -173,7 +174,20 @@ Export-Certificate -Cert $existingCert -FilePath $cerPath | Out-Null
 Write-Host "Signing Sideload MSIX package for local installation..." -ForegroundColor Yellow
 & $signTool sign /fd SHA256 /a /f $certPath /p "1234" $sideloadMsixPath
 
+# 7. Build Inno Setup Installer for GitHub Releases
+$isccPath = "C:\Program Files\Inno Setup 7\ISCC.exe"
+if (-not (Test-Path $isccPath)) {
+    $isccPath = "C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
+}
+$innoSetupExe = Join-Path $distDir "OverlayPic_v1.0.1_Setup.exe"
+
+if (Test-Path $isccPath) {
+    Write-Host "`nBuilding Inno Setup Installer for GitHub Releases..." -ForegroundColor Yellow
+    & $isccPath "OverlayPic_Installer.iss"
+}
+
 Write-Host "`n=== Packaging Complete ===" -ForegroundColor Cyan
-Write-Host "🛒 [MS Store 업로드용 (서명 없음)] : $storeMsixPath" -ForegroundColor Green
-Write-Host "💻 [로컬 직접 설치용 (자체 서명)] : $sideloadMsixPath" -ForegroundColor Yellow
+Write-Host "🛒 [MS Store 업로드용 MSIX] : $storeMsixPath" -ForegroundColor Green
+Write-Host "💻 [로컬 직접 설치용 MSIX] : $sideloadMsixPath" -ForegroundColor Yellow
+Write-Host "🚀 [GitHub 배포용 설치파일 (Inno Setup)] : $innoSetupExe" -ForegroundColor Cyan
 Write-Host "📜 [로컬 인증서 파일] : $cerPath" -ForegroundColor Gray
