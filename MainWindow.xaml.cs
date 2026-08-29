@@ -28,10 +28,12 @@ namespace OverlayPic
         // Virtual Key Codes
         private const uint VK_ESCAPE = 0x1B;
         private const uint VK_T = 0x54;
+        private const uint VK_X = 0x58;
 
         // Hotkey IDs
         private const int HOTKEY_ID_GLOBAL_TOGGLE = 9001; // Ctrl+Shift+T (Always registered)
         private const int HOTKEY_ID_ESCAPE_RELEASE = 9002; // Esc (Registered only during Click-Through)
+        private const int HOTKEY_ID_GLOBAL_SNIP = 9003;   // Ctrl+Alt+X (Always registered for screen snip)
 
         [DllImport("user32.dll", EntryPoint = "GetWindowLong")]
         private static extern int GetWindowLong32(IntPtr hwnd, int index);
@@ -92,6 +94,9 @@ namespace OverlayPic
             // Register global shortcut Ctrl+Shift+T to toggle click-through anytime
             RegisterHotKey(_hwnd, HOTKEY_ID_GLOBAL_TOGGLE, MOD_CONTROL | MOD_SHIFT | MOD_NOREPEAT, VK_T);
 
+            // Register global shortcut Ctrl+Alt+X for instant screen snippet capture
+            RegisterHotKey(_hwnd, HOTKEY_ID_GLOBAL_SNIP, MOD_CONTROL | MOD_ALT | MOD_NOREPEAT, VK_X);
+
             // Check if clipboard already has an image on startup
             TryLoadFromClipboard();
 
@@ -104,6 +109,7 @@ namespace OverlayPic
             if (_hwnd != IntPtr.Zero)
             {
                 UnregisterHotKey(_hwnd, HOTKEY_ID_GLOBAL_TOGGLE);
+                UnregisterHotKey(_hwnd, HOTKEY_ID_GLOBAL_SNIP);
                 if (_isEscHotKeyRegistered)
                 {
                     UnregisterHotKey(_hwnd, HOTKEY_ID_ESCAPE_RELEASE);
@@ -141,6 +147,12 @@ namespace OverlayPic
                 {
                     // Ctrl+Shift+T pressed globally -> Toggle click-through mode
                     ClickThroughToggle.IsChecked = !(ClickThroughToggle.IsChecked == true);
+                    handled = true;
+                }
+                else if (hotkeyId == HOTKEY_ID_GLOBAL_SNIP)
+                {
+                    // Ctrl+Alt+X pressed globally -> Start Screen Capture Snippet
+                    StartScreenCapture();
                     handled = true;
                 }
             }
@@ -309,6 +321,11 @@ namespace OverlayPic
                 {
                     Close();
                 }
+                e.Handled = true;
+            }
+            else if (e.Key == Key.X && Keyboard.Modifiers.HasFlag(ModifierKeys.Control) && Keyboard.Modifiers.HasFlag(ModifierKeys.Alt))
+            {
+                StartScreenCapture();
                 e.Handled = true;
             }
             else if (e.Key == Key.T && (Keyboard.Modifiers.HasFlag(ModifierKeys.Control) || Keyboard.Modifiers.HasFlag(ModifierKeys.Shift)))
@@ -515,6 +532,54 @@ namespace OverlayPic
             if (dlg.ShowDialog() == true)
             {
                 LoadFile(dlg.FileName);
+            }
+        }
+
+        private void Snip_Click(object sender, RoutedEventArgs e) => StartScreenCapture();
+
+        public void StartScreenCapture()
+        {
+            try
+            {
+                // Temporarily hide this window so it doesn't get captured in the screenshot
+                double prevOpacity = Opacity;
+                Opacity = 0;
+
+                // Allow UI to process the opacity change
+                System.Windows.Threading.Dispatcher.CurrentDispatcher.Invoke(
+                    System.Windows.Threading.DispatcherPriority.Render,
+                    new Action(() => { }));
+
+                System.Threading.Thread.Sleep(60);
+
+                var snipWin = new CaptureWindow();
+                bool? result = snipWin.ShowDialog();
+
+                // Restore opacity
+                Opacity = prevOpacity;
+
+                if (result == true && snipWin.CapturedBitmapSource != null)
+                {
+                    SetOverlayImage(snipWin.CapturedBitmapSource);
+
+                    // Position and size the window exactly at the dragged snippet area
+                    Rect rect = snipWin.SelectedScreenRect;
+                    if (rect.Width > 0 && rect.Height > 0)
+                    {
+                        Left = rect.Left;
+                        Top = rect.Top;
+                        Width = Math.Max(MinWidth, rect.Width);
+                        Height = Math.Max(MinHeight, rect.Height);
+                        UpdateInfoLabel();
+                    }
+
+                    Activate();
+                }
+            }
+            catch (Exception ex)
+            {
+                Opacity = 1.0;
+                MessageBox.Show($"캡처 실행 실패: {ex.Message}", "OverlayPic", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 

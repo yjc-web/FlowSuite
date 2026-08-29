@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>OverlayPic 블로그 포스팅</title>
+<style>
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "맑은 고딕", sans-serif;
+    line-height: 1.8;
+    color: #333333;
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f8fafc;
+  }
+  .post-container {
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  }
+  .tag {
+    display: inline-block;
+    background: #eff6ff;
+    color: #2563eb;
+    font-size: 13px;
+    font-weight: bold;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 12px;
+  }
+  h1 {
+    font-size: 26px;
+    color: #0f172a;
+    line-height: 1.4;
+    margin-top: 0;
+    margin-bottom: 8px;
+  }
+  .subtitle {
+    font-size: 16px;
+    color: #64748b;
+    margin-bottom: 25px;
+    border-bottom: 2px solid #f1f5f9;
+    padding-bottom: 15px;
+  }
+  .intro-box {
+    background: #f0fdf4;
+    border-left: 4px solid #22c55e;
+    padding: 16px 20px;
+    border-radius: 0 8px 8px 0;
+    margin-bottom: 30px;
+    font-size: 15px;
+  }
+  h2 {
+    font-size: 20px;
+    color: #1e293b;
+    margin-top: 35px;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-left: 4px solid #3b82f6;
+    padding-left: 10px;
+  }
+  .target-list {
+    background: #f8fafc;
+    border-radius: 10px;
+    padding: 18px 25px;
+    margin-bottom: 25px;
+  }
+  .target-list li {
+    margin-bottom: 8px;
+  }
+  .feature-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 25px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+  }
+  .feature-title {
+    font-size: 17px;
+    font-weight: bold;
+    color: #1e3a8a;
+    margin-bottom: 8px;
+  }
+  .gif-placeholder {
+    width: 100%;
+    height: 280px;
+    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #94a3b8;
+    margin: 15px 0;
+    text-align: center;
+    border: 2px dashed #3b82f6;
+  }
+  .gif-placeholder .icon {
+    font-size: 36px;
+    margin-bottom: 8px;
+  }
+  .gif-placeholder .hint {
+    font-size: 14px;
+    color: #38bdf8;
+    font-weight: bold;
+  }
+  .gif-placeholder .sub {
+    font-size: 12px;
+    color: #64748b;
+    margin-top: 4px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 14px;
+  }
+  th, td {
+    padding: 12px 14px;
+    text-align: left;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  th {
+    background: #f1f5f9;
+    color: #334155;
+    font-weight: bold;
+  }
+  tr:hover {
+    background: #f8fafc;
+  }
+  .kbd {
+    display: inline-block;
+    padding: 2px 7px;
+    font-size: 12px;
+    font-family: monospace;
+    color: #1e293b;
+    background-color: #f1f5f9;
+    border: 1px solid #cbd5e1;
+    border-radius: 4px;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+  }
+  .download-box {
+    background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+    color: #ffffff;
+    border-radius: 12px;
+    padding: 25px;
+    text-align: center;
+    margin: 35px 0;
+  }
+  .download-box h3 {
+    margin: 0 0 8px 0;
+    font-size: 20px;
+  }
+  .download-box p {
+    font-size: 14px;
+    color: #bfdbfe;
+    margin: 0 0 16px 0;
+  }
+  .download-btn {
+    display: inline-block;
+    background: #ffffff;
+    color: #1d4ed8;
+    font-weight: bold;
+    font-size: 15px;
+    padding: 12px 28px;
+    border-radius: 8px;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+  .footer-box {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    font-size: 14px;
+    color: #475569;
+    margin-top: 30px;
+  }
+</style>
+</head>
+<body>
+
+<div class="post-container">
+  <span class="tag">#무료프로그램 #생산성유틸리티 #디자인툴</span>
+  <h1>[무료 배포] 화면 위에 이미지 투명하게 띄우는 법 — OverlayPic v1.0 (클릭 통과/시안 대조/트레이싱)</h1>
+  <div class="subtitle">피그마 시안 1:1 픽셀 검수 & 그림 참고자료 띄우기 끝판왕! 무설치 단일 파일 무료 뷰어</div>
+
+  <div class="intro-box">
+    💡 <strong>이런 불편 겪어보신 적 있으신가요?</strong><br>
+    • 웹 퍼블리싱/프론트엔드 작업할 때 디자인 시안이랑 실제 화면 픽셀 맞추느라 눈 빠지셨던 분<br>
+    • 포토샵이나 클튜에서 그림 그릴 때 포즈 참고자료를 화면 위에 얹어두고 대고 그리고 싶으셨던 분<br>
+    • 듀얼 모니터 없이 한 화면에서 문서나 도면 대조 작업이 필요하셨던 분
+  </div>
+
+  <p>안녕하세요! 개발자 <strong>YJC</strong>입니다.<br>
+  제가 실무에서 매번 시안 대조하고 그림 그릴 때 불편해서 직접 만든 <strong>초경량 화면 오버레이 투명 뷰어 「OverlayPic」</strong>을 100% 무료(Freeware)로 배포합니다!</p>
+
+  <h2>🎯 이런 분들께 강력 추천합니다!</h2>
+  <div class="target-list">
+    <ul>
+      <li>👨‍💻 <strong>프론트엔드 개발자 / 웹 퍼블리셔</strong> : 피그마(Figma) 시안을 브라우저 위에 1:1로 겹쳐놓고 <strong>완벽한 픽셀 검수(Pixel-Perfect)</strong></li>
+      <li>🎨 <strong>일러스트레이터 / 웹툰 작가</strong> : 인체 포즈, 구도 레퍼런스를 반투명하게 띄워두고 <strong>트레이싱 & 형태 검수</strong></li>
+      <li>📊 <strong>일반 직장인 / 학생 / 3D 모델러</strong> : 화면 전환 없이 문서/영수증/도면을 띄워놓고 빠른 대조 입력</li>
+    </ul>
+  </div>
+
+  <h2>✨ 핵심 기능 & 사용법 (움짤 가이드)</h2>
+
+  <!-- 기능 0 (신규 킬러 기능) -->
+  <div class="feature-card" style="border: 2px solid #38bdf8; background: #f0f9ff;">
+    <div class="feature-title" style="color: #0369a1;">🔥 신기능! ✂️ Ctrl+Alt+X 화면 즉시 드래그 캡처</div>
+    <p>어느 화면에서든 <span class="kbd">Ctrl</span> + <span class="kbd">Alt</span> + <span class="kbd">X</span>를 누르고 원하는 영역을 마우스로 드래그하면, <strong>그 위치 그대로 즉시 반투명 오버레이 창으로 변환</strong>됩니다!<br>
+    윈도우 캡처 도구 열기 ➔ 파일 저장 ➔ 불러오기 과정이 <strong>단 1초(1동작)</strong>로 끝납니다.</p>
+    
+    <div class="gif-placeholder">
+      <div class="icon">✂️ ➔ 📌</div>
+      <div class="hint">[ 여기에 'Ctrl+Alt+X 드래그 캡처 즉시 오버레이 움짤(GIF)' 삽입 ]</div>
+      <div class="sub">Ctrl+Alt+X 누르고 사각형 드래그하면 그 자리에 바로 반투명 창이 생기는 장면</div>
+    </div>
+  </div>
+
+  <!-- 기능 1 -->
+  <div class="feature-card">
+    <div class="feature-title">1. Ctrl+V 하나로 캡처 이미지 즉시 띄우기</div>
+    <p>이미지를 캡처(Win+Shift+S 또는 캡처도구)한 뒤 <code>OverlayPic</code> 창에서 <span class="kbd">Ctrl</span> + <span class="kbd">V</span>만 누르면 파일 저장 없이 화면에 즉시 표시됩니다.</p>
+    
+    <div class="gif-placeholder">
+      <div class="icon">📋 ➔ 📌</div>
+      <div class="hint">[ 여기에 'Ctrl+V로 붙여넣는 움짤(GIF)' 삽입 ]</div>
+      <div class="sub">캡처 후 Ctrl+V 누르면 화면에 이미지가 뿅 뜨는 장면 녹화</div>
+    </div>
+  </div>
+
+  <!-- 기능 2 -->
+  <div class="feature-card">
+    <div class="feature-title">2. 마우스 휠로 부드러운 실시간 투명도 조절</div>
+    <p>창 위에 마우스를 올리고 휠을 굴리기만 하면 <strong>5%부터 100%까지 투명도가 실시간으로 스르륵 조절</strong>됩니다. 단축키 <span class="kbd">+</span> / <span class="kbd">-</span> 키로도 조절할 수 있습니다.</p>
+    
+    <div class="gif-placeholder">
+      <div class="icon">🔍 ➔ 🌫️</div>
+      <div class="hint">[ 여기에 '마우스 휠로 투명도 조절하는 움짤(GIF)' 삽입 ]</div>
+      <div class="sub">마우스 휠을 굴려 반투명해지는 장면 녹화</div>
+    </div>
+  </div>
+
+  <!-- 기능 3 -->
+  <div class="feature-card">
+    <div class="feature-title">3. 킬러 기능! 👆 클릭 통과 (Click-Through) 모드</div>
+    <p>상단바의 손모양(👆) 버튼을 누르거나 <span class="kbd">Ctrl</span> + <span class="kbd">Shift</span> + <span class="kbd">T</span>를 누르면 <strong>마우스 클릭이 이미지를 뚫고 뒤쪽 프로그램으로 통과</strong>됩니다!<br>
+    이미지를 띄워둔 채로 밑에 있는 브라우저나 포토샵을 자유롭게 클릭하고 작업할 수 있으며, 해제할 때는 언제든 <span class="kbd">Esc</span> 키만 누르면 즉시 복귀합니다.</p>
+    
+    <div class="gif-placeholder">
+      <div class="icon">👆 ➔ 💻</div>
+      <div class="hint">[ 여기에 '클릭 통과로 아래 창 조작 + Esc 해제 움짤(GIF)' 삽입 ]</div>
+      <div class="sub">손모양 켜고 밑에 있는 웹페이지 클릭하다가 Esc로 해제하는 장면</div>
+    </div>
+  </div>
+
+  <!-- 기능 4 -->
+  <div class="feature-card">
+    <div class="feature-title">4. 창 크기 조절 & 위치 잠금 & 체커보드 배경</div>
+    <p>
+      • <span class="kbd">Ctrl</span> + <strong>마우스 휠</strong> : 원본 가로세로 비율을 유지하며 창 확대/축소<br>
+      • <span class="kbd">Ctrl</span> + <span class="kbd">L</span> (🔒) : 작업 중 실수로 창이 움직이지 않도록 위치/크기 완벽 고정<br>
+      • <span class="kbd">Space</span> (🏁) : 투명 PNG의 흰색 배경 구분을 위한 체커보드 배경 토글<br>
+      • <span class="kbd">Ctrl</span> + <span class="kbd">R</span> (↻) : 1:1 원본 해상도 크기로 즉시 초기화
+    </p>
+    
+    <div class="gif-placeholder">
+      <div class="icon">🔒 🏁 ↻</div>
+      <div class="hint">[ 여기에 '크기 조절 + 체커보드 토글 움짤(GIF)' 삽입 ]</div>
+      <div class="sub">Ctrl+휠로 크기 늘리고 Space로 체커보드 켜는 장면</div>
+    </div>
+  </div>
+
+  <h2>⌨️ 전체 단축키 요약표</h2>
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 35%;">단축키</th>
+        <th>동작 설명</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="kbd">Ctrl</span> + <span class="kbd">Alt</span> + <span class="kbd">X</span></td>
+        <td>✂️ <strong>화면 영역 즉시 드래그 캡처</strong> (그 자리에 바로 오버레이 생성)</td>
+      </tr>
+      <tr>
+        <td><span class="kbd">Ctrl</span> + <span class="kbd">V</span></td>
+        <td>클립보드 캡처 이미지 또는 이미지 파일 즉시 붙여넣기</td>
+      </tr>
+      <tr>
+        <td><span class="kbd">Ctrl</span> + <span class="kbd">Shift</span> + <span class="kbd">T</span></td>
+        <td>👆 <strong>클릭 통과 모드 토글</strong> (마우스 클릭 통과)</td>
+      </tr>
+      <tr>
+        <td><span class="kbd">Esc</span></td>
+        <td>👆 <strong>클릭 통과 즉시 해제</strong> (일반 모드에서는 창 닫기)</td>
+      </tr>
+      <tr>
+        <td><strong>마우스 휠</strong> / <span class="kbd">+</span>, <span class="kbd">-</span></td>
+        <td>이미지 불투명도 실시간 조절</td>
+      </tr>
+      <tr>
+        <td><span class="kbd">Ctrl</span> + <strong>마우스 휠</strong></td>
+        <td>창 크기 확대 / 축소 (비율 유지)</td>
+      </tr>
+      <tr>
+        <td><span class="kbd">Ctrl</span> + <span class="kbd">L</span></td>
+        <td>🔒 창 위치 및 크기 고정 (Lock)</td>
+      </tr>
+      <tr>
+        <td><span class="kbd">Ctrl</span> + <span class="kbd">R</span></td>
+        <td>↻ 원본 1:1 해상도 크기로 리셋</td>
+      </tr>
+      <tr>
+        <td><span class="kbd">Space</span></td>
+        <td>🏁 투명 PNG용 체커보드 배경 켜기/끄기</td>
+      </tr>
+      <tr>
+        <td><span class="kbd">Ctrl</span> + <span class="kbd">O</span></td>
+        <td>이미지 파일 직접 열기</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- 다운로드 영역 -->
+  <div class="download-box">
+    <h3>📥 OverlayPic v1.0.0 무료 다운로드</h3>
+    <p>설치가 필요 없는 100% 무설치 단일 포터블 파일입니다. (압축 해제 후 바로 실행)</p>
+    <a href="#" class="download-btn">⬇️ 첨부파일 다운로드 (OverlayPic_v1.0.0.zip)</a>
+    <p style="font-size: 12px; margin-top: 12px; color: #93c5fd;">* 바이러스 및 악성코드 없는 안전한 순수 C# WPF 프로그램입니다.</p>
+  </div>
+
+  <div class="footer-box">
+    <p><strong>👨‍💻 개발자 한마디 & 피드백</strong></p>
+    <p>OverlayPic이 여러분의 작업 시간과 칼퇴에 조금이나마 도움이 되었으면 좋겠습니다! 😊<br>
+    사용하시면서 버그나 추가되었으면 하는 기능이 있다면 언제든 <strong>댓글</strong>로 남겨주세요.<br>
+    유용하게 쓰셨다면 <strong>공감(❤️)과 이웃 추가</strong> 부탁드립니다!</p>
+  </div>
+</div>
+
+</body>
+</html>

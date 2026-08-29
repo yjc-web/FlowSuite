@@ -170,6 +170,8 @@
                                              Content="🏁" Style="{StaticResource BarToggle}" 
                                              ToolTip="체커보드 배경 토글 (Space)" Margin="0,0,3,0"
                                              Checked="CheckerToggle_Changed" Unchecked="CheckerToggle_Changed" />
+                    <Button Content="✂" Style="{StaticResource BarBtn}" Click="Snip_Click" 
+                            ToolTip="화면 영역 드래그 캡처 (Ctrl+Alt+X)" Margin="0,0,3,0" />
                     <Button Content="📋" Style="{StaticResource BarBtn}" Click="Paste_Click" 
                             ToolTip="클립보드 이미지 붙여넣기 (Ctrl+V)" Margin="0,0,3,0" />
                     <Button Content="📂" Style="{StaticResource BarBtn}" Click="Open_Click" 
@@ -222,6 +224,7 @@
                         <Border Grid.Column="0" Background="#0F172A" CornerRadius="6" Padding="10" Margin="0,0,8,0">
                             <StackPanel>
                                 <TextBlock Text="⌨️ 주요 단축키" FontWeight="Bold" FontSize="11" Foreground="#F1F5F9" Margin="0,0,0,6" />
+                                <TextBlock Text="• Ctrl+Alt+X : ✂️ 화면 영역 드래그 캡처" FontSize="10.5" Foreground="#38BDF8" FontWeight="SemiBold" Margin="0,1.5" />
                                 <TextBlock Text="• Ctrl+V : 클립보드 이미지/파일 붙여넣기" FontSize="10.5" Foreground="#CBD5E1" Margin="0,1.5" />
                                 <TextBlock Text="• Ctrl+Shift+T / Ctrl+T : 클릭 통과 토글" FontSize="10.5" Foreground="#CBD5E1" Margin="0,1.5" />
                                 <TextBlock Text="• Esc : 클릭 통과 해제 (일반 시 창 닫기)" FontSize="10.5" Foreground="#F59E0B" Margin="0,1.5" />
