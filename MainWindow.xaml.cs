@@ -619,6 +619,7 @@ namespace OverlayPic
             ClickThroughToggle.ToolTip = isEn ? "Click-Through Mode (Click windows beneath / Esc to exit)" : "클릭 통과 모드 (뒤쪽 프로그램 클릭 가능 / 해제: Esc 또는 Ctrl+Shift+T)";
             SnipBtn.ToolTip = isEn ? "Screen Snipping (Ctrl+Alt+X)" : "화면 영역 드래그 캡처 (Ctrl+Alt+X)";
             MoreBtn.ToolTip = isEn ? "More Options (Ctrl+O, Ctrl+V, Lock, etc.)" : "더보기 메뉴 (Ctrl+O, Ctrl+V, 고정, 설정 등)";
+            AboutBtn.ToolTip = isEn ? "About / Shortcuts / Coffee Donation" : "프로그램 정보 / 단축키 / 개발자 후원";
             MinimizeBtn.ToolTip = isEn ? "Minimize (Ctrl+M)" : "최소화 (Ctrl+M)";
             CloseBtn.ToolTip = isEn ? "Close (Esc)" : "닫기 (Esc)";
 
@@ -629,7 +630,6 @@ namespace OverlayPic
             MenuChecker.Header = isEn ? "🏁 Toggle Checkerboard Grid (Space)" : "🏁 체커보드 배경 토글 (Space)";
             MenuReset.Header = isEn ? "↻ Reset to 1:1 Native Resolution (Ctrl+R)" : "↻ 1:1 원본 해상도로 리셋 (Ctrl+R)";
             MenuLang.Header = isEn ? "🌐 Language / 언어 전환 (English ➔ 한국어)" : "🌐 Language / 언어 전환 (한국어 ➔ English)";
-            MenuAbout.Header = isEn ? "ℹ️ About & Keyboard Shortcuts" : "ℹ️ 프로그램 정보 및 단축키 안내";
 
             // DropZone
             DropTitle.Text = isEn ? "Drag & Drop Image Here" : "이미지를 여기에 드래그 & 드롭";

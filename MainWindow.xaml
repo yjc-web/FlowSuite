@@ -78,6 +78,61 @@
                 </Setter.Value>
             </Setter>
         </Style>
+        <!-- Dark Theme ContextMenu Style (Removes default white gutter) -->
+        <Style TargetType="ContextMenu">
+            <Setter Property="Background" Value="#1E293B" />
+            <Setter Property="BorderBrush" Value="#3B82F6" />
+            <Setter Property="BorderThickness" Value="1.5" />
+            <Setter Property="Foreground" Value="#F1F5F9" />
+            <Setter Property="Padding" Value="4" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ContextMenu">
+                        <Border Background="#1E293B" BorderBrush="#3B82F6" BorderThickness="1.5" CornerRadius="6" Padding="4">
+                            <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Cycle" />
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Dark Theme MenuItem Style -->
+        <Style TargetType="MenuItem">
+            <Setter Property="Foreground" Value="#F1F5F9" />
+            <Setter Property="FontSize" Value="11.5" />
+            <Setter Property="Padding" Value="8,5" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="MenuItem">
+                        <Border x:Name="ItemBorder" Background="Transparent" CornerRadius="4" Padding="{TemplateBinding Padding}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <ContentPresenter Grid.Column="1" ContentSource="Header" VerticalAlignment="Center" Margin="2,0,4,0" />
+                            </Grid>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsHighlighted" Value="True">
+                                <Setter TargetName="ItemBorder" Property="Background" Value="#334155" />
+                            </Trigger>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter TargetName="ItemBorder" Property="Background" Value="#2563EB" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Dark Theme Separator Style -->
+        <Style TargetType="Separator">
+            <Setter Property="Background" Value="#334155" />
+            <Setter Property="Margin" Value="4,3" />
+            <Setter Property="Height" Value="1" />
+        </Style>
     </Window.Resources>
 
     <Grid x:Name="RootGrid" MouseLeftButtonDown="RootGrid_MouseLeftButtonDown">
@@ -172,25 +227,28 @@
                     <Button x:Name="MoreBtn" Content="⋯" Style="{StaticResource BarBtn}" Click="More_Click" 
                             ToolTip="더보기 메뉴 (Ctrl+O, Ctrl+V, 고정, 설정 등)" Margin="0,0,3,0">
                         <Button.ContextMenu>
-                            <ContextMenu x:Name="MainMenu" Background="#1E293B" BorderBrush="#3B82F6" BorderThickness="1" Foreground="#F1F5F9" FontSize="12">
-                                <MenuItem x:Name="MenuOpen" Header="📂 이미지 파일 열기... (Ctrl+O)" Click="Open_Click" Foreground="#F1F5F9" />
-                                <MenuItem x:Name="MenuPaste" Header="📋 클립보드 붙여넣기 (Ctrl+V)" Click="Paste_Click" Foreground="#F1F5F9" />
-                                <Separator Background="#334155" />
-                                <MenuItem x:Name="MenuLock" Header="🔒 위치 및 크기 고정 (Ctrl+L)" IsCheckable="True" Click="MenuLock_Click" Foreground="#F1F5F9" />
-                                <MenuItem x:Name="MenuChecker" Header="🏁 체커보드 배경 토글 (Space)" IsCheckable="True" Click="MenuChecker_Click" Foreground="#F1F5F9" />
-                                <MenuItem x:Name="MenuReset" Header="↻ 1:1 원본 해상도로 리셋 (Ctrl+R)" Click="ResetSize_Click" Foreground="#F1F5F9" />
-                                <Separator Background="#334155" />
+                            <ContextMenu x:Name="MainMenu">
+                                <MenuItem x:Name="MenuOpen" Header="📂 이미지 파일 열기... (Ctrl+O)" Click="Open_Click" />
+                                <MenuItem x:Name="MenuPaste" Header="📋 클립보드 붙여넣기 (Ctrl+V)" Click="Paste_Click" />
+                                <Separator />
+                                <MenuItem x:Name="MenuLock" Header="🔒 위치 및 크기 고정 (Ctrl+L)" IsCheckable="True" Click="MenuLock_Click" />
+                                <MenuItem x:Name="MenuChecker" Header="🏁 체커보드 배경 토글 (Space)" IsCheckable="True" Click="MenuChecker_Click" />
+                                <MenuItem x:Name="MenuReset" Header="↻ 1:1 원본 해상도로 리셋 (Ctrl+R)" Click="ResetSize_Click" />
+                                <Separator />
                                 <MenuItem x:Name="MenuLang" Header="🌐 Language / 언어 전환 (English ↔ 한국어)" Click="Lang_Click" Foreground="#38BDF8" FontWeight="SemiBold" />
-                                <MenuItem x:Name="MenuAbout" Header="ℹ️ 프로그램 정보 및 단축키 안내" Click="About_Click" Foreground="#F1F5F9" />
                             </ContextMenu>
                         </Button.ContextMenu>
                     </Button>
 
-                    <!-- 4. Minimize -->
+                    <!-- 4. About / Donation Info -->
+                    <Button x:Name="AboutBtn" Content="ℹ" Style="{StaticResource BarBtn}" Click="About_Click" 
+                            ToolTip="프로그램 정보 / 후원 / 단축키 안내" Margin="0,0,3,0" />
+
+                    <!-- 5. Minimize -->
                     <Button x:Name="MinimizeBtn" Content="─" Style="{StaticResource BarBtn}" Click="Minimize_Click" 
                             ToolTip="최소화 (Ctrl+M)" Margin="0,0,3,0" />
 
-                    <!-- 5. Close -->
+                    <!-- 6. Close -->
                     <Button x:Name="CloseBtn" Content="✕" Style="{StaticResource BarBtn}" Click="Close_Click" 
                             ToolTip="닫기 (Esc)" Background="#88EF4444" />
                 </StackPanel>
