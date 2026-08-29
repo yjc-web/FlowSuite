@@ -184,7 +184,7 @@ namespace OverlayPic
 
         private void RootGrid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (LockToggle.IsChecked != true && e.ButtonState == MouseButtonState.Pressed)
+            if (!_isLocked && e.ButtonState == MouseButtonState.Pressed)
             {
                 try { DragMove(); } catch { }
             }
@@ -192,7 +192,7 @@ namespace OverlayPic
 
         private void ControlBar_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (LockToggle.IsChecked != true && e.ButtonState == MouseButtonState.Pressed)
+            if (!_isLocked && e.ButtonState == MouseButtonState.Pressed)
             {
                 try { DragMove(); } catch { }
             }
@@ -208,7 +208,7 @@ namespace OverlayPic
             if (Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
             {
                 // Ctrl + Wheel: Resize window (if not locked)
-                if (LockToggle.IsChecked != true)
+                if (!_isLocked)
                 {
                     double factor = e.Delta > 0 ? 1.08 : 0.92;
                     double newW = Width * factor;
