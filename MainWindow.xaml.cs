@@ -386,7 +386,7 @@ namespace OverlayPic
             if (ClickThroughToggle.IsChecked == true)
             {
                 // Enable click-through: Mouse clicks pass through to windows beneath
-                SetWindowLong(_hwnd, GWL_EXSTYLE, _originalExStyle | WS_EX_TRANSPARENT);
+                NativeMethods.SetWindowLong(_hwnd, NativeMethods.GWL_EXSTYLE, _originalExStyle | NativeMethods.WS_EX_TRANSPARENT);
                 ControlBar.Opacity = 0.45;
                 OutlineBorder.BorderBrush = Brushes.OrangeRed;
                 InfoLabel.Text = "👆 클릭 통과 활성 (해제: Esc 또는 Ctrl+Shift+T)";
@@ -394,20 +394,20 @@ namespace OverlayPic
                 // Register global Esc hotkey so pressing Esc anywhere disables click-through
                 if (!_isEscHotKeyRegistered)
                 {
-                    _isEscHotKeyRegistered = RegisterHotKey(_hwnd, HOTKEY_ID_ESCAPE_RELEASE, MOD_NOREPEAT, VK_ESCAPE);
+                    _isEscHotKeyRegistered = NativeMethods.RegisterHotKey(_hwnd, NativeMethods.HOTKEY_ID_ESCAPE_RELEASE, NativeMethods.MOD_NOREPEAT, NativeMethods.VK_ESCAPE);
                 }
             }
             else
             {
                 // Disable click-through
-                SetWindowLong(_hwnd, GWL_EXSTYLE, _originalExStyle);
+                NativeMethods.SetWindowLong(_hwnd, NativeMethods.GWL_EXSTYLE, _originalExStyle);
                 ControlBar.Opacity = 1.0;
                 OutlineBorder.BorderBrush = new SolidColorBrush(Color.FromArgb(0x66, 0x3B, 0x82, 0xF6));
 
                 // Unregister global Esc hotkey so Esc functions normally for other apps
                 if (_isEscHotKeyRegistered)
                 {
-                    UnregisterHotKey(_hwnd, HOTKEY_ID_ESCAPE_RELEASE);
+                    NativeMethods.UnregisterHotKey(_hwnd, NativeMethods.HOTKEY_ID_ESCAPE_RELEASE);
                     _isEscHotKeyRegistered = false;
                 }
 
