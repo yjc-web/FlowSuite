@@ -1,0 +1,18 @@
+## Visual Studio & .NET build output
+[Bb]in/
+[Oo]bj/
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.cache
+
+## Temporary scripts
+Resources/convert_ico.ps1
+
+## OS generated files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
