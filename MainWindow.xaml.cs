@@ -13,44 +13,42 @@ namespace OverlayPic
 {
     public partial class MainWindow : Window
     {
-        #region Win32 API Constants & Imports
+    internal static class NativeMethods
+    {
+        public const int GWL_EXSTYLE = -20;
+        public const int WS_EX_TRANSPARENT = 0x00000020;
+        public const int WM_HOTKEY = 0x0312;
 
-        private const int GWL_EXSTYLE = -20;
-        private const int WS_EX_TRANSPARENT = 0x00000020;
-        private const int WM_HOTKEY = 0x0312;
+        public const uint MOD_ALT = 0x0001;
+        public const uint MOD_CONTROL = 0x0002;
+        public const uint MOD_SHIFT = 0x0004;
+        public const uint MOD_NOREPEAT = 0x4000;
 
-        // Modifiers for RegisterHotKey
-        private const uint MOD_ALT = 0x0001;
-        private const uint MOD_CONTROL = 0x0002;
-        private const uint MOD_SHIFT = 0x0004;
-        private const uint MOD_NOREPEAT = 0x4000;
+        public const uint VK_ESCAPE = 0x1B;
+        public const uint VK_T = 0x54;
+        public const uint VK_X = 0x58;
 
-        // Virtual Key Codes
-        private const uint VK_ESCAPE = 0x1B;
-        private const uint VK_T = 0x54;
-        private const uint VK_X = 0x58;
+        public const int HOTKEY_ID_GLOBAL_TOGGLE = 9001;
+        public const int HOTKEY_ID_ESCAPE_RELEASE = 9002;
+        public const int HOTKEY_ID_GLOBAL_SNIP = 9003;
 
-        // Hotkey IDs
-        private const int HOTKEY_ID_GLOBAL_TOGGLE = 9001; // Ctrl+Shift+T (Always registered)
-        private const int HOTKEY_ID_ESCAPE_RELEASE = 9002; // Esc (Registered only during Click-Through)
-        private const int HOTKEY_ID_GLOBAL_SNIP = 9003;   // Ctrl+Alt+X (Always registered for screen snip)
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern int GetWindowLong(IntPtr hwnd, int index);
 
-        [DllImport("user32.dll", EntryPoint = "GetWindowLong", SetLastError = true)]
-        private static extern int GetWindowLong(IntPtr hwnd, int index);
-
-        [DllImport("user32.dll", EntryPoint = "SetWindowLong", SetLastError = true)]
-        private static extern int SetWindowLong(IntPtr hwnd, int index, int newStyle);
+        [DllImport("user32.dll", SetLastError = true)]
+        public static extern int SetWindowLong(IntPtr hwnd, int index, int newStyle);
 
         [DllImport("user32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        private static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
+        public static extern bool RegisterHotKey(IntPtr hWnd, int id, uint fsModifiers, uint vk);
 
         [DllImport("user32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        private static extern bool UnregisterHotKey(IntPtr hWnd, int id);
+        public static extern bool UnregisterHotKey(IntPtr hWnd, int id);
+    }
 
-        #endregion
-
+    public partial class MainWindow : Window
+    {
         private IntPtr _hwnd;
         private HwndSource _hwndSource;
         private int _originalExStyle;
@@ -68,16 +66,16 @@ namespace OverlayPic
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             _hwnd = new WindowInteropHelper(this).Handle;
-            _originalExStyle = GetWindowLong(_hwnd, GWL_EXSTYLE);
+            _originalExStyle = NativeMethods.GetWindowLong(_hwnd, NativeMethods.GWL_EXSTYLE);
 
             _hwndSource = HwndSource.FromHwnd(_hwnd);
             _hwndSource?.AddHook(HwndHook);
 
             // Register global shortcut Ctrl+Shift+T to toggle click-through anytime
-            RegisterHotKey(_hwnd, HOTKEY_ID_GLOBAL_TOGGLE, MOD_CONTROL | MOD_SHIFT | MOD_NOREPEAT, VK_T);
+            NativeMethods.RegisterHotKey(_hwnd, NativeMethods.HOTKEY_ID_GLOBAL_TOGGLE, NativeMethods.MOD_CONTROL | NativeMethods.MOD_SHIFT | NativeMethods.MOD_NOREPEAT, NativeMethods.VK_T);
 
             // Register global shortcut Ctrl+Alt+X for instant screen snippet capture
-            RegisterHotKey(_hwnd, HOTKEY_ID_GLOBAL_SNIP, MOD_CONTROL | MOD_ALT | MOD_NOREPEAT, VK_X);
+            NativeMethods.RegisterHotKey(_hwnd, NativeMethods.HOTKEY_ID_GLOBAL_SNIP, NativeMethods.MOD_CONTROL | NativeMethods.MOD_ALT | NativeMethods.MOD_NOREPEAT, NativeMethods.VK_X);
 
             // Check if clipboard already has an image on startup
             TryLoadFromClipboard();
@@ -90,11 +88,11 @@ namespace OverlayPic
             // Unregister all hotkeys on window close
             if (_hwnd != IntPtr.Zero)
             {
-                UnregisterHotKey(_hwnd, HOTKEY_ID_GLOBAL_TOGGLE);
-                UnregisterHotKey(_hwnd, HOTKEY_ID_GLOBAL_SNIP);
+                NativeMethods.UnregisterHotKey(_hwnd, NativeMethods.HOTKEY_ID_GLOBAL_TOGGLE);
+                NativeMethods.UnregisterHotKey(_hwnd, NativeMethods.HOTKEY_ID_GLOBAL_SNIP);
                 if (_isEscHotKeyRegistered)
                 {
-                    UnregisterHotKey(_hwnd, HOTKEY_ID_ESCAPE_RELEASE);
+                    NativeMethods.UnregisterHotKey(_hwnd, NativeMethods.HOTKEY_ID_ESCAPE_RELEASE);
                     _isEscHotKeyRegistered = false;
                 }
             }
@@ -113,10 +111,10 @@ namespace OverlayPic
         /// </summary>
         private IntPtr HwndHook(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
-            if (msg == WM_HOTKEY)
+            if (msg == NativeMethods.WM_HOTKEY)
             {
                 int hotkeyId = wParam.ToInt32();
-                if (hotkeyId == HOTKEY_ID_ESCAPE_RELEASE)
+                if (hotkeyId == NativeMethods.HOTKEY_ID_ESCAPE_RELEASE)
                 {
                     // Escape key pressed globally while in Click-Through mode -> Release click-through
                     if (ClickThroughToggle.IsChecked == true)
@@ -125,13 +123,13 @@ namespace OverlayPic
                         handled = true;
                     }
                 }
-                else if (hotkeyId == HOTKEY_ID_GLOBAL_TOGGLE)
+                else if (hotkeyId == NativeMethods.HOTKEY_ID_GLOBAL_TOGGLE)
                 {
                     // Ctrl+Shift+T pressed globally -> Toggle click-through mode
                     ClickThroughToggle.IsChecked = !(ClickThroughToggle.IsChecked == true);
                     handled = true;
                 }
-                else if (hotkeyId == HOTKEY_ID_GLOBAL_SNIP)
+                else if (hotkeyId == NativeMethods.HOTKEY_ID_GLOBAL_SNIP)
                 {
                     // Ctrl+Alt+X pressed globally -> Start Screen Capture Snippet
                     StartScreenCapture();
