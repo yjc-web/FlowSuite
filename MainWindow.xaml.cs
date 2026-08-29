@@ -324,6 +324,11 @@ namespace OverlayPic
                 LockToggle.IsChecked = !(LockToggle.IsChecked == true);
                 e.Handled = true;
             }
+            else if (e.Key == Key.M && Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
+            {
+                WindowState = WindowState.Minimized;
+                e.Handled = true;
+            }
             else if (e.Key == Key.R && Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
             {
                 ResetSize_Click(this, null);
@@ -599,6 +604,7 @@ namespace OverlayPic
             OpenBtn.ToolTip = isEn ? "Open Image File (Ctrl+O)" : "이미지 파일 열기 (Ctrl+O)";
             LangBtn.ToolTip = isEn ? "Language / 언어 전환 (English ➔ 한국어)" : "Language / 언어 전환 (한국어 ➔ English)";
             AboutBtn.ToolTip = isEn ? "About / Shortcuts / Website" : "프로그램 정보 / 블로그 / 단축키 안내";
+            MinimizeBtn.ToolTip = isEn ? "Minimize (Ctrl+M)" : "최소화 (Ctrl+M)";
             CloseBtn.ToolTip = isEn ? "Close (Esc)" : "닫기 (Esc)";
 
             // DropZone
@@ -613,6 +619,7 @@ namespace OverlayPic
             ShortcutPaste.Text = isEn ? "• Ctrl+V : Paste Clipboard Image/File" : "• Ctrl+V : 클립보드 이미지/파일 붙여넣기";
             ShortcutToggle.Text = isEn ? "• Ctrl+Shift+T / Ctrl+T : Toggle Click-Through" : "• Ctrl+Shift+T / Ctrl+T : 클릭 통과 토글";
             ShortcutEsc.Text = isEn ? "• Esc : Release Click-Through / Close Window" : "• Esc : 클릭 통과 해제 (일반 시 창 닫기)";
+            ShortcutMin.Text = isEn ? "• Ctrl+M : Minimize Window" : "• Ctrl+M : 최소화 (Minimize)";
             ShortcutOpacity.Text = isEn ? "• Mouse Wheel / +, - : Adjust Opacity" : "• 마우스 휠 / +, - : 투명도 조절";
             ShortcutResize.Text = isEn ? "• Ctrl + Wheel / Ctrl+(+,-) : Resize Window" : "• Ctrl + 휠 / Ctrl+(+,-) : 창 크기 조절";
             ShortcutLock.Text = isEn ? "• Ctrl+L : Lock/Unlock Position & Size" : "• Ctrl+L : 위치/크기 고정 토글";
@@ -624,6 +631,11 @@ namespace OverlayPic
             DonationSubtitle.Text = isEn ? "Scan QR with KakaoPay app" : "카카오페이 앱으로 QR 스캔";
 
             UpdateInfoLabel();
+        }
+
+        private void Minimize_Click(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState.Minimized;
         }
 
         private void About_Click(object sender, RoutedEventArgs e)

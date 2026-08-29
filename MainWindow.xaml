@@ -180,6 +180,8 @@
                             ToolTip="Language / 언어 전환 (한국어 ↔ English)" Margin="0,0,3,0" />
                     <Button x:Name="AboutBtn" Content="ℹ" Style="{StaticResource BarBtn}" Click="About_Click" 
                             ToolTip="프로그램 정보 / 블로그 / 단축키 안내" Margin="0,0,3,0" />
+                    <Button x:Name="MinimizeBtn" Content="─" Style="{StaticResource BarBtn}" Click="Minimize_Click" 
+                            ToolTip="최소화 (Ctrl+M)" Margin="0,0,3,0" />
                     <Button x:Name="CloseBtn" Content="✕" Style="{StaticResource BarBtn}" Click="Close_Click" 
                             ToolTip="닫기 (Esc)" Background="#88EF4444" />
                 </StackPanel>
@@ -230,6 +232,7 @@
                                 <TextBlock x:Name="ShortcutPaste" Text="• Ctrl+V : 클립보드 이미지/파일 붙여넣기" FontSize="10.5" Foreground="#CBD5E1" Margin="0,1.5" />
                                 <TextBlock x:Name="ShortcutToggle" Text="• Ctrl+Shift+T / Ctrl+T : 클릭 통과 토글" FontSize="10.5" Foreground="#CBD5E1" Margin="0,1.5" />
                                 <TextBlock x:Name="ShortcutEsc" Text="• Esc : 클릭 통과 해제 (일반 시 창 닫기)" FontSize="10.5" Foreground="#F59E0B" Margin="0,1.5" />
+                                <TextBlock x:Name="ShortcutMin" Text="• Ctrl+M : 최소화 (Minimize)" FontSize="10.5" Foreground="#CBD5E1" Margin="0,1.5" />
                                 <TextBlock x:Name="ShortcutOpacity" Text="• 마우스 휠 / +, - : 투명도 조절" FontSize="10.5" Foreground="#CBD5E1" Margin="0,1.5" />
                                 <TextBlock x:Name="ShortcutResize" Text="• Ctrl + 휠 / Ctrl+(+,-) : 창 크기 조절" FontSize="10.5" Foreground="#CBD5E1" Margin="0,1.5" />
                                 <TextBlock x:Name="ShortcutLock" Text="• Ctrl+L : 위치/크기 고정 토글" FontSize="10.5" Foreground="#CBD5E1" Margin="0,1.5" />
