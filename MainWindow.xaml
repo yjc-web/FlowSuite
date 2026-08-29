@@ -154,34 +154,43 @@
                 <TextBlock x:Name="InfoLabel" Grid.Column="1" 
                            FontSize="10" Foreground="#94A3B8"
                            HorizontalAlignment="Center" VerticalAlignment="Center"
-                           TextTrimming="CharacterEllipsis" Margin="8,0" />
+                           TextTrimming="CharacterEllipsis" Margin="6,0" />
 
-                <!-- Right: Action Buttons -->
+                <!-- Right: Action Buttons (Minimal 5 Icons) -->
                 <StackPanel Grid.Column="2" Orientation="Horizontal" VerticalAlignment="Center">
+                    <!-- 1. Click-Through Toggle -->
                     <Primitives:ToggleButton x:Name="ClickThroughToggle" xmlns:Primitives="clr-namespace:System.Windows.Controls.Primitives;assembly=PresentationFramework"
                                              Content="👆" Style="{StaticResource BarToggle}" 
                                              ToolTip="클릭 통과 모드 (뒤쪽 프로그램 클릭 가능 / 해제: Esc 또는 Ctrl+Shift+T)" Margin="0,0,3,0"
                                              Checked="ClickThrough_Changed" Unchecked="ClickThrough_Changed" />
-                    <Primitives:ToggleButton x:Name="LockToggle" xmlns:Primitives="clr-namespace:System.Windows.Controls.Primitives;assembly=PresentationFramework"
-                                             Content="🔒" Style="{StaticResource BarToggle}" 
-                                             ToolTip="위치 및 크기 고정 토글 (Ctrl+L)" Margin="0,0,3,0"
-                                             Checked="LockToggle_Changed" Unchecked="LockToggle_Changed" />
-                    <Primitives:ToggleButton x:Name="CheckerToggle" xmlns:Primitives="clr-namespace:System.Windows.Controls.Primitives;assembly=PresentationFramework"
-                                             Content="🏁" Style="{StaticResource BarToggle}" 
-                                             ToolTip="체커보드 배경 토글 (Space)" Margin="0,0,3,0"
-                                             Checked="CheckerToggle_Changed" Unchecked="CheckerToggle_Changed" />
+                    
+                    <!-- 2. Screen Snip -->
                     <Button x:Name="SnipBtn" Content="✂" Style="{StaticResource BarBtn}" Click="Snip_Click" 
                             ToolTip="화면 영역 드래그 캡처 (Ctrl+Alt+X)" Margin="0,0,3,0" />
-                    <Button x:Name="PasteBtn" Content="📋" Style="{StaticResource BarBtn}" Click="Paste_Click" 
-                            ToolTip="클립보드 이미지 붙여넣기 (Ctrl+V)" Margin="0,0,3,0" />
-                    <Button x:Name="OpenBtn" Content="📂" Style="{StaticResource BarBtn}" Click="Open_Click" 
-                            ToolTip="이미지 파일 열기 (Ctrl+O)" Margin="0,0,3,0" />
-                    <Button x:Name="LangBtn" Content="🌐" Style="{StaticResource BarBtn}" Click="Lang_Click" 
-                            ToolTip="Language / 언어 전환 (한국어 ↔ English)" Margin="0,0,3,0" />
-                    <Button x:Name="AboutBtn" Content="ℹ" Style="{StaticResource BarBtn}" Click="About_Click" 
-                            ToolTip="프로그램 정보 / 블로그 / 단축키 안내" Margin="0,0,3,0" />
+
+                    <!-- 3. More Menu (...) -->
+                    <Button x:Name="MoreBtn" Content="⋯" Style="{StaticResource BarBtn}" Click="More_Click" 
+                            ToolTip="더보기 메뉴 (Ctrl+O, Ctrl+V, 고정, 설정 등)" Margin="0,0,3,0">
+                        <Button.ContextMenu>
+                            <ContextMenu x:Name="MainMenu" Background="#1E293B" BorderBrush="#3B82F6" BorderThickness="1" Foreground="#F1F5F9" FontSize="12">
+                                <MenuItem x:Name="MenuOpen" Header="📂 이미지 파일 열기... (Ctrl+O)" Click="Open_Click" Foreground="#F1F5F9" />
+                                <MenuItem x:Name="MenuPaste" Header="📋 클립보드 붙여넣기 (Ctrl+V)" Click="Paste_Click" Foreground="#F1F5F9" />
+                                <Separator Background="#334155" />
+                                <MenuItem x:Name="MenuLock" Header="🔒 위치 및 크기 고정 (Ctrl+L)" IsCheckable="True" Click="MenuLock_Click" Foreground="#F1F5F9" />
+                                <MenuItem x:Name="MenuChecker" Header="🏁 체커보드 배경 토글 (Space)" IsCheckable="True" Click="MenuChecker_Click" Foreground="#F1F5F9" />
+                                <MenuItem x:Name="MenuReset" Header="↻ 1:1 원본 해상도로 리셋 (Ctrl+R)" Click="ResetSize_Click" Foreground="#F1F5F9" />
+                                <Separator Background="#334155" />
+                                <MenuItem x:Name="MenuLang" Header="🌐 Language / 언어 전환 (English ↔ 한국어)" Click="Lang_Click" Foreground="#38BDF8" FontWeight="SemiBold" />
+                                <MenuItem x:Name="MenuAbout" Header="ℹ️ 프로그램 정보 및 단축키 안내" Click="About_Click" Foreground="#F1F5F9" />
+                            </ContextMenu>
+                        </Button.ContextMenu>
+                    </Button>
+
+                    <!-- 4. Minimize -->
                     <Button x:Name="MinimizeBtn" Content="─" Style="{StaticResource BarBtn}" Click="Minimize_Click" 
                             ToolTip="최소화 (Ctrl+M)" Margin="0,0,3,0" />
+
+                    <!-- 5. Close -->
                     <Button x:Name="CloseBtn" Content="✕" Style="{StaticResource BarBtn}" Click="Close_Click" 
                             ToolTip="닫기 (Esc)" Background="#88EF4444" />
                 </StackPanel>

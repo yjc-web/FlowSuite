@@ -56,6 +56,7 @@ namespace OverlayPic
         private double _imageNativeHeight;
         private bool _hasImage;
         private bool _isEscHotKeyRegistered;
+        private bool _isLocked = false;
         private AppLanguage _currentLanguage = AppLanguage.Korean;
 
         public MainWindow()
@@ -321,7 +322,7 @@ namespace OverlayPic
             }
             else if (e.Key == Key.L && Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
             {
-                LockToggle.IsChecked = !(LockToggle.IsChecked == true);
+                ToggleLock();
                 e.Handled = true;
             }
             else if (e.Key == Key.M && Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
@@ -346,12 +347,12 @@ namespace OverlayPic
             }
             else if (e.Key == Key.Space)
             {
-                CheckerToggle.IsChecked = !(CheckerToggle.IsChecked == true);
+                ToggleChecker();
                 e.Handled = true;
             }
             else if (Keyboard.Modifiers.HasFlag(ModifierKeys.Control) && (e.Key == Key.OemPlus || e.Key == Key.Add))
             {
-                if (LockToggle.IsChecked != true)
+                if (!_isLocked)
                 {
                     Width = Math.Min(SystemParameters.PrimaryScreenWidth * 2.0, Width * 1.08);
                     Height = Math.Min(SystemParameters.PrimaryScreenHeight * 2.0, Height * 1.08);
@@ -361,7 +362,7 @@ namespace OverlayPic
             }
             else if (Keyboard.Modifiers.HasFlag(ModifierKeys.Control) && (e.Key == Key.OemMinus || e.Key == Key.Subtract))
             {
-                if (LockToggle.IsChecked != true)
+                if (!_isLocked)
                 {
                     Width = Math.Max(MinWidth, Width * 0.92);
                     Height = Math.Max(MinHeight, Height * 0.92);
@@ -430,22 +431,42 @@ namespace OverlayPic
             }
         }
 
-        private void LockToggle_Changed(object sender, RoutedEventArgs e)
+        private void More_Click(object sender, RoutedEventArgs e)
         {
-            if (LockToggle.IsChecked == true)
+            if (MoreBtn.ContextMenu != null)
             {
-                ResizeMode = ResizeMode.NoResize;
+                MoreBtn.ContextMenu.PlacementTarget = MoreBtn;
+                MoreBtn.ContextMenu.Placement = System.Windows.Controls.Primitives.PlacementMode.Bottom;
+                MoreBtn.ContextMenu.IsOpen = true;
             }
-            else
-            {
-                ResizeMode = ResizeMode.CanResizeWithGrip;
-            }
+        }
+
+        private void MenuLock_Click(object sender, RoutedEventArgs e)
+        {
+            ToggleLock(MenuLock.IsChecked);
+        }
+
+        private void ToggleLock(bool? forceState = null)
+        {
+            _isLocked = forceState ?? !_isLocked;
+            if (MenuLock != null) MenuLock.IsChecked = _isLocked;
+
+            ResizeMode = _isLocked ? ResizeMode.NoResize : ResizeMode.CanResizeWithGrip;
             UpdateInfoLabel();
         }
 
-        private void CheckerToggle_Changed(object sender, RoutedEventArgs e)
+        private void MenuChecker_Click(object sender, RoutedEventArgs e)
         {
-            CheckerBorder.Visibility = CheckerToggle.IsChecked == true ? Visibility.Visible : Visibility.Collapsed;
+            ToggleChecker(MenuChecker.IsChecked);
+        }
+
+        private void ToggleChecker(bool? forceState = null)
+        {
+            bool isVisible = (CheckerBorder.Visibility == Visibility.Visible);
+            bool target = forceState ?? !isVisible;
+
+            CheckerBorder.Visibility = target ? Visibility.Visible : Visibility.Collapsed;
+            if (MenuChecker != null) MenuChecker.IsChecked = target;
         }
 
         private void Paste_Click(object sender, RoutedEventArgs e) => PasteFromClipboard();
@@ -596,16 +617,19 @@ namespace OverlayPic
             OpacitySlider.ToolTip = isEn ? "Adjust opacity (Mouse Wheel supported)" : "투명도 조절 (마우스 휠로도 가능)";
 
             ClickThroughToggle.ToolTip = isEn ? "Click-Through Mode (Click windows beneath / Esc to exit)" : "클릭 통과 모드 (뒤쪽 프로그램 클릭 가능 / 해제: Esc 또는 Ctrl+Shift+T)";
-            LockToggle.ToolTip = isEn ? "Lock Position & Size (Ctrl+L)" : "위치 및 크기 고정 토글 (Ctrl+L)";
-            CheckerToggle.ToolTip = isEn ? "Toggle Checkerboard Background (Space)" : "체커보드 배경 토글 (Space)";
-
             SnipBtn.ToolTip = isEn ? "Screen Snipping (Ctrl+Alt+X)" : "화면 영역 드래그 캡처 (Ctrl+Alt+X)";
-            PasteBtn.ToolTip = isEn ? "Paste Image from Clipboard (Ctrl+V)" : "클립보드 이미지 붙여넣기 (Ctrl+V)";
-            OpenBtn.ToolTip = isEn ? "Open Image File (Ctrl+O)" : "이미지 파일 열기 (Ctrl+O)";
-            LangBtn.ToolTip = isEn ? "Language / 언어 전환 (English ➔ 한국어)" : "Language / 언어 전환 (한국어 ➔ English)";
-            AboutBtn.ToolTip = isEn ? "About / Shortcuts / Website" : "프로그램 정보 / 블로그 / 단축키 안내";
+            MoreBtn.ToolTip = isEn ? "More Options (Ctrl+O, Ctrl+V, Lock, etc.)" : "더보기 메뉴 (Ctrl+O, Ctrl+V, 고정, 설정 등)";
             MinimizeBtn.ToolTip = isEn ? "Minimize (Ctrl+M)" : "최소화 (Ctrl+M)";
             CloseBtn.ToolTip = isEn ? "Close (Esc)" : "닫기 (Esc)";
+
+            // More Context Menu Items
+            MenuOpen.Header = isEn ? "📂 Open Image File... (Ctrl+O)" : "📂 이미지 파일 열기... (Ctrl+O)";
+            MenuPaste.Header = isEn ? "📋 Paste from Clipboard (Ctrl+V)" : "📋 클립보드 붙여넣기 (Ctrl+V)";
+            MenuLock.Header = isEn ? "🔒 Lock Position & Size (Ctrl+L)" : "🔒 위치 및 크기 고정 (Ctrl+L)";
+            MenuChecker.Header = isEn ? "🏁 Toggle Checkerboard Grid (Space)" : "🏁 체커보드 배경 토글 (Space)";
+            MenuReset.Header = isEn ? "↻ Reset to 1:1 Native Resolution (Ctrl+R)" : "↻ 1:1 원본 해상도로 리셋 (Ctrl+R)";
+            MenuLang.Header = isEn ? "🌐 Language / 언어 전환 (English ➔ 한국어)" : "🌐 Language / 언어 전환 (한국어 ➔ English)";
+            MenuAbout.Header = isEn ? "ℹ️ About & Keyboard Shortcuts" : "ℹ️ 프로그램 정보 및 단축키 안내";
 
             // DropZone
             DropTitle.Text = isEn ? "Drag & Drop Image Here" : "이미지를 여기에 드래그 & 드롭";
@@ -714,7 +738,7 @@ namespace OverlayPic
             int h = (int)ActualHeight;
             int x = (int)Left;
             int y = (int)Top;
-            string lockStatus = LockToggle?.IsChecked == true ? (isEn ? " [🔒Locked]" : " [🔒고정]") : "";
+            string lockStatus = _isLocked ? (isEn ? " [🔒Locked]" : " [🔒고정]") : "";
             string origText = isEn ? "Native" : "원본";
 
             if (_hasImage && _imageNativeWidth > 0)
