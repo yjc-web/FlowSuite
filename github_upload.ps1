@@ -7,7 +7,7 @@ Write-Host "========================================================`n" -Foregro
 
 # 1. Check Git Remote
 $remotes = git remote
-$targetUrl = "https://github.com/yjc-web/OverlayPic.git"
+$targetUrl = "https://github.com/yjc-web/FlowSuite.git"
 
 if ($remotes -contains "origin") {
     $currentUrl = git remote get-url origin
