@@ -11,8 +11,6 @@ using Microsoft.Win32;
 
 namespace OverlayPic
 {
-    public partial class MainWindow : Window
-    {
     internal static class NativeMethods
     {
         public const int GWL_EXSTYLE = -20;
