@@ -1,6 +1,6 @@
 param(
     [string]$PackageName = "FlowSuiteYJC.OverlayPic",
-    [string]$Version = "1.0.2.0",
+    [string]$Version = "1.0.3.0",
     [string]$Publisher = "CN=8EFD2B12-10C1-4962-8D35-5EFCA941AC84",
     [string]$PublisherDisplayName = "FlowSuiteYJC",
     [string]$DisplayName = "OverlayPic"
