@@ -345,6 +345,11 @@ namespace OverlayPic
                 OpenImageFile();
                 e.Handled = true;
             }
+            else if (e.Key == Key.S && Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
+            {
+                SaveImageFile();
+                e.Handled = true;
+            }
             else if (e.Key == Key.Space)
             {
                 ToggleChecker();
@@ -536,11 +541,70 @@ namespace OverlayPic
 
         private void Open_Click(object sender, RoutedEventArgs e) => OpenImageFile();
 
+        private void Save_Click(object sender, RoutedEventArgs e) => SaveImageFile();
+
+        private void SaveImageFile()
+        {
+            if (!_hasImage || !(OverlayImage.Source is BitmapSource bitmapSource))
+            {
+                string msg = _currentLanguage == AppLanguage.English ? "No image loaded to save." : "저장할 이미지가 없습니다.";
+                MessageBox.Show(msg, "OverlayPic", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            var dlg = new SaveFileDialog
+            {
+                Title = _currentLanguage == AppLanguage.English ? "Save Image As" : "다른 이름으로 이미지 저장",
+                Filter = "PNG Image (*.png)|*.png|JPEG Image (*.jpg;*.jpeg)|*.jpg;*.jpeg|BMP Image (*.bmp)|*.bmp",
+                DefaultExt = ".png",
+                FileName = $"OverlayPic_{DateTime.Now:yyyyMMdd_HHmmss}.png"
+            };
+
+            if (dlg.ShowDialog() == true)
+            {
+                try
+                {
+                    string ext = Path.GetExtension(dlg.FileName).ToLowerInvariant();
+                    BitmapEncoder encoder;
+
+                    if (ext == ".jpg" || ext == ".jpeg")
+                    {
+                        encoder = new JpegBitmapEncoder { QualityLevel = 95 };
+                    }
+                    else if (ext == ".bmp")
+                    {
+                        encoder = new BmpBitmapEncoder();
+                    }
+                    else
+                    {
+                        encoder = new PngBitmapEncoder();
+                    }
+
+                    encoder.Frames.Add(BitmapFrame.Create(bitmapSource));
+
+                    using (var stream = new FileStream(dlg.FileName, FileMode.Create, FileAccess.Write))
+                    {
+                        encoder.Save(stream);
+                    }
+
+                    string info = _currentLanguage == AppLanguage.English
+                        ? $"💾 Saved: {Path.GetFileName(dlg.FileName)}"
+                        : $"💾 저장 완료: {Path.GetFileName(dlg.FileName)}";
+                    InfoLabel.Text = info;
+                }
+                catch (Exception ex)
+                {
+                    string errMsg = _currentLanguage == AppLanguage.English ? $"Failed to save image: {ex.Message}" : $"이미지 저장 실패: {ex.Message}";
+                    MessageBox.Show(errMsg, "OverlayPic", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
+        }
+
         private void OpenImageFile()
         {
             var dlg = new OpenFileDialog
             {
-                Title = "오버레이 이미지 선택",
+                Title = _currentLanguage == AppLanguage.English ? "Select Overlay Image" : "오버레이 이미지 선택",
                 Filter = "이미지 파일|*.png;*.jpg;*.jpeg;*.bmp;*.webp;*.gif;*.tiff;*.tif;*.ico|모든 파일|*.*"
             };
             if (dlg.ShowDialog() == true)
@@ -608,7 +672,9 @@ namespace OverlayPic
         {
             bool isEn = (lang == AppLanguage.English);
 
-            // Window Title
+            // Window Title & About Header
+            string ver = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString(3);
+            AboutHeaderTitle.Text = $"📌 OverlayPic v{ver}";
             Title = isEn ? "OverlayPic — Screen Overlay Transparent Image Viewer" : "OverlayPic — 화면 오버레이 투명 뷰어";
 
             // Control Bar
@@ -625,6 +691,7 @@ namespace OverlayPic
 
             // More Context Menu Items
             MenuOpen.Header = isEn ? "📂 Open Image File... (Ctrl+O)" : "📂 이미지 파일 열기... (Ctrl+O)";
+            MenuSave.Header = isEn ? "💾 Save Image As... (Ctrl+S)" : "💾 이미지 다른 이름으로 저장... (Ctrl+S)";
             MenuPaste.Header = isEn ? "📋 Paste from Clipboard (Ctrl+V)" : "📋 클립보드 붙여넣기 (Ctrl+V)";
             MenuLock.Header = isEn ? "🔒 Lock Position & Size (Ctrl+L)" : "🔒 위치 및 크기 고정 (Ctrl+L)";
             MenuChecker.Header = isEn ? "🏁 Toggle Checkerboard Grid (Space)" : "🏁 체커보드 배경 토글 (Space)";
@@ -640,7 +707,9 @@ namespace OverlayPic
             AboutSubtitle.Text = isEn ? "Screen Overlay Image Viewer | Made by YJC" : "화면 오버레이 투명 뷰어 | Made by YJC";
             ShortcutsTitle.Text = isEn ? "⌨️ Keyboard Shortcuts" : "⌨️ 주요 단축키";
             ShortcutSnip.Text = isEn ? "• Ctrl+Alt+X : ✂️ Screen Snipping" : "• Ctrl+Alt+X : ✂️ 화면 영역 드래그 캡처";
-            ShortcutPaste.Text = isEn ? "• Ctrl+V : Paste Clipboard Image/File" : "• Ctrl+V : 클립보드 이미지/파일 붙여넣기";
+            ShortcutSave.Text = isEn ? "• Ctrl+S : 💾 Save Image to File" : "• Ctrl+S : 💾 현재 이미지 파일로 저장";
+            ShortcutOpen.Text = isEn ? "• Ctrl+O : 📂 Open Image File" : "• Ctrl+O : 📂 이미지 파일 열기";
+            ShortcutPaste.Text = isEn ? "• Ctrl+V : 📋 Paste Clipboard Image/File" : "• Ctrl+V : 📋 클립보드 이미지/파일 붙여넣기";
             ShortcutToggle.Text = isEn ? "• Ctrl+Shift+T / Ctrl+T : Toggle Click-Through" : "• Ctrl+Shift+T / Ctrl+T : 클릭 통과 토글";
             ShortcutEsc.Text = isEn ? "• Esc : Release Click-Through / Close Window" : "• Esc : 클릭 통과 해제 (일반 시 창 닫기)";
             ShortcutMin.Text = isEn ? "• Ctrl+M : Minimize Window" : "• Ctrl+M : 최소화 (Minimize)";
@@ -651,10 +720,52 @@ namespace OverlayPic
             ShortcutSpace.Text = isEn ? "• Space : Toggle Checkerboard Grid" : "• Space : 체커보드 배경 토글";
 
             BlogBtn.Content = isEn ? "🌐 Official Website (Blog)" : "🌐 공식 블로그 방문 (nds-macro)";
-            DonationTitle.Text = isEn ? "☕ Buy Developer a Coffee" : "☕ 커피 한 잔 후원 (카카오페이)";
-            DonationSubtitle.Text = isEn ? "Scan QR with KakaoPay app" : "카카오페이 앱으로 QR 스캔";
+
+            // Switch donation cards based on language
+            if (isEn)
+            {
+                KakaoPayCard.Visibility = Visibility.Collapsed;
+                GlobalCoffeeCard.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                KakaoPayCard.Visibility = Visibility.Visible;
+                GlobalCoffeeCard.Visibility = Visibility.Collapsed;
+            }
 
             UpdateInfoLabel();
+        }
+
+        private void BuyCoffee_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                {
+                    FileName = "https://buymeacoffee.com/flowsuiteyjc",
+                    UseShellExecute = true
+                });
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to open Buy Me a Coffee: {ex.Message}", "OverlayPic", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
+
+        private void OpenGitHub_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                {
+                    FileName = "https://github.com/yjc-web/FlowSuite",
+                    UseShellExecute = true
+                });
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Failed to open GitHub: {ex.Message}", "OverlayPic", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
         }
 
         private void Minimize_Click(object sender, RoutedEventArgs e)

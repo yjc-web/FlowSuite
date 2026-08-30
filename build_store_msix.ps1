@@ -26,5 +26,5 @@ Write-Host "`n2. Packaging MSIX for MS Store..." -ForegroundColor Yellow
 
 Write-Host "`n========================================================" -ForegroundColor Green
 Write-Host "  [SUCCESS] MS Store MSIX build completed!" -ForegroundColor Green
-Write-Host "  Location: dist\OverlayPic_v1.0.1.0_Store.msix" -ForegroundColor White
+Write-Host "  Location: dist\OverlayPic_v1.0.2.0_Store.msix" -ForegroundColor White
 Write-Host "========================================================`n" -ForegroundColor Green

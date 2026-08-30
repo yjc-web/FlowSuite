@@ -229,6 +229,7 @@
                         <Button.ContextMenu>
                             <ContextMenu x:Name="MainMenu">
                                 <MenuItem x:Name="MenuOpen" Header="📂 이미지 파일 열기... (Ctrl+O)" Click="Open_Click" />
+                                <MenuItem x:Name="MenuSave" Header="💾 이미지 다른 이름으로 저장... (Ctrl+S)" Click="Save_Click" />
                                 <MenuItem x:Name="MenuPaste" Header="📋 클립보드 붙여넣기 (Ctrl+V)" Click="Paste_Click" />
                                 <Separator />
                                 <MenuItem x:Name="MenuLock" Header="🔒 위치 및 크기 고정 (Ctrl+L)" IsCheckable="True" Click="MenuLock_Click" />
@@ -296,7 +297,9 @@
                             <StackPanel x:Name="ShortcutsStackPanel">
                                 <TextBlock x:Name="ShortcutsTitle" Text="⌨️ 주요 단축키" FontWeight="Bold" FontSize="11" Foreground="#F1F5F9" Margin="0,0,0,6" />
                                 <TextBlock x:Name="ShortcutSnip" Text="• Ctrl+Alt+X : ✂️ 화면 영역 드래그 캡처" FontSize="10.5" Foreground="#38BDF8" FontWeight="SemiBold" Margin="0,1.5" />
-                                <TextBlock x:Name="ShortcutPaste" Text="• Ctrl+V : 클립보드 이미지/파일 붙여넣기" FontSize="10.5" Foreground="#CBD5E1" Margin="0,1.5" />
+                                <TextBlock x:Name="ShortcutSave" Text="• Ctrl+S : 💾 현재 이미지 파일로 저장" FontSize="10.5" Foreground="#CBD5E1" Margin="0,1.5" />
+                                <TextBlock x:Name="ShortcutOpen" Text="• Ctrl+O : 📂 이미지 파일 열기" FontSize="10.5" Foreground="#CBD5E1" Margin="0,1.5" />
+                                <TextBlock x:Name="ShortcutPaste" Text="• Ctrl+V : 📋 클립보드 이미지/파일 붙여넣기" FontSize="10.5" Foreground="#CBD5E1" Margin="0,1.5" />
                                 <TextBlock x:Name="ShortcutToggle" Text="• Ctrl+Shift+T / Ctrl+T : 클릭 통과 토글" FontSize="10.5" Foreground="#CBD5E1" Margin="0,1.5" />
                                 <TextBlock x:Name="ShortcutEsc" Text="• Esc : 클릭 통과 해제 (일반 시 창 닫기)" FontSize="10.5" Foreground="#F59E0B" Margin="0,1.5" />
                                 <TextBlock x:Name="ShortcutMin" Text="• Ctrl+M : 최소화 (Minimize)" FontSize="10.5" Foreground="#CBD5E1" Margin="0,1.5" />
@@ -308,9 +311,9 @@
                             </StackPanel>
                         </Border>
 
-                        <!-- Right Column: Blog & KakaoPay Donation QR -->
+                        <!-- Right Column: Blog/GitHub & Dual Donation Cards (KR / EN) -->
                         <StackPanel Grid.Column="1">
-                            <!-- Blog Button -->
+                            <!-- Website / GitHub Button -->
                             <Button x:Name="BlogBtn" Content="🌐 공식 블로그 방문 (nds-macro)" 
                                     Background="#2563EB" Foreground="White" FontWeight="SemiBold" FontSize="11"
                                     Padding="6,5" BorderThickness="0" Cursor="Hand" Margin="0,0,0,8"
@@ -322,14 +325,53 @@
                                 </Button.Resources>
                             </Button>
 
-                            <!-- Donation Card -->
-                            <Border Background="#0F172A" CornerRadius="6" Padding="8">
+                            <!-- 1. Korean Donation Card (KakaoPay QR) -->
+                            <Border x:Name="KakaoPayCard" Background="#0F172A" CornerRadius="6" Padding="8">
                                 <StackPanel HorizontalAlignment="Center">
                                     <TextBlock x:Name="DonationTitle" Text="☕ 커피 한 잔 후원 (카카오페이)" FontWeight="Bold" FontSize="10.5" Foreground="#FCD34D" HorizontalAlignment="Center" Margin="0,0,0,4" />
                                     <Border Background="White" CornerRadius="6" HorizontalAlignment="Center" Padding="5" Width="105" Height="105">
                                         <Image Source="Resources/kakaopay_qr.png" Stretch="Uniform" RenderOptions.BitmapScalingMode="HighQuality" />
                                     </Border>
                                     <TextBlock x:Name="DonationSubtitle" Text="카카오페이 앱으로 QR 스캔" FontSize="9.5" Foreground="#64748B" HorizontalAlignment="Center" Margin="0,4,0,0" />
+                                </StackPanel>
+                            </Border>
+
+                            <!-- 2. Global Donation Card (Buy Me a Coffee / GitHub) -->
+                            <Border x:Name="GlobalCoffeeCard" Background="#0F172A" CornerRadius="6" Padding="10" Visibility="Collapsed">
+                                <StackPanel HorizontalAlignment="Center">
+                                    <TextBlock Text="☕ Support the Developer" FontWeight="Bold" FontSize="11" Foreground="#FFDD00" HorizontalAlignment="Center" Margin="0,0,0,8" />
+                                    
+                                    <!-- Buy Me a Coffee Button -->
+                                    <Button Background="#FFDD00" Foreground="#000000" FontWeight="Bold" FontSize="11.5"
+                                            Padding="10,7" BorderThickness="0" Cursor="Hand" Width="160" Margin="0,0,0,8"
+                                            Click="BuyCoffee_Click" ToolTip="https://buymeacoffee.com/flowsuiteyjc">
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                            <TextBlock Text="☕ " FontSize="12" />
+                                            <TextBlock Text="Buy me a coffee" FontWeight="Bold" />
+                                        </StackPanel>
+                                        <Button.Resources>
+                                            <Style TargetType="Border">
+                                                <Setter Property="CornerRadius" Value="6"/>
+                                            </Style>
+                                        </Button.Resources>
+                                    </Button>
+
+                                    <!-- GitHub Star Button -->
+                                    <Button Background="#334155" Foreground="#F1F5F9" FontWeight="SemiBold" FontSize="10.5"
+                                            Padding="8,5" BorderThickness="0" Cursor="Hand" Width="160"
+                                            Click="OpenGitHub_Click" ToolTip="https://github.com/yjc-web/FlowSuite">
+                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                            <TextBlock Text="⭐ " FontSize="11" Foreground="#FCD34D" />
+                                            <TextBlock Text="Star on GitHub" />
+                                        </StackPanel>
+                                        <Button.Resources>
+                                            <Style TargetType="Border">
+                                                <Setter Property="CornerRadius" Value="6"/>
+                                            </Style>
+                                        </Button.Resources>
+                                    </Button>
+                                    
+                                    <TextBlock Text="Card, Apple Pay, Google Pay" FontSize="9" Foreground="#64748B" HorizontalAlignment="Center" Margin="0,6,0,0" />
                                 </StackPanel>
                             </Border>
                         </StackPanel>

@@ -1,8 +1,8 @@
-﻿; Inno Setup Script for OverlayPic
-; Generated for v1.0.1
+; Inno Setup Script for OverlayPic
+; Generated for v1.0.2
 
 #define MyAppName "OverlayPic"
-#define MyAppVersion "1.0.1"
+#define MyAppVersion "1.0.2"
 #define MyAppPublisher "YJC"
 #define MyAppURL "https://blog.naver.com/nds-macro"
 #define MyAppExeName "OverlayPic.exe"

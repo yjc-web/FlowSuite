@@ -1,6 +1,6 @@
 param(
     [string]$PackageName = "FlowSuiteYJC.OverlayPic",
-    [string]$Version = "1.0.1.0",
+    [string]$Version = "1.0.2.0",
     [string]$Publisher = "CN=8EFD2B12-10C1-4962-8D35-5EFCA941AC84",
     [string]$PublisherDisplayName = "FlowSuiteYJC",
     [string]$DisplayName = "OverlayPic"
@@ -35,8 +35,14 @@ if (Test-Path "bin\Release\OverlayPic.pdb") { Copy-Item "bin\Release\OverlayPic.
 # 3. Generate Asset Logos from icon source
 Add-Type -AssemblyName System.Drawing
 
-$srcIconPath = "Resources\app.ico"
-$srcImg = [System.Drawing.Image]::FromFile($srcIconPath)
+$srcIconPath = "dist\store_assets\AppIcon_300x300.png"
+if (Test-Path $srcIconPath) {
+    $srcImg = [System.Drawing.Image]::FromFile((Convert-Path $srcIconPath))
+} else {
+    $ico = New-Object System.Drawing.Icon((Convert-Path "Resources\app.ico"))
+    $srcImg = $ico.ToBitmap()
+    $ico.Dispose()
+}
 
 function Save-ResizedImage($img, $w, $h, $dest) {
     $bmp = New-Object System.Drawing.Bitmap($w, $h)

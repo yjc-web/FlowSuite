@@ -36,17 +36,17 @@ if (Test-Path $iscc) {
 
 # 4. Portable ZIP
 Write-Host "`n4. Creating Portable ZIP..." -ForegroundColor Yellow
-$portableDir = "dist\OverlayPic_v1.0.1"
+$portableDir = "dist\OverlayPic_v1.0.2"
 if (Test-Path $portableDir) { Remove-Item -Recurse -Force $portableDir }
 New-Item -ItemType Directory -Path $portableDir | Out-Null
 Copy-Item "bin\Release\OverlayPic.exe" $portableDir
-if (Test-Path "????_?_???.txt") { Copy-Item "????_?_???.txt" $portableDir }
-Compress-Archive -Path "$portableDir\*" -DestinationPath "dist\OverlayPic_v1.0.1.zip" -Force
+if (Test-Path "사용안내_및_단축키.txt") { Copy-Item "사용안내_및_단축키.txt" $portableDir }
+Compress-Archive -Path "$portableDir\*" -DestinationPath "dist\OverlayPic_v1.0.2.zip" -Force
 Write-Host "Portable ZIP created." -ForegroundColor Green
 
 Write-Host "`n========================================================" -ForegroundColor Green
 Write-Host "  [SUCCESS] All distribution packages created!" -ForegroundColor Green
-Write-Host "  1. MS Store MSIX : dist\OverlayPic_v1.0.1.0_Store.msix" -ForegroundColor White
-Write-Host "  2. GitHub Setup  : dist\OverlayPic_v1.0.1_Setup.exe" -ForegroundColor White
-Write-Host "  3. Portable ZIP  : dist\OverlayPic_v1.0.1.zip" -ForegroundColor White
+Write-Host "  1. MS Store MSIX : dist\OverlayPic_v1.0.2.0_Store.msix" -ForegroundColor White
+Write-Host "  2. GitHub Setup  : dist\OverlayPic_v1.0.2_Setup.exe" -ForegroundColor White
+Write-Host "  3. Portable ZIP  : dist\OverlayPic_v1.0.2.zip" -ForegroundColor White
 Write-Host "========================================================`n" -ForegroundColor Green
