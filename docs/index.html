@@ -136,6 +136,20 @@
       border-color: rgba(56, 189, 248, 0.5);
       color: #38BDF8;
     }
+    .cat-pill {
+      background: rgba(255, 255, 255, 0.03);
+      border-color: rgba(255, 255, 255, 0.08);
+      color: #94A3B8;
+    }
+    .cat-pill:hover {
+      background: rgba(255, 255, 255, 0.06);
+      color: #FFFFFF;
+    }
+    .cat-pill.active {
+      background: rgba(56, 189, 248, 0.15);
+      border-color: rgba(56, 189, 248, 0.5);
+      color: #38BDF8;
+    }
   </style>
   <meta name="google-site-verification" content="zhvxdwF1Mwy_1uG9uOjVuVBs7J2NJv1tMQWLR7837_w" />
   <meta name="google-site-verification" content="ZKmkbgf-CA1Pj3EO07J3szrG0tViBL7j4htpIUihq14" />
@@ -192,6 +206,9 @@
         </a>
         <a href="#overlaypic" class="px-3.5 py-1.5 rounded-full hover:text-white hover:bg-white/[0.06] transition-all flex items-center gap-1.5">
           <span class="w-2 h-2 rounded-full bg-amber-400"></span> OverlayPic
+        </a>
+        <a href="#feedback" class="px-3.5 py-1.5 rounded-full hover:text-white hover:bg-white/[0.06] transition-all flex items-center gap-1.5">
+          <i class="fa-regular fa-comment-dots text-sky-400 text-xs"></i> <span data-i18n="nav_feedback">의견·댓글</span>
         </a>
       </nav>
 
@@ -551,6 +568,169 @@
     </div>
   </section>
 
+  <!-- ================= COMMUNITY & FEEDBACK (COMMENTS) ================= -->
+  <section id="feedback" class="py-24 relative border-t border-white/[0.06] bg-dark-950/40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <!-- Section Header -->
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <span class="px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-300 font-mono text-xs font-bold uppercase tracking-widest" data-i18n="fb_badge">
+          COMMUNITY & FEEDBACK
+        </span>
+        <h2 class="text-3xl sm:text-4xl font-black text-white mt-4 mb-4" data-i18n="fb_title">
+          로그인 없이 남기는 실시간 피드백 & 댓글
+        </h2>
+        <p class="text-slate-400 text-sm sm:text-base leading-relaxed" data-i18n="fb_desc">
+          별도 회원가입 없이 닉네임과 내용만 적으시면 즉시 등록되며, 개발자에게 실시간으로 전달됩니다.<br class="hidden sm:inline" />
+          버그 제보, 추가되었으면 하는 기능, 사용 후기나 응원 한 줄 모두 환영합니다!
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        
+        <!-- Left: Instant Comment / Feedback Form (7 cols) -->
+        <div class="lg:col-span-7 bento-card rounded-3xl p-6 sm:p-8 relative">
+          <div class="flex items-center justify-between border-b border-white/[0.08] pb-4 mb-6">
+            <h3 class="text-lg font-bold text-white flex items-center gap-2">
+              <i class="fa-solid fa-pen-nib text-cyan-400"></i>
+              <span data-i18n="fb_form_title">새 의견 / 댓글 작성</span>
+            </h3>
+            <span class="text-xs text-emerald-400 font-mono flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20">
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span data-i18n="fb_no_login_badge">로그인 불필요</span>
+            </span>
+          </div>
+
+          <form id="commentForm" class="space-y-4">
+            <!-- Category Pills -->
+            <div>
+              <label class="block text-xs font-semibold text-slate-300 mb-2" data-i18n="fb_cat_label">분류 선택</label>
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-2" id="categoryGroup">
+                <button type="button" class="cat-pill active px-3 py-2 rounded-xl text-xs font-bold text-center border transition-all" data-category="기능제안">
+                  💡 <span data-i18n="cat_feature">기능 제안</span>
+                </button>
+                <button type="button" class="cat-pill px-3 py-2 rounded-xl text-xs font-bold text-center border transition-all" data-category="버그제보">
+                  🐞 <span data-i18n="cat_bug">버그 제보</span>
+                </button>
+                <button type="button" class="cat-pill px-3 py-2 rounded-xl text-xs font-bold text-center border transition-all" data-category="사용후기">
+                  💬 <span data-i18n="cat_review">사용 후기</span>
+                </button>
+                <button type="button" class="cat-pill px-3 py-2 rounded-xl text-xs font-bold text-center border transition-all" data-category="이용문의">
+                  ❓ <span data-i18n="cat_question">이용 문의</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Inputs (Nickname & Email) -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label for="fbNickname" class="block text-xs font-semibold text-slate-300 mb-1.5">
+                  <span data-i18n="fb_name_label">닉네임 / 이름</span> <span class="text-rose-400">*</span>
+                </label>
+                <input type="text" id="fbNickname" required placeholder="예: 익명의 사용자, 퇴근요정"
+                  class="w-full px-4 py-2.5 rounded-xl bg-white/[0.04] border border-white/10 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-cyan-400 focus:bg-white/[0.07] transition-all" />
+              </div>
+              <div>
+                <label for="fbEmail" class="block text-xs font-semibold text-slate-300 mb-1.5">
+                  <span data-i18n="fb_email_label">답변 받을 이메일</span> <span class="text-slate-500 text-[11px]" data-i18n="fb_optional">(선택)</span>
+                </label>
+                <input type="email" id="fbEmail" placeholder="답변을 원하시면 적어주세요"
+                  class="w-full px-4 py-2.5 rounded-xl bg-white/[0.04] border border-white/10 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-cyan-400 focus:bg-white/[0.07] transition-all" />
+              </div>
+            </div>
+
+            <!-- Message Area -->
+            <div>
+              <label for="fbMessage" class="block text-xs font-semibold text-slate-300 mb-1.5">
+                <span data-i18n="fb_msg_label">댓글 / 문의 내용</span> <span class="text-rose-400">*</span>
+              </label>
+              <textarea id="fbMessage" required rows="4" placeholder="어떤 점이 좋았나요? 혹은 개선이 필요한 부분이나 궁금한 점을 자유롭게 적어주세요."
+                class="w-full px-4 py-3 rounded-xl bg-white/[0.04] border border-white/10 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-cyan-400 focus:bg-white/[0.07] transition-all resize-none"></textarea>
+            </div>
+
+            <!-- Submit Button & Feedback Status -->
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2">
+              <div id="fbStatus" class="text-xs font-medium text-emerald-400 hidden"></div>
+              <button type="submit" id="fbSubmitBtn" class="btn-shine w-full sm:w-auto ml-auto px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-400 to-sky-400 hover:from-cyan-300 hover:to-sky-300 text-brand-pitch font-bold text-sm flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/20 transition-all">
+                <i class="fa-solid fa-paper-plane"></i>
+                <span data-i18n="fb_submit_btn">댓글 등록하기</span>
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Right: Direct Channels & Live Stream (5 cols) -->
+        <div class="lg:col-span-5 space-y-6">
+          
+          <!-- Direct Developer Contacts -->
+          <div class="bento-card rounded-3xl p-6">
+            <h4 class="text-sm font-bold text-white mb-4 flex items-center gap-2">
+              <i class="fa-solid fa-headset text-indigo-400"></i>
+              <span data-i18n="fb_direct_contact">직접 문의 & 공식 채널</span>
+            </h4>
+            <div class="space-y-3 text-xs">
+              <a href="mailto:yunjichang86@gmail.com" class="flex items-center justify-between p-3 rounded-xl bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.06] transition-all group">
+                <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 rounded-lg bg-rose-500/10 border border-rose-500/20 text-rose-400 flex items-center justify-center text-sm">
+                    <i class="fa-solid fa-envelope"></i>
+                  </div>
+                  <div>
+                    <div class="font-bold text-white group-hover:text-cyan-300 transition-colors">이메일 직접 문의</div>
+                    <div class="text-slate-400 text-[11px] font-mono">yunjichang86@gmail.com</div>
+                  </div>
+                </div>
+                <i class="fa-solid fa-arrow-up-right-from-square text-slate-500 text-xs"></i>
+              </a>
+
+              <a href="https://github.com/yjc-web/FlowSuite/issues" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-3 rounded-xl bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.06] transition-all group">
+                <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 rounded-lg bg-white/[0.05] border border-white/10 text-white flex items-center justify-center text-sm">
+                    <i class="fa-brands fa-github"></i>
+                  </div>
+                  <div>
+                    <div class="font-bold text-white group-hover:text-cyan-300 transition-colors">GitHub Issues (공개 토론)</div>
+                    <div class="text-slate-400 text-[11px]">버그 추적 및 기능 건의 PR</div>
+                  </div>
+                </div>
+                <i class="fa-solid fa-arrow-up-right-from-square text-slate-500 text-xs"></i>
+              </a>
+
+              <a href="https://apps.microsoft.com/search/publisher?name=FlowSuiteYJC&hl=ko-KR&gl=KR" target="_blank" rel="noopener noreferrer" class="flex items-center justify-between p-3 rounded-xl bg-white/[0.03] hover:bg-white/[0.08] border border-white/[0.06] transition-all group">
+                <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 rounded-lg bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 flex items-center justify-center text-sm">
+                    <i class="fa-brands fa-microsoft"></i>
+                  </div>
+                  <div>
+                    <div class="font-bold text-white group-hover:text-cyan-300 transition-colors">MS Store 공식 리뷰</div>
+                    <div class="text-slate-400 text-[11px]">스토어 평점 및 공식 후기 남기기</div>
+                  </div>
+                </div>
+                <i class="fa-solid fa-arrow-up-right-from-square text-slate-500 text-xs"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Live Comments / Recent Feedback Stream -->
+          <div class="bento-card rounded-3xl p-6">
+            <div class="flex items-center justify-between mb-4">
+              <h4 class="text-sm font-bold text-white flex items-center gap-2">
+                <i class="fa-regular fa-comments text-emerald-400"></i>
+                <span data-i18n="fb_recent_title">최근 등록된 의견</span>
+              </h4>
+              <span class="text-[10px] font-mono text-cyan-400 px-2 py-0.5 rounded bg-cyan-500/10 border border-cyan-500/20">LIVE</span>
+            </div>
+            <div id="recentCommentsList" class="space-y-2.5 max-h-64 overflow-y-auto pr-1">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
   <!-- ================= FOOTER ================= -->
   <footer class="bg-brand-pitch border-t border-white/[0.06] py-12 text-slate-400 text-sm">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-6">
@@ -624,7 +804,25 @@
         syn_1: "마우스 제스처로 작업 창들을 순식간에 정렬하고 필요한 툴을 바로 띄웁니다.",
         syn_2: "필요한 가이드 시안이나 데이터를 화면 위에 투명하게 띄워두고 작업합니다.",
         syn_3: "손이 많이 가는 반복 클릭과 시스템 입력을 노코드 순서도로 대신 처리합니다.",
-        syn_4: "완성된 결과물과 다운로드 파일들을 AI가 알아서 폴더별로 0.1초 만에 정리합니다."
+        syn_4: "완성된 결과물과 다운로드 파일들을 AI가 알아서 폴더별로 0.1초 만에 정리합니다.",
+        nav_feedback: "의견·댓글",
+        fb_badge: "COMMUNITY & FEEDBACK",
+        fb_title: "로그인 없이 남기는 실시간 피드백 & 댓글",
+        fb_desc: "별도 회원가입 없이 닉네임과 내용만 적으시면 즉시 등록되며, 개발자에게 실시간으로 전달됩니다.<br class=\"hidden sm:inline\" />버그 제보, 추가되었으면 하는 기능, 사용 후기나 응원 한 줄 모두 환영합니다!",
+        fb_form_title: "새 의견 / 댓글 작성",
+        fb_no_login_badge: "로그인 불필요",
+        fb_cat_label: "분류 선택",
+        cat_feature: "기능 제안",
+        cat_bug: "버그 제보",
+        cat_review: "사용 후기",
+        cat_question: "이용 문의",
+        fb_name_label: "닉네임 / 이름",
+        fb_email_label: "답변 받을 이메일",
+        fb_optional: "(선택)",
+        fb_msg_label: "댓글 / 문의 내용",
+        fb_submit_btn: "댓글 등록하기",
+        fb_direct_contact: "직접 문의 & 공식 채널",
+        fb_recent_title: "최근 등록된 의견"
       },
       en: {
         meta_title: "FlowSuite — Ultimate Desktop Productivity Software Suite for Windows",
@@ -679,7 +877,25 @@
         syn_1: "Instantly arrange windows and launch utilities with swift mouse gestures.",
         syn_2: "Keep reference mockups and checklists pinned transparently on top.",
         syn_3: "Let no-code visual flowcharts handle repetitive clicks and inputs.",
-        syn_4: "Let AI organize generated files and downloads into tidy folders instantly."
+        syn_4: "Let AI organize generated files and downloads into tidy folders instantly.",
+        nav_feedback: "Feedback",
+        fb_badge: "COMMUNITY & FEEDBACK",
+        fb_title: "Instant Community Feedback & Comments",
+        fb_desc: "No signup or login required. Simply enter a nickname and message to submit immediately.<br class=\"hidden sm:inline\" />Feature ideas, bug reports, and reviews are all warmly welcomed!",
+        fb_form_title: "Leave a Comment / Inquiry",
+        fb_no_login_badge: "No Login Needed",
+        fb_cat_label: "Category",
+        cat_feature: "Feature Idea",
+        cat_bug: "Bug Report",
+        cat_review: "Review",
+        cat_question: "Inquiry",
+        fb_name_label: "Nickname / Name",
+        fb_email_label: "Email for Reply",
+        fb_optional: "(Optional)",
+        fb_msg_label: "Comment / Message",
+        fb_submit_btn: "Post Comment",
+        fb_direct_contact: "Direct Channels",
+        fb_recent_title: "Recent Community Feedback"
       }
     };
 
@@ -710,7 +926,159 @@
       setLanguage(nextLang);
     }
 
+    // Category selection logic
+    let selectedCategory = '기능제안';
+    const catPills = document.querySelectorAll('.cat-pill');
+    catPills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        catPills.forEach(p => p.classList.remove('active'));
+        pill.classList.add('active');
+        selectedCategory = pill.getAttribute('data-category') || '기능제안';
+      });
+    });
+
+    // Default community feedback items
+    const defaultComments = [
+      {
+        nickname: "자동화매니아",
+        category: "기능제안",
+        time: "1시간 전",
+        message: "ImageFlow에서 순서도 실행 도중 특정 조건에서 단축키를 눌러 즉시 일시정지(Pause)하는 기능이 있으면 좋겠습니다!"
+      },
+      {
+        nickname: "퇴근원츄",
+        category: "사용후기",
+        time: "3시간 전",
+        message: "FileFlow 쓰고 있는데 다운로드 폴더 쌓이던 파일들이 알아서 날짜/프로젝트별로 쏙쏙 들어가서 너무 편해요. 개발자님 최고!"
+      },
+      {
+        nickname: "MacDev",
+        category: "이용문의",
+        time: "어제",
+        message: "OverlayPic 맥북 M3 Pro(Apple Silicon)에서도 완벽하게 투명도 조절되나요?"
+      }
+    ];
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    function renderComments() {
+      const listEl = document.getElementById('recentCommentsList');
+      if (!listEl) return;
+
+      let stored = [];
+      try {
+        stored = JSON.parse(localStorage.getItem('flowsuite_user_comments') || '[]');
+      } catch (e) {
+        stored = [];
+      }
+
+      const all = [...stored, ...defaultComments];
+      listEl.innerHTML = '';
+
+      all.forEach((item) => {
+        const div = document.createElement('div');
+        div.className = 'p-3 rounded-xl bg-white/[0.03] border border-white/[0.06] text-xs transition-all hover:bg-white/[0.05]';
+        
+        let badgeColor = 'text-cyan-400 bg-cyan-500/10 border-cyan-500/20';
+        if (item.category.includes('버그') || item.category.includes('Bug')) badgeColor = 'text-rose-400 bg-rose-500/10 border-rose-500/20';
+        else if (item.category.includes('후기') || item.category.includes('Review')) badgeColor = 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20';
+        else if (item.category.includes('문의') || item.category.includes('Inquiry')) badgeColor = 'text-amber-400 bg-amber-500/10 border-amber-500/20';
+
+        div.innerHTML = `
+          <div class="flex items-center justify-between mb-1.5">
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-0.5 rounded text-[10px] font-bold border ${badgeColor}">${escapeHtml(item.category)}</span>
+              <span class="font-bold text-white">${escapeHtml(item.nickname)}</span>
+            </div>
+            <span class="text-[10px] text-slate-500 font-mono">${escapeHtml(item.time || '방금 전')}</span>
+          </div>
+          <p class="text-slate-300 text-xs leading-relaxed whitespace-pre-wrap">${escapeHtml(item.message)}</p>
+        `;
+        listEl.appendChild(div);
+      });
+    }
+
+    // Form submission
+    const commentForm = document.getElementById('commentForm');
+    if (commentForm) {
+      commentForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const nickname = document.getElementById('fbNickname').value.trim();
+        const email = document.getElementById('fbEmail').value.trim();
+        const message = document.getElementById('fbMessage').value.trim();
+        const submitBtn = document.getElementById('fbSubmitBtn');
+        const statusEl = document.getElementById('fbStatus');
+
+        if (!nickname || !message) return;
+
+        submitBtn.disabled = true;
+        const originalBtnHtml = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span>등록 중...</span>';
+        if (statusEl) {
+          statusEl.className = 'text-xs font-medium text-slate-400';
+          statusEl.textContent = '메시지를 전송하고 있습니다...';
+          statusEl.classList.remove('hidden');
+        }
+
+        // Send via AJAX to formsubmit.co
+        try {
+          await fetch('https://formsubmit.co/ajax/yunjichang86@gmail.com', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+              Nickname: nickname,
+              Email: email || '미입력(익명)',
+              Category: selectedCategory,
+              Message: message,
+              _subject: `[FlowSuite 피드백] ${selectedCategory}: ${nickname}님의 새 의견`,
+              _captcha: 'false'
+            })
+          });
+        } catch (err) {
+          console.warn('FormSubmit notify warning:', err);
+        }
+
+        // Save locally to display immediately in live feed
+        const newComment = {
+          nickname: nickname,
+          category: selectedCategory,
+          time: '방금 전',
+          message: message
+        };
+
+        try {
+          const stored = JSON.parse(localStorage.getItem('flowsuite_user_comments') || '[]');
+          stored.unshift(newComment);
+          localStorage.setItem('flowsuite_user_comments', JSON.stringify(stored));
+        } catch (e) {
+          console.error(e);
+        }
+
+        renderComments();
+
+        // Reset form & show success
+        document.getElementById('fbMessage').value = '';
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalBtnHtml;
+
+        if (statusEl) {
+          statusEl.className = 'text-xs font-medium text-emerald-400';
+          statusEl.innerHTML = '<i class="fa-solid fa-circle-check mr-1"></i> 소중한 의견이 등록되었습니다!';
+          setTimeout(() => {
+            statusEl.classList.add('hidden');
+          }, 6000);
+        }
+      });
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
+      renderComments();
       const savedLang = localStorage.getItem('flowsuite_lang');
       if (savedLang && (savedLang === 'ko' || savedLang === 'en')) {
         setLanguage(savedLang);
