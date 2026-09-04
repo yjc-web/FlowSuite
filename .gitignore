@@ -10,6 +10,8 @@
 
 ## Temporary scripts & layouts
 Resources/convert_ico.ps1
+generate_*.ps1
+build_*_html.ps1
 msix_layout/
 dist/
 dist_crossplatform/
