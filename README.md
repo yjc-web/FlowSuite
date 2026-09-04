@@ -1,151 +1,79 @@
-# 📌 OverlayPic
+<div align="center">
+
+# ⚡ FlowSuite
+### The Ultimate Desktop Productivity Software Suite for Windows
+
+[![Official Website](https://img.shields.io/badge/Website-yjc--web.github.io-06B6D4?style=for-the-badge&logo=google-chrome&logoColor=white)](https://yjc-web.github.io)
+[![Microsoft Store](https://img.shields.io/badge/Microsoft_Store-FlowSuiteYJC-0078D4?style=for-the-badge&logo=windows&logoColor=white)](https://apps.microsoft.com/search/publisher?name=FlowSuiteYJC&hl=ko-KR&gl=KR)
+[![Latest Release](https://img.shields.io/badge/Release-v1.0.8-10B981?style=for-the-badge&logo=github&logoColor=white)](https://github.com/yjc-web/FlowSuite/releases)
+[![Platform](https://img.shields.io/badge/Platform-Windows_10%2F11-6366F1?style=for-the-badge&logo=windows11&logoColor=white)](https://yjc-web.github.io)
+
+<br />
 
 <p align="center">
-  <b>Ultra-lightweight Transparent Screen Overlay Image Viewer for Windows</b><br>
-  <sub>Designed & Developed by <b>YJC</b></sub>
+  <img src="https://yjc-web.github.io/assets/SuperHeroArt_1920x1080.png" width="90%" alt="FlowSuite Showcase Banner" style="border-radius: 16px; box-shadow: 0 20px 50px rgba(0,0,0,0.5);" />
 </p>
 
 <p align="center">
-  <a href="https://github.com/yjc-web/FlowSuite/releases/tag/v1.0.4.0"><img src="https://img.shields.io/badge/Version-v1.0.4.0-blue.svg" alt="Version" /></a>
-  <a href="https://github.com/yjc-web/FlowSuite/actions/workflows/build.yml"><img src="https://github.com/yjc-web/FlowSuite/actions/workflows/build.yml/badge.svg" alt="Build Status" /></a>
-  <img src="https://img.shields.io/badge/.NET_Framework-4.8.1-512BD4.svg" alt=".NET" />
-  <img src="https://img.shields.io/badge/Platform-Windows_10_|_11-0078D6.svg" alt="Platform" />
-  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License" /></a>
-  <a href="https://buymeacoffee.com/flowsuiteyjc"><img src="https://img.shields.io/badge/Buy_Me_a_Coffee-FFDD00?logo=buy-me-a-coffee&logoColor=black" alt="Buy Me A Coffee" /></a>
+  <b>화면 자동화부터 AI 파일 정리, 마우스 제스처 창 제어, 화면 오버레이 핀까지.</b><br />
+  데스크톱 업무의 모든 번거로움을 해결하는 4대 필수 생산성 도구를 한곳에서 만나보세요.
+</p>
+
+<p align="center">
+  <a href="https://yjc-web.github.io">🌐 <b>공식 홈페이지 방문하기</b></a> &bull;
+  <a href="https://apps.microsoft.com/search/publisher?name=FlowSuiteYJC&hl=ko-KR&gl=KR">🏬 <b>Microsoft Store 공식 퍼블리셔</b></a> &bull;
+  <a href="https://github.com/yjc-web/FlowSuite/releases">📦 <b>GitHub 릴리즈 다운로드</b></a>
 </p>
 
 ---
 
-## 🌟 Overview
+</div>
 
-**OverlayPic** is an ultra-lightweight, zero-install Windows utility that floats reference images, design mockups, and documents with adjustable semi-transparency directly over your workspace.
+## 🚀 FlowSuite 4대 핵심 라인업 (Core Product Lineup)
 
-With its native **Click-Through** mode, your mouse clicks pass straight through the overlay image, allowing you to interact with underlying applications (Figma, browser, IDE, Photoshop, Excel, etc.) without any disruption.
-
-- 🎨 **Web & App Frontend Developers**: Place Figma/XD design comps 1:1 directly over your browser for **Pixel-Perfect layout inspections**.
-- 🖌️ **Digital Artists & Illustrators**: Float anatomy, character sheets, and pose references over Clip Studio or Photoshop for precise tracing.
-- 📊 **Multitasking & Office Work**: Compare receipts, invoices, drawings, and tables directly over spreadsheets without dual monitors.
-
----
-
-## ✨ Key Features
-
-| Feature | Description |
-|---|---|
-| 🎯 **1px Fine-Tuning & Floating Jog Window** | Nudge position in **1px increments** with Arrow keys (`↑↓←→`) and resize with `Ctrl+Arrow`. Includes a standalone, draggable floating **Jog Pad** window with D-Pad controls, 1px/10px step switch, real-time coordinate badges, and mouse wheel nudge support. |
-| ✂️ **One-Touch Screen Snipping** | Press `Ctrl + Alt + X` anywhere to drag-select any screen area and spawn an instant semi-transparent overlay in place. |
-| 👆 **Native Click-Through Mode** | Mouse clicks pass through the overlay to control the background app. Press `Esc` or `Ctrl + Shift + T` to exit anytime. |
-| 💾 **Instant Image Saving** | Save currently loaded or snipped images directly to **PNG** (with alpha transparency preserved), **JPG**, or **BMP** via `Ctrl + S`. |
-| 📋 **Instant Clipboard Paste** | Press `Ctrl + V` to immediately load images copied from browsers, capture tools, or Windows Explorer. |
-| 🔍 **Real-Time Opacity Control** | Smoothly adjust transparency from 5% to 100% using the mouse wheel or `+` / `-` keys. |
-| 📐 **Proportional Resizing** | Zoom in and out while preserving the original aspect ratio with `Ctrl + Mouse Wheel`. |
-| 🔒 **Position & Size Lock** | Freeze the overlay window (`Ctrl + L`) to prevent accidental shifts or resizing during work. |
-| 🏁 **Checkerboard Background** | Toggle transparent checkerboard grid (`Space`) to inspect PNG alpha cutouts and icon contours. |
-| ↻ **1:1 Native Resolution Reset** | Instantly snap back to the image's original pixel dimensions with `Ctrl + R`. |
-| 🌐 **Bilingual UI** | Seamless real-time switching between English and Korean with automatic system locale detection. |
-| ⚡ **100% Pure Portable** | Single standalone `.exe` (< 300KB). Zero registry clutter, zero network telemetry, runs 100% offline. |
+| 제품 (Product) | 분류 (Category) | 주요 기능 (Key Highlights) | 다운로드 & 링크 |
+| :--- | :--- | :--- | :--- |
+| **🖼️ ImageFlow**<br>*(이미지플로우)* | **노코드 화면 RPA**<br>(No-Code Screen Automation) | &bull; **선만 연결하는 비주얼 순서도 편집기**<br>&bull; 4K 다중모니터 초정밀 픽셀 서치<br>&bull; 전용 단축키 & 간편 시작(QuickStart)<br>&bull; 조건부 팝업 대기 & 예외 자동 처리 | [![MS Store](https://img.shields.io/badge/MS_Store-ImageFlow-0078D4?style=flat-square&logo=windows)](https://apps.microsoft.com/detail/9N4P7GW72J4X)<br>[![Setup](https://img.shields.io/badge/Setup.exe-Download-333?style=flat-square&logo=github)](https://github.com/yjc-web/FlowSuite/releases) |
+| **📁 FileFlow**<br>*(파일플로우)* | **AI 파일 관리 허브**<br>(AI File Organizer) | &bull; **0.1초 실시간 폴더 감시 (Spooler)**<br>&bull; Explainable AI(나이브 베이즈) 자동 분류<br>&bull; PDF, Excel, PPT, Zip 멀티포맷 즉시 미리보기<br>&bull; 독립 플로팅 듀얼 탐색기 & 실행 취소(Undo) | [![MS Store](https://img.shields.io/badge/MS_Store-Publisher-0078D4?style=flat-square&logo=windows)](https://apps.microsoft.com/search/publisher?name=FlowSuiteYJC&hl=ko-KR&gl=KR)<br>[![Explore](https://img.shields.io/badge/Explore-FileFlow-indigo?style=flat-square)](https://yjc-web.github.io/#fileflow) |
+| **🖱️ GestureGo**<br>*(제스처고)* | **마우스 제스처 유틸리티**<br>(Mouse Gesture Control) | &bull; **마우스 우클릭 드래그로 창 광속 제어**<br>&bull; 창 닫기, 최소화, 가상 데스크톱 전환<br>&bull; 초경량 마우스 궤적 인식 엔진<br>&bull; 사용자 정의 커스텀 단축키 매핑 | [![MS Store](https://img.shields.io/badge/MS_Store-Publisher-0078D4?style=flat-square&logo=windows)](https://apps.microsoft.com/search/publisher?name=FlowSuiteYJC&hl=ko-KR&gl=KR)<br>[![Explore](https://img.shields.io/badge/Explore-GestureGo-emerald?style=flat-square)](https://yjc-web.github.io/#gesturego) |
+| **📌 OverlayPic**<br>*(오버레이픽)* | **항상 위 이미지 핀 도구**<br>(Floating Reference Pin) | &bull; **작업 화면 최상단(Always-on-Top) 고정**<br>&bull; 마우스 휠 투명도(Opacity 0~100%) 실시간 조절<br>&bull; 클릭 투과(Click-through)로 밑 화면 바로 작업<br>&bull; **Windows & macOS (Apple Silicon / Intel) 지원** | [![MS Store](https://img.shields.io/badge/MS_Store-Publisher-0078D4?style=flat-square&logo=windows)](https://apps.microsoft.com/search/publisher?name=FlowSuiteYJC&hl=ko-KR&gl=KR)<br>[![Explore](https://img.shields.io/badge/Explore-OverlayPic-amber?style=flat-square)](https://yjc-web.github.io/#overlaypic) |
 
 ---
 
-## ⌨️ Keyboard Shortcuts Reference
+## ⚡ All-in-One Synergy (유기적 업무 시너지)
 
-| Shortcut | Action |
-|---|---|
-| `🎯 Button` | **Toggle Fine Tuning Mode** (opens draggable Jog Window & enables arrow key nudging) |
-| `Arrow Keys (↑, ↓, ←, →)` | **Nudge position by 1px** (Hold `Shift`: 10px fast movement) *in Fine-Tuning Mode* |
-| `Ctrl + Arrow Keys` | **Resize width/height by 1px** (Hold `Ctrl + Shift`: 10px) *in Fine-Tuning Mode* |
-| `Ctrl + Alt + X` | ✂️ **Screen Snipping Tool** (creates an instant overlay over the dragged region) |
-| `Ctrl + S` | 💾 **Save current image to file** (PNG with transparency / JPG / BMP) |
-| `Ctrl + V` | 📋 Paste image from clipboard or copied file |
-| `Ctrl + O` | 📂 Open image file (`.png`, `.jpg`, `.webp`, `.gif`, `.bmp`) |
-| `Mouse Wheel` / `+`, `-` | Adjust opacity (0.05 to 1.0) |
-| `Ctrl + Mouse Wheel` | Scale window size proportionally |
-| `Ctrl + Shift + T` / `Ctrl + T` | 👆 Toggle Click-Through mode |
-| `Esc` | 👆 **Exit Fine Tuning / Exit Click-Through** (Closes window only in default mode) |
-| `Ctrl + L` | 🔒 Lock / Unlock position and dimensions |
-| `Ctrl + R` | ↻ Reset window to 1:1 original image resolution |
-| `Space` | 🏁 Toggle transparency checkerboard background |
-| `Ctrl + M` | Minimize window |
+FlowSuite의 도구들은 개별적으로도 강력하지만, 함께 사용할 때 완벽한 생산성 워크스테이션을 만듭니다:
 
----
-
-## 🚀 Download & Installation
-
-### Option 1: Portable Standalone Executable (Recommended)
-1. Download `OverlayPic_v1.0.4.zip` from [GitHub Releases](https://github.com/yjc-web/FlowSuite/releases/tag/v1.0.4.0).
-2. Extract the archive anywhere (USB, Desktop, Tools folder).
-3. Run `OverlayPic.exe` directly — zero setup required!
-
-### Option 2: Windows Installer
-1. Download `OverlayPic_v1.0.4.0_Setup.exe` from [GitHub Releases](https://github.com/yjc-web/FlowSuite/releases/tag/v1.0.4.0).
-2. Follow the standard installation wizard. Desktop shortcut and Start Menu entries will be created.
-
-### Option 3: Microsoft Store (MSIX)
-- Search for **OverlayPic** in the Microsoft Store or install `OverlayPic_v1.0.4.0_Store.msix`.
-
----
-
-## 🛠️ Build from Source
-
-OverlayPic is built with pure C# and WPF on .NET Framework 4.8.1 with zero third-party dependencies.
-
-### Prerequisites
-- Windows 10 or 11
-- Visual Studio 2019 / 2022 (with .NET Desktop Development workload) or MSBuild Tools
-
-### Build Instructions
-```bash
-# 1. Clone repository
-git clone https://github.com/yjc-web/FlowSuite.git
-cd FlowSuite
-
-# 2. Build Release using MSBuild
-msbuild OverlayPic.sln /p:Configuration=Release /p:Platform="Any CPU"
 ```
-The compiled standalone binary will be generated at:
-```
-bin\Release\OverlayPic.exe
+[01. Control]   GestureGo  ─▶ 마우스 제스처로 작업 창들을 순식간에 정렬
+[02. Reference] OverlayPic ─▶ 필요한 가이드 시안이나 데이터를 화면 위에 투명 핀 고정
+[03. Automate]  ImageFlow  ─▶ 손이 많이 가는 반복 클릭과 입력을 노코드 순서도로 자동화
+[04. Organize]  FileFlow   ─▶ 생성된 결과물 파일들을 AI가 폴더별로 0.1초 만에 자동 정리
 ```
 
 ---
 
-## 📋 Release Notes
+## 💻 System Requirements (시스템 요구사항)
 
-### 📌 v1.0.4.0
-- **New Feature**: Added 1px Fine-Tuning mode (`🎯`) with keyboard arrow nudging (1px default, Shift: 10px).
-- **New Floating Window**: Separated the Jog Pad controller into an independent, draggable floating window (`FineTuningWindow`) that never obstructs the underlying image canvas.
-- **Safety Guards**: Automatically disables nudging when the window is locked (`Ctrl+L`) or in click-through mode. `Esc` safely closes the fine-tuning window first.
-- **CI / CD**: Added automated GitHub Actions cloud build workflow with transparent build provenance.
-
-### 📌 v1.0.2
-- **New Feature**: Added `Ctrl + S` instant file saving with full alpha transparency preservation for PNG.
-- **UI Enhancements**: Added More menu (`⋯`) with direct image export options.
-
-### 📌 v1.0.1
-- **New Feature**: Added `Ctrl + Alt + X` one-touch screen drag snip.
-- **Localization**: Added full English and Korean bilingual support with automatic system locale detection.
-
-### 📌 v1.0.0
-- Official first public release: ultra-lightweight overlay viewer, native Win32 click-through, and mouse wheel controls.
+- **Operating System**: Windows 10 (64-bit, 1809 이상) / Windows 11
+- **Architecture**: x64 최적화
+- **Framework**: .NET Framework 4.8 / .NET 8.0 Runtime
+- **macOS Support**: OverlayPic의 경우 macOS 11.0 Big Sur 이상 (Apple Silicon M1/M2/M3 & Intel x64) 완벽 지원
 
 ---
 
-## 📄 Documentation
+## 🏬 Microsoft Store Official Publisher
 
-- 📖 [User Manual (Web HTML)](userManual.html) — Comprehensive interactive visual guide
-- 📝 [Release Notes (Web HTML)](releasenotes.html) — Full patch history & changelog
+FlowSuite의 모든 상용 소프트웨어는 마이크로소프트의 엄격한 보안 및 앱 인증 심사를 통과하여 배포됩니다.
 
----
-
-## 👨‍💻 Author & Community
-
-- **Developer**: YJC
-- **Official Blog**: [https://blog.naver.com/nds-macro](https://blog.naver.com/nds-macro)
-- **Support & Donations**: [Buy Me a Coffee](https://buymeacoffee.com/flowsuiteyjc)
-- **Bug Reports & Feedback**: Please file an issue on [GitHub Issues](https://github.com/yjc-web/FlowSuite/issues).
+- 🛒 **공식 스토어 퍼블리셔 페이지**:  
+  [https://apps.microsoft.com/search/publisher?name=FlowSuiteYJC&hl=ko-KR&gl=KR](https://apps.microsoft.com/search/publisher?name=FlowSuiteYJC&hl=ko-KR&gl=KR)
 
 ---
 
-## ⚖️ License
+## 📄 License & Community
 
-This project is open source and available under the terms of the [MIT License](LICENSE).
+- **Official Website**: [https://yjc-web.github.io](https://yjc-web.github.io)
+- **Developer / Publisher**: `FlowSuiteYJC` (yjc-web)
+- **Contact & Feedback**: GitHub Issues or [Disquiet Product Page](https://disquiet.io)
+- Copyright &copy; 2026 **yjc-web**. All rights reserved.
