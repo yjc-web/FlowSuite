@@ -1,124 +1,151 @@
 # 📌 OverlayPic
 
 <p align="center">
-  <img src="Resources/kakaopay_qr.png" width="0" height="0" alt="" />
-  <b>초경량 화면 오버레이 투명 이미지 뷰어 (Lightweight Screen Overlay Transparent Image Viewer)</b><br>
+  <b>Ultra-lightweight Transparent Screen Overlay Image Viewer for Windows</b><br>
   <sub>Designed & Developed by <b>YJC</b></sub>
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Version-v1.0.4.0-blue.svg" alt="Version" />
+  <a href="https://github.com/yjc-web/FlowSuite/releases/tag/v1.0.4.0"><img src="https://img.shields.io/badge/Version-v1.0.4.0-blue.svg" alt="Version" /></a>
+  <a href="https://github.com/yjc-web/FlowSuite/actions/workflows/build.yml"><img src="https://github.com/yjc-web/FlowSuite/actions/workflows/build.yml/badge.svg" alt="Build Status" /></a>
   <img src="https://img.shields.io/badge/.NET_Framework-4.8.1-512BD4.svg" alt=".NET" />
-  <img src="https://img.shields.io/badge/Platform-Windows-0078D6.svg" alt="Platform" />
-  <img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License" />
+  <img src="https://img.shields.io/badge/Platform-Windows_10_|_11-0078D6.svg" alt="Platform" />
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-green.svg" alt="License" /></a>
+  <a href="https://buymeacoffee.com/flowsuiteyjc"><img src="https://img.shields.io/badge/Buy_Me_a_Coffee-FFDD00?logo=buy-me-a-coffee&logoColor=black" alt="Buy Me A Coffee" /></a>
 </p>
 
 ---
 
-## 🌟 개요 (Overview)
+## 🌟 Overview
 
-**OverlayPic**은 화면 위에 원하는 이미지를 반투명하게 띄워두고, **클릭 통과(Click-through)** 모드를 통해 뒤쪽 프로그램을 그대로 조작할 수 있는 초경량 Windows 유틸리티입니다.
+**OverlayPic** is an ultra-lightweight, zero-install Windows utility that floats reference images, design mockups, and documents with adjustable semi-transparency directly over your workspace.
 
-무설치 단일 실행 파일(`.exe`)로 언제 어디서나 가볍고 빠르게 사용할 수 있습니다.
+With its native **Click-Through** mode, your mouse clicks pass straight through the overlay image, allowing you to interact with underlying applications (Figma, browser, IDE, Photoshop, Excel, etc.) without any disruption.
 
-- 🎨 **웹/앱 프론트엔드 개발자 & 디자이너**: Figma/디자인 시안을 웹 브라우저 위에 1:1로 얹어놓고 픽셀 단위 검수 (Pixel-Perfect Check)
-- 🖌️ **일러스트레이터 & 원화가**: 포토샵, 클립스튜디오 작업 시 참고 포즈/구도 이미지를 띄워두고 트레이싱 및 대고 그리기
-- 📊 **일반 업무 & 학생**: 듀얼 모니터 없이 한 화면에서 문서, 영수증, 도면 대조 작업
-
----
-
-## ✨ 주요 기능 (Key Features)
-
-| **🎯 1px 정밀 미세 정렬** | `🎯` 버튼 클릭 시 조그 패드 표시 및 방향키로 위치/크기 1px 단위 정밀 조절 (피그마/웹 퍼블리싱/트레이싱 특화) |
-| **✂️ 원터치 화면 캡처** | `Ctrl + Alt + X`로 화면의 원하는 영역을 드래그하면 그 자리에 즉시 반투명 오버레이 생성 |
-| **💾 편리한 이미지 저장** | `Ctrl + S`로 현재 캡처 또는 로드된 이미지를 PNG/JPG/BMP 파일로 즉시 저장 |
-| **📋 원클릭 붙여넣기** | `Ctrl + V`로 클립보드 캡처 이미지나 탐색기 복사 파일을 즉시 화면에 로드 |
-| **👆 클릭 통과 (Click-Through)** | 마우스 클릭이 뒤쪽 프로그램으로 통과되어 이미지 아래 창을 자유롭게 조작 (`Esc`로 즉시 해제) |
-| **🔍 실시간 투명도 조절** | 마우스 휠 또는 `+` / `-` 키로 불투명도(0.05 ~ 1.0)를 부드럽게 조절 |
-| **📐 직관적인 창 크기 조절** | `Ctrl + 마우스 휠` 또는 `Ctrl + (+/-)`로 비율 유지하며 확대/축소 |
-| **🔒 위치 및 크기 잠금 (Lock)** | 작업 중 실수로 창이 밀리거나 크기가 변하지 않도록 원클릭 고정 (`Ctrl + L`) |
-| **🏁 체커보드 배경 지원** | 투명 PNG 이미지의 외곽선 확인을 위한 체커보드 배경 토글 (`Space`) |
-| **↻ 1:1 원본 크기 복원** | 클릭 한 번으로 원본 이미지의 1:1 해상도로 창 크기 복구 (`Ctrl + R`) |
-| **⚡ 무설치 포터블** | 레지스트리 건드리지 않는 100% 무설치 단일 실행 파일 |
+- 🎨 **Web & App Frontend Developers**: Place Figma/XD design comps 1:1 directly over your browser for **Pixel-Perfect layout inspections**.
+- 🖌️ **Digital Artists & Illustrators**: Float anatomy, character sheets, and pose references over Clip Studio or Photoshop for precise tracing.
+- 📊 **Multitasking & Office Work**: Compare receipts, invoices, drawings, and tables directly over spreadsheets without dual monitors.
 
 ---
 
-## ⌨️ 단축키 안내 (Keyboard Shortcuts)
+## ✨ Key Features
 
-| 단축키 | 동작 |
+| Feature | Description |
 |---|---|
-| `🎯 버튼` | 🎯 **미세 정렬 모드 토글** (조그 패드 표시 및 방향키 1px 이동 활성화) |
-| `방향키 (↑, ↓, ←, →)` | 🎯 **위치 1px 미세 이동** (Shift+방향키: 10px 빠른 이동) *미세 정렬 모드 활성 시* |
-| `Ctrl + 방향키` | 🎯 **가로/세로 1px 크기 조절** (Ctrl+Shift+방향키: 10px) *미세 정렬 모드 활성 시* |
-| `Ctrl + Alt + X` | ✂️ **화면 영역 드래그 캡처** (캡처 위치에 즉시 오버레이 생성) |
-| `Ctrl + S` | 💾 **현재 오버레이 이미지 파일로 저장** (PNG/JPG/BMP) |
-| `Ctrl + V` | 📋 클립보드 이미지 또는 이미지 파일 붙여넣기 |
-| `Ctrl + O` | 📂 이미지 파일 열기 (.png, .jpg, .webp, .gif, .bmp 등) |
-| `마우스 휠` / `+`, `-` | 투명도 실시간 조절 |
-| `Ctrl + 마우스 휠` / `Ctrl + (+/-)` | 창 크기 비율 조절 |
-| `Ctrl + Shift + T` / `Ctrl + T` | 👆 클릭 통과 모드 토글 |
-| `Esc` | 👆 **미세 정렬 모드 / 클릭 통과 해제** (일반 모드 시 창 닫기) |
-| `Ctrl + L` | 🔒 위치 및 크기 고정 토글 |
-| `Ctrl + R` | ↻ 원본 해상도 크기로 리셋 |
-| `Space` | 🏁 투명 체커보드 배경 토글 |
+| 🎯 **1px Fine-Tuning & Floating Jog Window** | Nudge position in **1px increments** with Arrow keys (`↑↓←→`) and resize with `Ctrl+Arrow`. Includes a standalone, draggable floating **Jog Pad** window with D-Pad controls, 1px/10px step switch, real-time coordinate badges, and mouse wheel nudge support. |
+| ✂️ **One-Touch Screen Snipping** | Press `Ctrl + Alt + X` anywhere to drag-select any screen area and spawn an instant semi-transparent overlay in place. |
+| 👆 **Native Click-Through Mode** | Mouse clicks pass through the overlay to control the background app. Press `Esc` or `Ctrl + Shift + T` to exit anytime. |
+| 💾 **Instant Image Saving** | Save currently loaded or snipped images directly to **PNG** (with alpha transparency preserved), **JPG**, or **BMP** via `Ctrl + S`. |
+| 📋 **Instant Clipboard Paste** | Press `Ctrl + V` to immediately load images copied from browsers, capture tools, or Windows Explorer. |
+| 🔍 **Real-Time Opacity Control** | Smoothly adjust transparency from 5% to 100% using the mouse wheel or `+` / `-` keys. |
+| 📐 **Proportional Resizing** | Zoom in and out while preserving the original aspect ratio with `Ctrl + Mouse Wheel`. |
+| 🔒 **Position & Size Lock** | Freeze the overlay window (`Ctrl + L`) to prevent accidental shifts or resizing during work. |
+| 🏁 **Checkerboard Background** | Toggle transparent checkerboard grid (`Space`) to inspect PNG alpha cutouts and icon contours. |
+| ↻ **1:1 Native Resolution Reset** | Instantly snap back to the image's original pixel dimensions with `Ctrl + R`. |
+| 🌐 **Bilingual UI** | Seamless real-time switching between English and Korean with automatic system locale detection. |
+| ⚡ **100% Pure Portable** | Single standalone `.exe` (< 300KB). Zero registry clutter, zero network telemetry, runs 100% offline. |
 
 ---
 
-## 🚀 다운로드 및 실행 방법 (Download & Run)
+## ⌨️ Keyboard Shortcuts Reference
 
-1. [FlowSuite Releases](https://github.com/yjc-web/FlowSuite/releases/tag/OverlayPic) 페이지에서 `OverlayPic_v1.0.4.0_Setup.exe` (설치형) 또는 `OverlayPic_v1.0.4.zip` (무설치 포터블)을 다운로드합니다.
-2. 설치 후 실행하거나, 압축을 푼 후 `OverlayPic.exe`를 실행합니다.
-3. 원하는 이미지를 드래그 앤 드롭하거나, 캡처 후 `Ctrl + V`를 누르면 즉시 사용할 수 있습니다.
+| Shortcut | Action |
+|---|---|
+| `🎯 Button` | **Toggle Fine Tuning Mode** (opens draggable Jog Window & enables arrow key nudging) |
+| `Arrow Keys (↑, ↓, ←, →)` | **Nudge position by 1px** (Hold `Shift`: 10px fast movement) *in Fine-Tuning Mode* |
+| `Ctrl + Arrow Keys` | **Resize width/height by 1px** (Hold `Ctrl + Shift`: 10px) *in Fine-Tuning Mode* |
+| `Ctrl + Alt + X` | ✂️ **Screen Snipping Tool** (creates an instant overlay over the dragged region) |
+| `Ctrl + S` | 💾 **Save current image to file** (PNG with transparency / JPG / BMP) |
+| `Ctrl + V` | 📋 Paste image from clipboard or copied file |
+| `Ctrl + O` | 📂 Open image file (`.png`, `.jpg`, `.webp`, `.gif`, `.bmp`) |
+| `Mouse Wheel` / `+`, `-` | Adjust opacity (0.05 to 1.0) |
+| `Ctrl + Mouse Wheel` | Scale window size proportionally |
+| `Ctrl + Shift + T` / `Ctrl + T` | 👆 Toggle Click-Through mode |
+| `Esc` | 👆 **Exit Fine Tuning / Exit Click-Through** (Closes window only in default mode) |
+| `Ctrl + L` | 🔒 Lock / Unlock position and dimensions |
+| `Ctrl + R` | ↻ Reset window to 1:1 original image resolution |
+| `Space` | 🏁 Toggle transparency checkerboard background |
+| `Ctrl + M` | Minimize window |
 
 ---
 
-## 📋 릴리즈 노트 (Release Notes)
+## 🚀 Download & Installation
+
+### Option 1: Portable Standalone Executable (Recommended)
+1. Download `OverlayPic_v1.0.4.zip` from [GitHub Releases](https://github.com/yjc-web/FlowSuite/releases/tag/v1.0.4.0).
+2. Extract the archive anywhere (USB, Desktop, Tools folder).
+3. Run `OverlayPic.exe` directly — zero setup required!
+
+### Option 2: Windows Installer
+1. Download `OverlayPic_v1.0.4.0_Setup.exe` from [GitHub Releases](https://github.com/yjc-web/FlowSuite/releases/tag/v1.0.4.0).
+2. Follow the standard installation wizard. Desktop shortcut and Start Menu entries will be created.
+
+### Option 3: Microsoft Store (MSIX)
+- Search for **OverlayPic** in the Microsoft Store or install `OverlayPic_v1.0.4.0_Store.msix`.
+
+---
+
+## 🛠️ Build from Source
+
+OverlayPic is built with pure C# and WPF on .NET Framework 4.8.1 with zero third-party dependencies.
+
+### Prerequisites
+- Windows 10 or 11
+- Visual Studio 2019 / 2022 (with .NET Desktop Development workload) or MSBuild Tools
+
+### Build Instructions
+```bash
+# 1. Clone repository
+git clone https://github.com/yjc-web/FlowSuite.git
+cd FlowSuite
+
+# 2. Build Release using MSBuild
+msbuild OverlayPic.sln /p:Configuration=Release /p:Platform="Any CPU"
+```
+The compiled standalone binary will be generated at:
+```
+bin\Release\OverlayPic.exe
+```
+
+---
+
+## 📋 Release Notes
 
 ### 📌 v1.0.4.0
-- **신규 기능**: 1px 정밀 미세 정렬 모드 (`🎯`) 추가 (방향키 1px 이동, Ctrl+방향키 1px 크기 조절)
-- **UI 개선**: 화면 우상단 플로팅 조그 패드(D-Pad, 1px/10px 스텝 토글, 실시간 좌표/크기 표시, 패드 위 마우스 휠 지원)
-- **안전 장치**: 잠금(`Ctrl+L`) 및 클릭 통과 활성화 시 자동 차단, Esc 키로 미세 정렬 모드 안전 해제
-- **단축키 및 다국어**: 한국어/English 실시간 다국어 지원 및 안내 창 업데이트
+- **New Feature**: Added 1px Fine-Tuning mode (`🎯`) with keyboard arrow nudging (1px default, Shift: 10px).
+- **New Floating Window**: Separated the Jog Pad controller into an independent, draggable floating window (`FineTuningWindow`) that never obstructs the underlying image canvas.
+- **Safety Guards**: Automatically disables nudging when the window is locked (`Ctrl+L`) or in click-through mode. `Esc` safely closes the fine-tuning window first.
+- **CI / CD**: Added automated GitHub Actions cloud build workflow with transparent build provenance.
 
 ### 📌 v1.0.2
-- **신규 기능**: 캡처 및 로드된 오버레이 이미지를 파일로 즉시 저장하는 기능 추가 (`Ctrl + S`)
-- **포맷 지원**: PNG (투명도 보존), JPEG/JPG (고품질), BMP 포맷 저장 지원
-- **UI 개선**: 더보기 메뉴(`⋯`)에 `💾 이미지 다른 이름으로 저장...` 추가 및 단축키 안내 모달 업데이트
-- **다국어 지원**: 한국어/영어 전환 시 저장 메뉴 및 알림 메시지 완벽 지원
+- **New Feature**: Added `Ctrl + S` instant file saving with full alpha transparency preservation for PNG.
+- **UI Enhancements**: Added More menu (`⋯`) with direct image export options.
 
 ### 📌 v1.0.1
-- **신규 기능**: 원터치 화면 영역 드래그 캡처 (`Ctrl + Alt + X`) 추가
-- **개선**: 한국어/English 실시간 다국어 지원 및 시스템 로캘 자동 감지
-- **패키징**: MS Store MSIX 및 GitHub Setup 인스톨러 배포 지원
+- **New Feature**: Added `Ctrl + Alt + X` one-touch screen drag snip.
+- **Localization**: Added full English and Korean bilingual support with automatic system locale detection.
 
 ### 📌 v1.0.0
-- 최초 공식 릴리즈
-- 초경량 투명 오버레이 뷰어, 클릭 통과(Click-through), 마우스 휠 투명도 및 크기 조절 기능 구현
+- Official first public release: ultra-lightweight overlay viewer, native Win32 click-through, and mouse wheel controls.
 
 ---
 
-## 🛠️ 빌드 방법 (Build from Source)
+## 📄 Documentation
 
-- **요구 사양**: Visual Studio 2019 이상 / .NET Framework 4.8.1
-```bash
-# 저장소 복제
-git clone https://github.com/yjc-web/OverlayPic.git
-
-# MSBuild로 릴리즈 빌드
-msbuild OverlayPic.csproj /p:Configuration=Release
-```
-빌드된 파일은 `bin/Release/OverlayPic.exe`에서 확인하실 수 있습니다.
+- 📖 [User Manual (Web HTML)](userManual.html) — Comprehensive interactive visual guide
+- 📝 [Release Notes (Web HTML)](releasenotes.html) — Full patch history & changelog
 
 ---
 
-## 👨‍💻 제작자 & 문의 (Author & Feedback)
+## 👨‍💻 Author & Community
 
 - **Developer**: YJC
 - **Official Blog**: [https://blog.naver.com/nds-macro](https://blog.naver.com/nds-macro)
-- 버그 제보 및 기능 제안은 GitHub Issue 또는 블로그 안부글/댓글을 통해 남겨주세요.
+- **Support & Donations**: [Buy Me a Coffee](https://buymeacoffee.com/flowsuiteyjc)
+- **Bug Reports & Feedback**: Please file an issue on [GitHub Issues](https://github.com/yjc-web/FlowSuite/issues).
 
 ---
 
-## 📄 라이선스 (License)
+## ⚖️ License
 
-This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
+This project is open source and available under the terms of the [MIT License](LICENSE).
