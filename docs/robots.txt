@@ -1,0 +1,4 @@
+﻿User-agent: *
+Allow: /
+
+Sitemap: https://yjc-web.github.io/FlowSuite/sitemap.xml

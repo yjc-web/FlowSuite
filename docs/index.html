@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="ko" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title data-i18n="meta_title">FlowSuite — 윈도우 데스크톱 스마트 생산성 소프트웨어 스위트</title>
+
+  <!-- SEO & 메타 태그 -->
+  <meta name="description" data-i18n-meta="description" content="데스크톱 업무의 모든 번거로움을 해결하는 스마트 생산성 소프트웨어 제품군 FlowSuite. ImageFlow, FileFlow, GestureGo, OverlayPic을 한곳에서 만나보세요." />
+  <meta name="keywords" content="FlowSuite, ImageFlow, FileFlow, GestureGo, OverlayPic, 윈도우 유틸리티, 노코드 자동화, 파일 자동 분류, 마우스 제스처, 화면 오버레이" />
+  <meta name="author" content="yjc-web" />
+  <meta name="robots" content="index, follow" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://yjc-web.github.io/FlowSuite/" />
+  <meta property="og:title" content="FlowSuite — The Ultimate Desktop Productivity Suite" />
+  <meta property="og:description" content="ImageFlow, FileFlow, GestureGo, and OverlayPic. Supercharge your Windows workflow." />
+  <meta property="og:image" content="assets/SuperHeroArt_1920x1080.png" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="FlowSuite — Desktop Productivity Suite" />
+  <meta name="twitter:description" content="ImageFlow, FileFlow, GestureGo, OverlayPic." />
+  <meta name="twitter:image" content="assets/SuperHeroArt_1920x1080.png" />
+
+  <link rel="icon" type="image/png" href="assets/AppIcon_71x71.png" />
+  <link rel="apple-touch-icon" href="assets/AppIcon_150x150.png" />
+
+  <!-- Tailwind CSS & FontAwesome CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <!-- 폰트: Plus Jakarta Sans + Pretendard + JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'Pretendard', '-apple-system', 'BlinkMacSystemFont', 'system-ui', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            brand: {
+              pitch: '#030712',
+              subtle: '#090D1A',
+              surface: '#0F1629',
+              surfaceHover: '#162038',
+              cyan: '#06B6D4',
+              sky: '#38BDF8',
+              violet: '#6366F1',
+              emerald: '#10B981',
+              amber: '#F59E0B',
+              rose: '#F43F5E'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    :root { color-scheme: dark; }
+    body {
+      background-color: #030712;
+      color: #F8FAFC;
+      font-family: 'Plus Jakarta Sans', Pretendard, sans-serif;
+      letter-spacing: -0.022em;
+      overflow-x: hidden;
+    }
+    .bento-card {
+      background: linear-gradient(180deg, rgba(15, 22, 41, 0.75) 0%, rgba(9, 13, 26, 0.85) 100%);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.08), 0 20px 40px -15px rgba(0, 0, 0, 0.5);
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .bento-card:hover {
+      border-color: rgba(56, 189, 248, 0.35);
+      transform: translateY(-2px);
+      box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.15), 0 25px 50px -12px rgba(6, 182, 212, 0.15);
+    }
+    .hero-title-gradient {
+      background: linear-gradient(180deg, #FFFFFF 0%, #E2E8F0 45%, #94A3B8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .accent-gradient {
+      background: linear-gradient(135deg, #38BDF8 0%, #818CF8 50%, #C084FC 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .ambient-mesh {
+      position: absolute;
+      top: -20%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 1200px;
+      height: 800px;
+      background: radial-gradient(circle, rgba(99, 102, 241, 0.18) 0%, rgba(56, 189, 248, 0.14) 30%, rgba(3, 7, 18, 0) 70%);
+      filter: blur(120px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .dot-grid {
+      background-image: radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px);
+      background-size: 24px 24px;
+    }
+    .btn-shine {
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-shine::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+      transition: all 0.6s ease;
+    }
+    .btn-shine:hover::after {
+      left: 100%;
+    }
+    .tab-btn.active {
+      background: rgba(56, 189, 248, 0.15);
+      border-color: rgba(56, 189, 248, 0.5);
+      color: #38BDF8;
+    }
+  </style>
+</head>
+
+<body class="dot-grid min-h-screen flex flex-col selection:bg-cyan-500 selection:text-white">
+
+  <!-- Ambient Light -->
+  <div class="ambient-mesh"></div>
+
+  <!-- ================= TOP ANNOUNCEMENT ================= -->
+  <aside class="relative z-50 border-b border-white/[0.06] bg-brand-pitch/80 backdrop-blur-xl py-2 px-4 text-center">
+    <div class="max-w-7xl mx-auto flex items-center justify-center gap-3 text-xs font-medium text-slate-300">
+      <span class="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-cyan-500/10 text-cyan-300 border border-cyan-500/20 font-mono text-[11px] font-bold">
+        <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
+        FLOWSUITE ECOSYSTEM
+      </span>
+      <span class="hidden sm:inline text-slate-400" data-i18n="top_bar_text">윈도우 생산성을 극대화하는 4대 필수 유틸리티 라인업</span>
+      <a href="#suite" class="text-cyan-400 hover:text-cyan-300 flex items-center gap-1 font-semibold transition-colors">
+        <span data-i18n="top_bar_link">전체 라인업 보기</span> <i class="fa-solid fa-arrow-right text-[10px]"></i>
+      </a>
+    </div>
+  </aside>
+
+  <!-- ================= HEADER / NAVIGATION ================= -->
+  <header class="sticky top-0 z-40 border-b border-white/[0.06] bg-brand-pitch/70 backdrop-blur-2xl">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 py-3.5 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <a href="#" class="flex items-center gap-3 group">
+        <div class="relative flex items-center justify-center">
+          <div class="absolute -inset-1 bg-gradient-to-r from-cyan-500 to-indigo-500 rounded-2xl blur-sm opacity-40 group-hover:opacity-80 transition-opacity"></div>
+          <img src="assets/AppIcon_150x150.png" alt="FlowSuite Logo" class="relative w-10 h-10 rounded-xl shadow-lg border border-white/20" />
+        </div>
+        <div class="flex flex-col">
+          <div class="flex items-center gap-2">
+            <span class="font-extrabold text-lg tracking-tight text-white group-hover:text-cyan-300 transition-colors">FlowSuite</span>
+            <span class="text-[10px] font-mono font-bold px-1.5 py-0.5 rounded bg-white/[0.08] text-slate-300 border border-white/10">SUITE</span>
+          </div>
+          <span class="text-[11px] text-slate-400 font-mono -mt-0.5">by yjc-web</span>
+        </div>
+      </a>
+
+      <!-- Desktop Nav (Products) -->
+      <nav class="hidden md:flex items-center gap-1 px-4 py-1.5 rounded-full bg-white/[0.03] border border-white/[0.06] text-sm text-slate-400">
+        <a href="#imageflow" class="px-3.5 py-1.5 rounded-full hover:text-white hover:bg-white/[0.06] transition-all flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-cyan-400"></span> ImageFlow
+        </a>
+        <a href="#fileflow" class="px-3.5 py-1.5 rounded-full hover:text-white hover:bg-white/[0.06] transition-all flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-indigo-400"></span> FileFlow
+        </a>
+        <a href="#gesturego" class="px-3.5 py-1.5 rounded-full hover:text-white hover:bg-white/[0.06] transition-all flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-emerald-400"></span> GestureGo
+        </a>
+        <a href="#overlaypic" class="px-3.5 py-1.5 rounded-full hover:text-white hover:bg-white/[0.06] transition-all flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-amber-400"></span> OverlayPic
+        </a>
+      </nav>
+
+      <!-- Action & Language Switcher -->
+      <div class="flex items-center gap-2.5 sm:gap-3">
+        <!-- Language Switcher -->
+        <button id="langToggleBtn" onclick="toggleLanguage()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/[0.05] hover:bg-white/[0.1] border border-white/[0.1] text-xs font-semibold text-slate-300 transition-all">
+          <i class="fa-solid fa-globe text-cyan-400 text-xs"></i>
+          <span id="currentLangLabel">EN</span>
+        </button>
+
+        <a href="https://github.com/yjc-web/FlowSuite" target="_blank" rel="noopener noreferrer" class="hidden sm:inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-slate-300 hover:text-white hover:bg-white/[0.06] border border-white/[0.08] transition-all text-xs font-semibold">
+          <i class="fa-brands fa-github text-sm"></i>
+          <span>GitHub</span>
+        </a>
+        <a href="#suite" class="btn-shine px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl font-bold text-xs sm:text-sm text-brand-pitch bg-gradient-to-r from-cyan-400 via-sky-300 to-indigo-300 shadow-lg shadow-cyan-500/20 hover:shadow-cyan-400/40 hover:scale-[1.02] transition-all flex items-center gap-2">
+          <i class="fa-solid fa-layer-group text-xs"></i>
+          <span data-i18n="nav_suite_btn">제품군 탐색</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= HERO SECTION ================= -->
+  <section class="relative pt-16 sm:pt-24 pb-20 overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+      
+      <!-- Pill Badge -->
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/[0.04] border border-white/10 text-xs font-medium text-slate-300 mb-8 backdrop-blur-xl hover:border-cyan-500/40 transition-colors">
+        <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
+        <span class="text-white font-semibold">FlowSuite Productivity Ecosystem</span>
+        <span class="text-slate-600">&bull;</span>
+        <span class="accent-gradient font-bold" data-i18n="hero_pill">데스크톱 업무의 모든 낭비를 없애다</span>
+      </div>
+
+      <!-- Main Headline -->
+      <h1 class="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight leading-[1.08] max-w-4xl mx-auto mb-8">
+        <span class="hero-title-gradient" data-i18n="hero_title_1">윈도우 업무를 혁신하는</span><br />
+        <span class="accent-gradient" data-i18n="hero_title_2">스마트 소프트웨어 스위트</span>
+      </h1>
+
+      <!-- Subtitle -->
+      <p class="text-base sm:text-lg lg:text-xl text-slate-400 font-normal leading-relaxed max-w-3xl mx-auto mb-12" data-i18n="hero_desc">
+        화면 인식 자동화부터 파일 지능형 정리, 마우스 제스처 창 제어, 화면 오버레이 핀까지.<br class="hidden sm:inline" />
+        <strong>FlowSuite</strong>의 4대 핵심 유틸리티가 당신의 일일 데스크톱 작업 시간을 90% 이상 단축해 드립니다.
+      </p>
+
+      <!-- 4 Product Quick Cards Strip -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl mx-auto mb-16 text-left">
+        <!-- ImageFlow Card -->
+        <a href="#imageflow" class="bento-card rounded-2xl p-5 hover:border-cyan-500/50 group transition-all">
+          <div class="flex items-center justify-between mb-3">
+            <span class="w-8 h-8 rounded-lg bg-cyan-500/10 text-cyan-400 flex items-center justify-center font-bold text-sm">
+              <i class="fa-solid fa-crosshairs"></i>
+            </span>
+            <span class="text-[10px] font-mono text-cyan-400 bg-cyan-950/60 px-2 py-0.5 rounded border border-cyan-800/40">RPA</span>
+          </div>
+          <h3 class="font-bold text-white text-base group-hover:text-cyan-300 transition-colors">ImageFlow</h3>
+          <p class="text-xs text-slate-400 mt-1 line-clamp-2" data-i18n="strip_imageflow">선만 연결하는 노코드 화면 인식 자동화</p>
+        </a>
+
+        <!-- FileFlow Card -->
+        <a href="#fileflow" class="bento-card rounded-2xl p-5 hover:border-indigo-500/50 group transition-all">
+          <div class="flex items-center justify-between mb-3">
+            <span class="w-8 h-8 rounded-lg bg-indigo-500/10 text-indigo-400 flex items-center justify-center font-bold text-sm">
+              <i class="fa-solid fa-folder-tree"></i>
+            </span>
+            <span class="text-[10px] font-mono text-indigo-400 bg-indigo-950/60 px-2 py-0.5 rounded border border-indigo-800/40">AI Org</span>
+          </div>
+          <h3 class="font-bold text-white text-base group-hover:text-indigo-300 transition-colors">FileFlow</h3>
+          <p class="text-xs text-slate-400 mt-1 line-clamp-2" data-i18n="strip_fileflow">0.1초 실시간 감시 & AI 스마트 파일 자동 분류</p>
+        </a>
+
+        <!-- GestureGo Card -->
+        <a href="#gesturego" class="bento-card rounded-2xl p-5 hover:border-emerald-500/50 group transition-all">
+          <div class="flex items-center justify-between mb-3">
+            <span class="w-8 h-8 rounded-lg bg-emerald-500/10 text-emerald-400 flex items-center justify-center font-bold text-sm">
+              <i class="fa-solid fa-hand-pointer"></i>
+            </span>
+            <span class="text-[10px] font-mono text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-800/40">Gesture</span>
+          </div>
+          <h3 class="font-bold text-white text-base group-hover:text-emerald-300 transition-colors">GestureGo</h3>
+          <p class="text-xs text-slate-400 mt-1 line-clamp-2" data-i18n="strip_gesturego">마우스 제스처로 윈도우 창 제어 & 단축 실행</p>
+        </a>
+
+        <!-- OverlayPic Card -->
+        <a href="#overlaypic" class="bento-card rounded-2xl p-5 hover:border-amber-500/50 group transition-all">
+          <div class="flex items-center justify-between mb-3">
+            <span class="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-400 flex items-center justify-center font-bold text-sm">
+              <i class="fa-solid fa-thumbtack"></i>
+            </span>
+            <span class="text-[10px] font-mono text-amber-400 bg-amber-950/60 px-2 py-0.5 rounded border border-amber-800/40">Pin Tool</span>
+          </div>
+          <h3 class="font-bold text-white text-base group-hover:text-amber-300 transition-colors">OverlayPic</h3>
+          <p class="text-xs text-slate-400 mt-1 line-clamp-2" data-i18n="strip_overlaypic">화면 위 항상 고정되는 투명 이미지 참조 도구</p>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= SUITE PRODUCT SHOWCASE ================= -->
+  <section id="suite" class="py-20 relative border-t border-white/[0.06] bg-brand-subtle/40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <span class="text-xs font-mono font-bold uppercase tracking-widest text-cyan-400" data-i18n="suite_badge">Product Lineup</span>
+        <h2 class="text-3xl sm:text-5xl font-black text-white mt-2" data-i18n="suite_title">FlowSuite 4대 핵심 라인업</h2>
+        <p class="text-slate-400 text-sm sm:text-base mt-3" data-i18n="suite_desc">각각의 도구는 독립적으로도 완벽하며, 함께 사용할 때 상상 이상의 시너지를 발휘합니다.</p>
+      </div>
+
+      <!-- ================= 1. ImageFlow Section ================= -->
+      <div id="imageflow" class="bento-card rounded-3xl p-8 sm:p-12 mb-12 border-cyan-500/30">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          <div class="lg:col-span-7">
+            <div class="flex items-center gap-2 mb-4">
+              <span class="px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-cyan-400 font-mono text-xs font-bold">RPA AUTOMATION</span>
+              <span class="text-xs text-slate-400 font-mono">v1.0.8 &bull; Windows 10/11</span>
+            </div>
+            <h3 class="text-3xl sm:text-4xl font-black text-white mb-4 flex items-center gap-3">
+              ImageFlow
+              <span class="text-sm font-normal text-slate-400" data-i18n="imageflow_sub">(이미지플로우)</span>
+            </h3>
+            <p class="text-slate-300 text-base sm:text-lg leading-relaxed mb-6" data-i18n="imageflow_desc">
+              <strong>"선만 연결하면 완성되는 노코드 화면 자동화"</strong><br />
+              복잡한 코딩(Script) 없이 화면 이미지를 마우스로 지정하고 선만 연결하면 알아서 동작하는 비주얼 순서도 기반 업무 자동화 도구입니다. ERP 자동 로그인, 엑셀/웹 반복 클릭, 화면 감지 클릭을 손쉽게 구현합니다.
+            </p>
+            <div class="grid grid-cols-2 gap-3 mb-8 text-xs sm:text-sm text-slate-300">
+              <div class="flex items-center gap-2"><i class="fa-solid fa-check text-cyan-400"></i> <span data-i18n="if_point_1">노코드 비주얼 순서도 편집기</span></div>
+              <div class="flex items-center gap-2"><i class="fa-solid fa-check text-cyan-400"></i> <span data-i18n="if_point_2">4K 다중모니터 초정밀 픽셀 서치</span></div>
+              <div class="flex items-center gap-2"><i class="fa-solid fa-check text-cyan-400"></i> <span data-i18n="if_point_3">간편 시작(QuickStart) & 단축키</span></div>
+              <div class="flex items-center gap-2"><i class="fa-solid fa-check text-cyan-400"></i> <span data-i18n="if_point_4">MS 스토어 공식 심사 통과 (Durable IAP)</span></div>
+            </div>
+            <div class="flex flex-wrap gap-3">
+              <a href="https://apps.microsoft.com/detail/9N4P7GW72J4X" target="_blank" rel="noopener noreferrer" class="btn-shine px-6 py-3 rounded-xl bg-cyan-400 hover:bg-cyan-300 text-brand-pitch font-bold text-sm flex items-center gap-2">
+                <i class="fa-brands fa-microsoft"></i> <span data-i18n="btn_ms_store">스토어에서 받기</span>
+              </a>
+              <a href="https://github.com/yjc-web/FlowSuite/releases" target="_blank" rel="noopener noreferrer" class="px-6 py-3 rounded-xl bg-white/[0.08] hover:bg-white/[0.14] border border-white/10 text-white font-bold text-sm flex items-center gap-2">
+                <i class="fa-brands fa-github"></i> <span data-i18n="btn_gh_setup">독립 설치기 (Setup.exe)</span>
+              </a>
+            </div>
+          </div>
+          <div class="lg:col-span-5">
+            <div class="rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
+              <img src="assets/BoxArt_1080x1080.png" alt="ImageFlow Artwork" class="w-full h-auto object-cover hover:scale-105 transition-transform duration-500" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= 2. FileFlow Section ================= -->
+      <div id="fileflow" class="bento-card rounded-3xl p-8 sm:p-12 mb-12 border-indigo-500/30">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          <div class="lg:col-span-7">
+            <div class="flex items-center gap-2 mb-4">
+              <span class="px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 font-mono text-xs font-bold">AI FILE MANAGEMENT</span>
+              <span class="text-xs text-slate-400 font-mono">Pro Edition &bull; Windows</span>
+            </div>
+            <h3 class="text-3xl sm:text-4xl font-black text-white mb-4 flex items-center gap-3">
+              FileFlow
+              <span class="text-sm font-normal text-slate-400" data-i18n="fileflow_sub">(파일플로우)</span>
+            </h3>
+            <p class="text-slate-300 text-base sm:text-lg leading-relaxed mb-6" data-i18n="fileflow_desc">
+              <strong>"0.1초 실시간 감시 & Explainable AI 기반 스마트 파일 정리"</strong><br />
+              다운로드 폴더나 업무 드라이브에 신규 파일이 들어오는 즉시 0.1초 만에 감지하여, 나이브 베이즈 머신러닝 및 키워드 규칙으로 최적의 프로젝트 하위 폴더에 자동 분류해 주는 차세대 파일 허브 시스템입니다.
+            </p>
+            <div class="grid grid-cols-2 gap-3 mb-8 text-xs sm:text-sm text-slate-300">
+              <div class="flex items-center gap-2"><i class="fa-solid fa-check text-indigo-400"></i> <span data-i18n="ff_point_1">0.1초 폴더 감시 & 잠금 해제 안전 이동</span></div>
+              <div class="flex items-center gap-2"><i class="fa-solid fa-check text-indigo-400"></i> <span data-i18n="ff_point_2">PDF, Excel, PPT, Zip 멀티포맷 즉시 미리보기</span></div>
+              <div class="flex items-center gap-2"><i class="fa-solid fa-check text-indigo-400"></i> <span data-i18n="ff_point_3">설명 가능한 AI (가중치 통계 대시보드)</span></div>
+              <div class="flex items-center gap-2"><i class="fa-solid fa-check text-indigo-400"></i> <span data-i18n="ff_point_4">독립 플로팅 듀얼 탐색기 & 실행 취소(Undo)</span></div>
+            </div>
+            <div class="flex flex-wrap gap-3">
+              <a href="https://github.com/yjc-web/FlowSuite" target="_blank" rel="noopener noreferrer" class="btn-shine px-6 py-3 rounded-xl bg-indigo-500 hover:bg-indigo-400 text-white font-bold text-sm flex items-center gap-2">
+                <i class="fa-solid fa-folder-open"></i> <span data-i18n="btn_explore_ff">FileFlow 자세히 보기</span>
+              </a>
+            </div>
+          </div>
+          <div class="lg:col-span-5">
+            <div class="rounded-2xl p-6 bg-dark-950/80 border border-white/10 font-mono text-xs text-slate-300 shadow-2xl">
+              <div class="flex items-center justify-between pb-3 mb-4 border-b border-white/10 text-slate-400">
+                <span>FileFlow Spooler Engine</span>
+                <span class="text-emerald-400">● Realtime Monitoring</span>
+              </div>
+              <div class="space-y-3">
+                <div class="p-3 rounded-lg bg-white/[0.04] border border-white/[0.06]">
+                  <div class="text-indigo-400 font-bold mb-1">📥 Incoming File: 2026_Q3_Financial_Report.xlsx</div>
+                  <div class="text-slate-400 text-[11px]">&rarr; AI Score: 98.4% Confidence &rarr; [Projects/2026/Reports]</div>
+                </div>
+                <div class="p-3 rounded-lg bg-white/[0.04] border border-white/[0.06]">
+                  <div class="text-indigo-400 font-bold mb-1">📥 Incoming File: Product_Design_Final_v2.pdf</div>
+                  <div class="text-slate-400 text-[11px]">&rarr; Rule Matched: `{yyyy}/Design` &rarr; [Auto Moved]</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= 3. GestureGo Section ================= -->
+      <div id="gesturego" class="bento-card rounded-3xl p-8 sm:p-12 mb-12 border-emerald-500/30">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          <div class="lg:col-span-7">
+            <div class="flex items-center gap-2 mb-4">
+              <span class="px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-mono text-xs font-bold">GESTURE UTILITY</span>
+              <span class="text-xs text-slate-400 font-mono">Fast & Lightweight</span>
+            </div>
+            <h3 class="text-3xl sm:text-4xl font-black text-white mb-4 flex items-center gap-3">
+              GestureGo
+              <span class="text-sm font-normal text-slate-400" data-i18n="gesturego_sub">(제스처고)</span>
+            </h3>
+            <p class="text-slate-300 text-base sm:text-lg leading-relaxed mb-6" data-i18n="gesturego_desc">
+              <strong>"마우스 우클릭 드래그 하나로 윈도우 창과 단축키를 광속 제어"</strong><br />
+              마우스를 살짝 긋는 동작만으로 창 닫기, 최소화, 최대화, 가상 데스크톱 전환, 웹 브라우저 탭 이동 등 자주 쓰는 동작을 키보드에 손 올릴 필요 없이 즉각 실행합니다.
+            </p>
+            <div class="grid grid-cols-2 gap-3 mb-8 text-xs sm:text-sm text-slate-300">
+              <div class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400"></i> <span data-i18n="gg_point_1">초경량 마우스 궤적 인식 엔진</span></div>
+              <div class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400"></i> <span data-i18n="gg_point_2">자유로운 커스텀 제스처 매핑</span></div>
+              <div class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400"></i> <span data-i18n="gg_point_3">화면 가장자리 엣지 액션 지원</span></div>
+              <div class="flex items-center gap-2"><i class="fa-solid fa-check text-emerald-400"></i> <span data-i18n="gg_point_4">MSIX & InnoSetup 단독 패키징</span></div>
+            </div>
+            <div class="flex flex-wrap gap-3">
+              <a href="https://github.com/yjc-web/FlowSuite" target="_blank" rel="noopener noreferrer" class="btn-shine px-6 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-brand-pitch font-bold text-sm flex items-center gap-2">
+                <i class="fa-solid fa-hand-pointer"></i> <span data-i18n="btn_explore_gg">GestureGo 자세히 보기</span>
+              </a>
+            </div>
+          </div>
+          <div class="lg:col-span-5">
+            <div class="rounded-2xl p-6 bg-dark-950/80 border border-white/10 text-center shadow-2xl">
+              <div class="text-slate-400 text-xs font-mono mb-4">Quick Gesture Triggers</div>
+              <div class="grid grid-cols-3 gap-3">
+                <div class="p-3 rounded-xl bg-white/[0.03] border border-white/[0.06]">
+                  <div class="text-2xl text-emerald-400 mb-1">&darr;</div>
+                  <div class="text-xs font-bold text-white">최소화</div>
+                </div>
+                <div class="p-3 rounded-xl bg-white/[0.03] border border-white/[0.06]">
+                  <div class="text-2xl text-emerald-400 mb-1">&uarr;</div>
+                  <div class="text-xs font-bold text-white">최대화</div>
+                </div>
+                <div class="p-3 rounded-xl bg-white/[0.03] border border-white/[0.06]">
+                  <div class="text-2xl text-emerald-400 mb-1">&darr;&rarr;</div>
+                  <div class="text-xs font-bold text-white">창 닫기</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= 4. OverlayPic Section ================= -->
+      <div id="overlaypic" class="bento-card rounded-3xl p-8 sm:p-12 border-amber-500/30">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          <div class="lg:col-span-7">
+            <div class="flex items-center gap-2 mb-4">
+              <span class="px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-400 font-mono text-xs font-bold">PIN & REFERENCE</span>
+              <span class="text-xs text-slate-400 font-mono">Windows & macOS</span>
+            </div>
+            <h3 class="text-3xl sm:text-4xl font-black text-white mb-4 flex items-center gap-3">
+              OverlayPic
+              <span class="text-sm font-normal text-slate-400" data-i18n="overlaypic_sub">(오버레이픽)</span>
+            </h3>
+            <p class="text-slate-300 text-base sm:text-lg leading-relaxed mb-6" data-i18n="overlaypic_desc">
+              <strong>"작업 화면 위에 항상 떠 있는 투명 이미지 핀 & 참조 도구"</strong><br />
+              디자인 시안, 참고 문서, 코드 스니펫, 수식 이미지를 화면 최상단(Always-on-Top)에 고정해두고 투명도를 조절하며 작업할 수 있는 디자이너/개발자/사무직 필수 유틸리티입니다. (Windows 및 macOS 동시 지원)
+            </p>
+            <div class="grid grid-cols-2 gap-3 mb-8 text-xs sm:text-sm text-slate-300">
+              <div class="flex items-center gap-2"><i class="fa-solid fa-check text-amber-400"></i> <span data-i18n="op_point_1">항상 위(Always-on-Top) 고정 핀</span></div>
+              <div class="flex items-center gap-2"><i class="fa-solid fa-check text-amber-400"></i> <span data-i18n="op_point_2">마우스 휠 투명도(Opacity) 0~100% 조절</span></div>
+              <div class="flex items-center gap-2"><i class="fa-solid fa-check text-amber-400"></i> <span data-i18n="op_point_3">클릭 투과(Click-through) 지원으로 밑 화면 조작 가능</span></div>
+              <div class="flex items-center gap-2"><i class="fa-solid fa-check text-amber-400"></i> <span data-i18n="op_point_4">Windows 64비트 & macOS ARM64/x64 크로스플랫폼</span></div>
+            </div>
+            <div class="flex flex-wrap gap-3">
+              <a href="https://github.com/yjc-web/FlowSuite" target="_blank" rel="noopener noreferrer" class="btn-shine px-6 py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-brand-pitch font-bold text-sm flex items-center gap-2">
+                <i class="fa-solid fa-thumbtack"></i> <span data-i18n="btn_explore_op">OverlayPic 자세히 보기</span>
+              </a>
+            </div>
+          </div>
+          <div class="lg:col-span-5">
+            <div class="rounded-2xl p-6 bg-dark-950/80 border border-white/10 text-center shadow-2xl relative overflow-hidden">
+              <div class="text-slate-400 text-xs font-mono mb-3">Always-on-Top Floating Reference</div>
+              <div class="relative mx-auto w-48 h-32 rounded-xl bg-amber-500/20 border-2 border-dashed border-amber-400/60 flex items-center justify-center text-amber-300 font-bold text-sm shadow-xl">
+                <i class="fa-solid fa-image mr-2"></i> Pinned Image (50% Opacity)
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= INTEGRATED WORKFLOW (SYNERGY) ================= -->
+  <section class="py-24 relative border-t border-white/[0.06]">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <span class="text-xs font-mono font-bold uppercase tracking-widest text-cyan-400" data-i18n="synergy_badge">All-in-One Synergy</span>
+      <h2 class="text-3xl sm:text-5xl font-black text-white mt-3 mb-6" data-i18n="synergy_title">
+        따로 써도 강력하고, 함께 쓰면 완전해집니다
+      </h2>
+      <p class="text-slate-400 text-base sm:text-lg max-w-2xl mx-auto mb-16" data-i18n="synergy_desc">
+        FlowSuite의 도구들은 당신의 데스크톱을 가장 완벽한 생산성 워크스테이션으로 탈바꿈시킵니다.
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-6 text-left">
+        <div class="bento-card rounded-2xl p-6">
+          <div class="text-emerald-400 font-mono font-black text-lg mb-2">01. Control</div>
+          <h4 class="font-bold text-white mb-2">GestureGo</h4>
+          <p class="text-xs text-slate-300 leading-relaxed" data-i18n="syn_1">마우스 제스처로 작업 창들을 순식간에 정렬하고 필요한 툴을 바로 띄웁니다.</p>
+        </div>
+        <div class="bento-card rounded-2xl p-6">
+          <div class="text-amber-400 font-mono font-black text-lg mb-2">02. Reference</div>
+          <h4 class="font-bold text-white mb-2">OverlayPic</h4>
+          <p class="text-xs text-slate-300 leading-relaxed" data-i18n="syn_2">필요한 가이드 시안이나 데이터를 화면 위에 투명하게 띄워두고 작업합니다.</p>
+        </div>
+        <div class="bento-card rounded-2xl p-6">
+          <div class="text-cyan-400 font-mono font-black text-lg mb-2">03. Automate</div>
+          <h4 class="font-bold text-white mb-2">ImageFlow</h4>
+          <p class="text-xs text-slate-300 leading-relaxed" data-i18n="syn_3">손이 많이 가는 반복 클릭과 시스템 입력을 노코드 순서도로 대신 처리합니다.</p>
+        </div>
+        <div class="bento-card rounded-2xl p-6">
+          <div class="text-indigo-400 font-mono font-black text-lg mb-2">04. Organize</div>
+          <h4 class="font-bold text-white mb-2">FileFlow</h4>
+          <p class="text-xs text-slate-300 leading-relaxed" data-i18n="syn_4">완성된 결과물과 다운로드 파일들을 AI가 알아서 폴더별로 0.1초 만에 정리합니다.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="bg-brand-pitch border-t border-white/[0.06] py-12 text-slate-400 text-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-6">
+      <div class="flex items-center gap-3">
+        <img src="assets/AppIcon_71x71.png" alt="Logo" class="w-8 h-8 rounded-xl border border-white/10" />
+        <span class="font-bold text-white">FlowSuite</span>
+        <span class="text-xs text-slate-500">&copy; 2026 yjc-web. All rights reserved.</span>
+      </div>
+
+      <div class="flex items-center gap-6 text-xs sm:text-sm font-medium">
+        <a href="https://github.com/yjc-web/FlowSuite" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">GitHub</a>
+        <a href="https://apps.microsoft.com/detail/9N4P7GW72J4X" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">ImageFlow (Store)</a>
+        <a href="https://disquiet.io" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">Disquiet</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================= MULTILINGUAL i18n SCRIPT ================= -->
+  <script>
+    const translations = {
+      ko: {
+        meta_title: "FlowSuite — 윈도우 데스크톱 스마트 생산성 소프트웨어 스위트",
+        top_bar_text: "윈도우 생산성을 극대화하는 4대 필수 유틸리티 라인업",
+        top_bar_link: "전체 라인업 보기",
+        nav_suite_btn: "제품군 탐색",
+        hero_pill: "데스크톱 업무의 모든 낭비를 없애다",
+        hero_title_1: "윈도우 업무를 혁신하는",
+        hero_title_2: "스마트 소프트웨어 스위트",
+        hero_desc: "화면 인식 자동화부터 파일 지능형 정리, 마우스 제스처 창 제어, 화면 오버레이 핀까지.<br class=\"hidden sm:inline\" /><strong>FlowSuite</strong>의 4대 핵심 유틸리티가 당신의 일일 데스크톱 작업 시간을 90% 이상 단축해 드립니다.",
+        strip_imageflow: "선만 연결하는 노코드 화면 인식 자동화",
+        strip_fileflow: "0.1초 실시간 감시 & AI 스마트 파일 자동 분류",
+        strip_gesturego: "마우스 제스처로 윈도우 창 제어 & 단축 실행",
+        strip_overlaypic: "화면 위 항상 고정되는 투명 이미지 참조 도구",
+        suite_badge: "Product Lineup",
+        suite_title: "FlowSuite 4대 핵심 라인업",
+        suite_desc: "각각의 도구는 독립적으로도 완벽하며, 함께 사용할 때 상상 이상의 시너지를 발휘합니다.",
+        imageflow_sub: "(이미지플로우)",
+        imageflow_desc: "<strong>\"선만 연결하면 완성되는 노코드 화면 자동화\"</strong><br />복잡한 코딩(Script) 없이 화면 이미지를 마우스로 지정하고 선만 연결하면 알아서 동작하는 비주얼 순서도 기반 업무 자동화 도구입니다. ERP 자동 로그인, 엑셀/웹 반복 클릭, 화면 감지 클릭을 손쉽게 구현합니다.",
+        if_point_1: "노코드 비주얼 순서도 편집기",
+        if_point_2: "4K 다중모니터 초정밀 픽셀 서치",
+        if_point_3: "간편 시작(QuickStart) & 단축키",
+        if_point_4: "MS 스토어 공식 심사 통과 (Durable IAP)",
+        btn_ms_store: "스토어에서 받기",
+        btn_gh_setup: "독립 설치기 (Setup.exe)",
+        fileflow_sub: "(파일플로우)",
+        fileflow_desc: "<strong>\"0.1초 실시간 감시 & Explainable AI 기반 스마트 파일 정리\"</strong><br />다운로드 폴더나 업무 드라이브에 신규 파일이 들어오는 즉시 0.1초 만에 감지하여, 나이브 베이즈 머신러닝 및 키워드 규칙으로 최적의 프로젝트 하위 폴더에 자동 분류해 주는 차세대 파일 허브 시스템입니다.",
+        ff_point_1: "0.1초 폴더 감시 & 잠금 해제 안전 이동",
+        ff_point_2: "PDF, Excel, PPT, Zip 멀티포맷 즉시 미리보기",
+        ff_point_3: "설명 가능한 AI (가중치 통계 대시보드)",
+        ff_point_4: "독립 플로팅 듀얼 탐색기 & 실행 취소(Undo)",
+        btn_explore_ff: "FileFlow 자세히 보기",
+        gesturego_sub: "(제스처고)",
+        gesturego_desc: "<strong>\"마우스 우클릭 드래그 하나로 윈도우 창과 단축키를 광속 제어\"</strong><br />마우스를 살짝 긋는 동작만으로 창 닫기, 최소화, 최대화, 가상 데스크톱 전환, 웹 브라우저 탭 이동 등 자주 쓰는 동작을 키보드에 손 올릴 필요 없이 즉각 실행합니다.",
+        gg_point_1: "초경량 마우스 궤적 인식 엔진",
+        gg_point_2: "자유로운 커스텀 제스처 매핑",
+        gg_point_3: "화면 가장자리 엣지 액션 지원",
+        gg_point_4: "MSIX & InnoSetup 단독 패키징",
+        btn_explore_gg: "GestureGo 자세히 보기",
+        overlaypic_sub: "(오버레이픽)",
+        overlaypic_desc: "<strong>\"작업 화면 위에 항상 떠 있는 투명 이미지 핀 & 참조 도구\"</strong><br />디자인 시안, 참고 문서, 코드 스니펫, 수식 이미지를 화면 최상단(Always-on-Top)에 고정해두고 투명도를 조절하며 작업할 수 있는 디자이너/개발자/사무직 필수 유틸리티입니다. (Windows 및 macOS 동시 지원)",
+        op_point_1: "항상 위(Always-on-Top) 고정 핀",
+        op_point_2: "마우스 휠 투명도(Opacity) 0~100% 조절",
+        op_point_3: "클릭 투과(Click-through) 지원으로 밑 화면 조작 가능",
+        op_point_4: "Windows 64비트 & macOS ARM64/x64 크로스플랫폼",
+        btn_explore_op: "OverlayPic 자세히 보기",
+        synergy_badge: "All-in-One Synergy",
+        synergy_title: "따로 써도 강력하고, 함께 쓰면 완전해집니다",
+        synergy_desc: "FlowSuite의 도구들은 당신의 데스크톱을 가장 완벽한 생산성 워크스테이션으로 탈바꿈시킵니다.",
+        syn_1: "마우스 제스처로 작업 창들을 순식간에 정렬하고 필요한 툴을 바로 띄웁니다.",
+        syn_2: "필요한 가이드 시안이나 데이터를 화면 위에 투명하게 띄워두고 작업합니다.",
+        syn_3: "손이 많이 가는 반복 클릭과 시스템 입력을 노코드 순서도로 대신 처리합니다.",
+        syn_4: "완성된 결과물과 다운로드 파일들을 AI가 알아서 폴더별로 0.1초 만에 정리합니다."
+      },
+      en: {
+        meta_title: "FlowSuite — Ultimate Desktop Productivity Software Suite for Windows",
+        top_bar_text: "Four Essential Desktop Utilities to Supercharge Your Productivity",
+        top_bar_link: "View Lineup",
+        nav_suite_btn: "Explore Suite",
+        hero_pill: "Eliminate Every Repetitive Chore on Desktop",
+        hero_title_1: "Reinvent Your Windows Workflow with",
+        hero_title_2: "The FlowSuite Ecosystem",
+        hero_desc: "From no-code screen automation and AI file sorting to mouse gesture window controls and floating overlay reference.<br class=\"hidden sm:inline\" /><strong>FlowSuite</strong> cuts daily desktop fatigue by up to 90%.",
+        strip_imageflow: "Zero-code visual screen RPA & automation",
+        strip_fileflow: "0.1s real-time folder monitor & AI file sorting",
+        strip_gesturego: "High-speed mouse gesture window controls",
+        strip_overlaypic: "Always-on-top transparent image pin tool",
+        suite_badge: "Product Lineup",
+        suite_title: "FlowSuite 4 Core Software Lineup",
+        suite_desc: "Powerful as standalone tools, unstoppable when used together.",
+        imageflow_sub: "(Visual RPA)",
+        imageflow_desc: "<strong>\"Zero-Code Screen Automation by Connecting Lines\"</strong><br />A flowchart-based automation tool that captures screen images and connects nodes without writing a single line of script. Easily automate ERP logins, Excel/web clicking, and visual triggers.",
+        if_point_1: "Visual flowchart scenario editor",
+        if_point_2: "Sub-pixel search across 4K & multi-monitors",
+        if_point_3: "QuickStart launch & dedicated global hotkeys",
+        if_point_4: "Certified on Microsoft Store (Durable IAP)",
+        btn_ms_store: "Get from MS Store",
+        btn_gh_setup: "Standalone Setup.exe",
+        fileflow_sub: "(AI File Manager)",
+        fileflow_desc: "<strong>\"0.1s Real-Time Spooler & Explainable AI File Organization\"</strong><br />Instantly detects new files in your download or working folders within 0.1 seconds, automatically sorting them into structured project subdirectories using Naive Bayes ML and keyword rules.",
+        ff_point_1: "0.1s folder monitoring & lock-free safe moving",
+        ff_point_2: "Instant previews for PDF, Excel, PPT, Zip",
+        ff_point_3: "Explainable AI statistics & ranking dashboard",
+        ff_point_4: "Detachable dual-panel explorer & instant Undo",
+        btn_explore_ff: "Explore FileFlow",
+        gesturego_sub: "(Gesture Utility)",
+        gesturego_desc: "<strong>\"Lightning-Fast Window Control with Right-Click Mouse Gestures\"</strong><br />Close, minimize, maximize windows, switch virtual desktops, and trigger shortcuts with simple, fluid mouse swipes without lifting your hands to the keyboard.",
+        gg_point_1: "Ultra-lightweight trajectory recognition engine",
+        gg_point_2: "Fully customizable gesture & action mapping",
+        gg_point_3: "Screen edge trigger zones supported",
+        gg_point_4: "Packaged cleanly via MSIX & InnoSetup",
+        btn_explore_gg: "Explore GestureGo",
+        overlaypic_sub: "(Floating Pin)",
+        overlaypic_desc: "<strong>\"Always-on-Top Floating Reference Image Pin Tool\"</strong><br />Keep design mockups, reference docs, code snippets, or formulas pinned on top with adjustable opacity while working underneath. An indispensable companion for designers and developers.",
+        op_point_1: "Always-on-Top sticky reference pin",
+        op_point_2: "Mouse wheel opacity adjustment (0% to 100%)",
+        op_point_3: "Click-through mode allows interacting with underlying apps",
+        op_point_4: "Cross-platform for Windows 64-bit & macOS ARM64/x64",
+        btn_explore_op: "Explore OverlayPic",
+        synergy_badge: "All-in-One Synergy",
+        synergy_title: "Powerful Alone. Unstoppable Together.",
+        synergy_desc: "FlowSuite turns your desktop into the ultimate productivity workstation.",
+        syn_1: "Instantly arrange windows and launch utilities with swift mouse gestures.",
+        syn_2: "Keep reference mockups and checklists pinned transparently on top.",
+        syn_3: "Let no-code visual flowcharts handle repetitive clicks and inputs.",
+        syn_4: "Let AI organize generated files and downloads into tidy folders instantly."
+      }
+    };
+
+    let currentLang = 'ko';
+
+    function setLanguage(lang) {
+      currentLang = lang;
+      document.documentElement.lang = lang;
+      
+      const elements = document.querySelectorAll('[data-i18n]');
+      elements.forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (translations[lang] && translations[lang][key]) {
+          el.innerHTML = translations[lang][key];
+        }
+      });
+
+      const label = document.getElementById('currentLangLabel');
+      if (label) {
+        label.textContent = lang === 'ko' ? 'EN' : 'KO';
+      }
+
+      localStorage.setItem('flowsuite_lang', lang);
+    }
+
+    function toggleLanguage() {
+      const nextLang = currentLang === 'ko' ? 'en' : 'ko';
+      setLanguage(nextLang);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const savedLang = localStorage.getItem('flowsuite_lang');
+      if (savedLang && (savedLang === 'ko' || savedLang === 'en')) {
+        setLanguage(savedLang);
+      } else {
+        const userLang = navigator.language || navigator.userLanguage;
+        if (userLang && userLang.toLowerCase().startsWith('ko')) {
+          setLanguage('ko');
+        } else {
+          setLanguage('en');
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>
