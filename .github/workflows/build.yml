@@ -1,0 +1,100 @@
+name: Build and Release OverlayPic
+
+on:
+  push:
+    branches: [ main ]
+    tags: [ 'v*' ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build OverlayPic (WPF .NET 4.8.1)
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Setup NuGet
+        uses: nuget/setup-nuget@v2
+
+      - name: Restore NuGet Packages
+        run: nuget restore OverlayPic.sln
+
+      - name: Build OverlayPic (Release)
+        run: msbuild OverlayPic.sln /p:Configuration=Release /p:Platform="Any CPU" /p:Deterministic=true /m
+
+      - name: Verify Binary Output
+        shell: pwsh
+        run: |
+          if (-not (Test-Path "bin\Release\OverlayPic.exe")) {
+            throw "OverlayPic.exe was not created in bin\Release!"
+          }
+          $hash = (Get-FileHash "bin\Release\OverlayPic.exe" -Algorithm SHA256).Hash
+          Write-Host "OverlayPic.exe SHA256: $hash"
+
+      - name: Upload Standalone Executable Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: OverlayPic-Windows-x64
+          path: |
+            bin/Release/OverlayPic.exe
+            사용안내_및_단축키.txt
+            userManual.html
+            releasenotes.html
+          if-no-files-found: error
+
+      - name: Install Inno Setup
+        run: choco install innosetup -y --no-progress
+
+      - name: Build Inno Setup Installer
+        shell: pwsh
+        run: |
+          $iscc = (Get-Command iscc -ErrorAction SilentlyContinue)?.Source
+          if (-not $iscc) {
+            $candidates = @(
+              "C:\Program Files (x86)\Inno Setup 6\ISCC.exe",
+              "C:\Program Files\Inno Setup 6\ISCC.exe",
+              "C:\Program Files (x86)\Inno Setup 7\ISCC.exe",
+              "C:\Program Files\Inno Setup 7\ISCC.exe"
+            )
+            foreach ($c in $candidates) {
+              if (Test-Path $c) { $iscc = $c; break }
+            }
+          }
+          if ($iscc) {
+            Write-Host "Running: $iscc"
+            & $iscc OverlayPic_Installer.iss
+          } else {
+            Write-Warning "ISCC.exe not found. Skipping installer generation."
+          }
+
+      - name: Upload Installer Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: OverlayPic-Installer
+          path: dist/*_Setup.exe
+          if-no-files-found: warn
+
+      - name: Create Release and Upload Assets (on Tag Push)
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            bin/Release/OverlayPic.exe
+            dist/*_Setup.exe
+            userManual.html
+            releasenotes.html
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

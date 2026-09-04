@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleIconFile</key>
+    <string>app.icns</string>
+    <key>CFBundleIdentifier</key>
+    <string>com.yjc.overlaypic</string>
+    <key>CFBundleName</key>
+    <string>OverlayPic</string>
+    <key>CFBundleDisplayName</key>
+    <string>OverlayPic</string>
+    <key>CFBundleVersion</key>
+    <string>2.0.0</string>
+    <key>CFBundleShortVersionString</key>
+    <string>2.0.0</string>
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+    <key>CFBundleExecutable</key>
+    <string>OverlayPic.App</string>
+    <key>LSMinimumSystemVersion</key>
+    <string>10.15</string>
+    <key>NSHighResolutionCapable</key>
+    <true/>
+    <key>NSSupportsAutomaticGraphicsSwitching</key>
+    <true/>
+    <key>NSScreenCaptureUsageDescription</key>
+    <string>OverlayPic requires screen recording permission to take screen snippet overlays.</string>
+    <key>NSAccessibilityUsageDescription</key>
+    <string>OverlayPic requires accessibility permission for global hotkey support (Ctrl+Shift+T, Ctrl+Alt+X).</string>
+</dict>
+</plist>

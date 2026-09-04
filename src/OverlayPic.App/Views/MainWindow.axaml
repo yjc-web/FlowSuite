@@ -1,0 +1,246 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="OverlayPic.App.Views.MainWindow"
+        Title="OverlayPic — 화면 오버레이 투명 뷰어"
+        Width="540" Height="420"
+        MinWidth="200" MinHeight="140"
+        WindowStartupLocation="CenterScreen"
+        SystemDecorations="None"
+        Background="Transparent"
+        Topmost="True"
+        CanResize="True"
+        ShowInTaskbar="True">
+
+    <Window.Styles>
+        <!-- Modern Tool Button Style -->
+        <Style Selector="Button.tool-btn">
+            <Setter Property="Width" Value="28" />
+            <Setter Property="Height" Value="28" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="Background" Value="#33FFFFFF" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Cursor" Value="Hand" />
+        </Style>
+        <Style Selector="Button.tool-btn:pointerover">
+            <Setter Property="Background" Value="#66FFFFFF" />
+        </Style>
+        <Style Selector="Button.tool-btn:pressed">
+            <Setter Property="Background" Value="#99FFFFFF" />
+        </Style>
+
+        <!-- Toggle Button Style -->
+        <Style Selector="ToggleButton.tool-toggle">
+            <Setter Property="Width" Value="28" />
+            <Setter Property="Height" Value="28" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="FontSize" Value="13" />
+            <Setter Property="Background" Value="#33FFFFFF" />
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="CornerRadius" Value="6" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Cursor" Value="Hand" />
+        </Style>
+        <Style Selector="ToggleButton.tool-toggle:checked">
+            <Setter Property="Background" Value="#FFEF4444" />
+        </Style>
+    </Window.Styles>
+
+    <Grid x:Name="RootGrid" ClipToBounds="True">
+        <!-- Outer Border Frame -->
+        <Border x:Name="OutlineBorder"
+                BorderBrush="#663B82F6"
+                BorderThickness="1.5"
+                CornerRadius="8"
+                Background="#01000000"
+                ClipToBounds="True">
+
+            <Grid>
+                <!-- Checkerboard Pattern Background (Optional) -->
+                <Border x:Name="CheckerGrid" IsVisible="False" Background="#11FFFFFF" />
+
+                <!-- Image Viewer -->
+                <Image x:Name="OverlayImage"
+                       Stretch="Uniform"
+                       HorizontalAlignment="Stretch"
+                       VerticalAlignment="Stretch"
+                       Opacity="0.8" />
+
+                <!-- DropZone (Shown when no image is loaded) -->
+                <Border x:Name="DropZone"
+                        Background="#CC0F172A"
+                        CornerRadius="8"
+                        Cursor="Hand"
+                        IsVisible="True">
+                    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="8">
+                        <TextBlock x:Name="DropIcon" Text="🖼️" FontSize="36" HorizontalAlignment="Center" />
+                        <TextBlock x:Name="DropTitle" Text="이미지를 여기에 드래그 &amp; 드롭"
+                                   FontSize="15" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center" />
+                        <TextBlock x:Name="DropSubtitle" Text="또는 붙여넣기 (Ctrl+V / ⌘V)  |  화면 캡처 (Ctrl+Alt+X)"
+                                   FontSize="12" Foreground="#94A3B8" HorizontalAlignment="Center" />
+                        <TextBlock x:Name="DropHint" Text="마우스 휠: 투명도  |  Ctrl+휠: 크기 조절  |  클릭하여 파일 열기"
+                                   FontSize="11" Foreground="#64748B" HorizontalAlignment="Center" Margin="0,4,0,0" />
+                    </StackPanel>
+                </Border>
+
+                <!-- Top Control Bar Overlay -->
+                <Border x:Name="ControlBar"
+                        VerticalAlignment="Top"
+                        Margin="8,8,8,0"
+                        Background="#D90F172A"
+                        BorderBrush="#33FFFFFF"
+                        BorderThickness="1"
+                        CornerRadius="7"
+                        Padding="8,5"
+                        BoxShadow="0 4 12 0 #40000000">
+                    <Grid ColumnDefinitions="Auto,Auto,*,Auto,Auto,Auto,Auto,Auto,Auto">
+                        
+                        <!-- Drag Handle -->
+                        <Border Grid.Column="0"
+                                Background="Transparent"
+                                Cursor="SizeAll"
+                                Padding="4,2"
+                                ToolTip.Tip="드래그하여 창 이동">
+                            <TextBlock Text="⣿" FontSize="14" Foreground="#94A3B8" VerticalAlignment="Center" />
+                        </Border>
+
+                        <!-- Opacity Slider & Label -->
+                        <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="6" Margin="8,0,10,0">
+                            <TextBlock x:Name="OpacityTitle" Text="투명도:" FontSize="11" Foreground="#94A3B8" VerticalAlignment="Center" />
+                            <Slider x:Name="OpacitySlider"
+                                    Minimum="0.05" Maximum="1.0" Value="0.8"
+                                    Width="80"
+                                    VerticalAlignment="Center"
+                                    ToolTip.Tip="투명도 조절 (마우스 휠로도 가능)" />
+                            <TextBlock x:Name="OpacityLabel" Text="80%" FontSize="11" FontWeight="Bold" Foreground="#38BDF8" Width="32" VerticalAlignment="Center" />
+                        </StackPanel>
+
+                        <!-- Spacer -->
+                        <Panel Grid.Column="2" />
+
+                        <!-- Click-Through Toggle -->
+                        <ToggleButton x:Name="ClickThroughToggle"
+                                      Grid.Column="3"
+                                      Classes="tool-toggle"
+                                      Content="👆"
+                                      Margin="0,0,4,0"
+                                      ToolTip.Tip="클릭 통과 모드 (뒤쪽 클릭 가능 / 해제: Esc 또는 Ctrl+Shift+T)" />
+
+                        <!-- Screen Snip Button -->
+                        <Button x:Name="SnipBtn"
+                                Grid.Column="4"
+                                Classes="tool-btn"
+                                Content="✂️"
+                                Margin="0,0,4,0"
+                                ToolTip.Tip="화면 영역 드래그 캡처 (Ctrl+Alt+X)" />
+
+                        <!-- More Menu Button -->
+                        <Button x:Name="MoreBtn"
+                                Grid.Column="5"
+                                Classes="tool-btn"
+                                Content="⚙️"
+                                Margin="0,0,4,0"
+                                ToolTip.Tip="더보기 메뉴">
+                            <Button.Flyout>
+                                <MenuFlyout Placement="Bottom">
+                                    <MenuItem x:Name="MenuOpen" Header="📂 이미지 파일 열기... (Ctrl+O)" />
+                                    <MenuItem x:Name="MenuSave" Header="💾 이미지 다른 이름으로 저장... (Ctrl+S)" />
+                                    <MenuItem x:Name="MenuPaste" Header="📋 클립보드 붙여넣기 (Ctrl+V)" />
+                                    <Separator />
+                                    <MenuItem x:Name="MenuLock" Header="🔒 위치 및 크기 고정 (Ctrl+L)" />
+                                    <MenuItem x:Name="MenuChecker" Header="🏁 체커보드 배경 토글 (Space)" />
+                                    <MenuItem x:Name="MenuReset" Header="↻ 1:1 원본 해상도로 리셋 (Ctrl+R)" />
+                                    <Separator />
+                                    <MenuItem x:Name="MenuLang" Header="🌐 Language / 언어 전환" />
+                                </MenuFlyout>
+                            </Button.Flyout>
+                        </Button>
+
+                        <!-- About Button -->
+                        <Button x:Name="AboutBtn"
+                                Grid.Column="6"
+                                Classes="tool-btn"
+                                Content="ℹ️"
+                                Margin="0,0,4,0"
+                                ToolTip.Tip="프로그램 정보 / 단축키 / 개발자 후원" />
+
+                        <!-- Minimize Button -->
+                        <Button x:Name="MinimizeBtn"
+                                Grid.Column="7"
+                                Classes="tool-btn"
+                                Content="─"
+                                Margin="0,0,4,0"
+                                ToolTip.Tip="최소화 (Ctrl+M)" />
+
+                        <!-- Close Button -->
+                        <Button x:Name="CloseBtn"
+                                Grid.Column="8"
+                                Classes="tool-btn"
+                                Content="✕"
+                                ToolTip.Tip="닫기 (Esc)" />
+                    </Grid>
+                </Border>
+
+                <!-- Bottom Info Bar -->
+                <Border x:Name="InfoBar"
+                        VerticalAlignment="Bottom"
+                        HorizontalAlignment="Center"
+                        Margin="0,0,0,6"
+                        Background="#D90F172A"
+                        CornerRadius="4"
+                        Padding="8,3"
+                        IsHitTestVisible="False">
+                    <TextBlock x:Name="InfoLabel" Text="OverlayPic" FontSize="10.5" Foreground="#94A3B8" />
+                </Border>
+
+                <!-- About Modal Card -->
+                <Border x:Name="AboutModal"
+                        Background="#E60F172A"
+                        CornerRadius="8"
+                        Padding="20"
+                        IsVisible="False"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch">
+                    <Grid RowDefinitions="Auto,*,Auto">
+                        <!-- Header -->
+                        <Grid Grid.Row="0" ColumnDefinitions="*,Auto">
+                            <StackPanel>
+                                <TextBlock x:Name="AboutHeaderTitle" Text="📌 OverlayPic v2.0" FontSize="18" FontWeight="Bold" Foreground="White" />
+                                <TextBlock x:Name="AboutSubtitle" Text="화면 오버레이 투명 뷰어 (Cross-Platform)" FontSize="12" Foreground="#94A3B8" Margin="0,2,0,0" />
+                            </StackPanel>
+                            <Button x:Name="CloseAboutBtn" Grid.Column="1" Classes="tool-btn" Content="✕" />
+                        </Grid>
+
+                        <!-- Shortcuts List -->
+                        <ScrollViewer Grid.Row="1" Margin="0,12,0,12">
+                            <StackPanel Spacing="5">
+                                <TextBlock x:Name="ShortcutsTitle" Text="⌨️ 주요 단축키" FontSize="13" FontWeight="Bold" Foreground="#38BDF8" Margin="0,0,0,4" />
+                                <TextBlock x:Name="ShortcutSnip" Text="• Ctrl+Alt+X / ⌘⌥X : ✂️ 화면 영역 드래그 캡처" FontSize="11" Foreground="#E2E8F0" />
+                                <TextBlock x:Name="ShortcutSave" Text="• Ctrl+S / ⌘S : 💾 현재 이미지 파일로 저장" FontSize="11" Foreground="#CBD5E1" />
+                                <TextBlock x:Name="ShortcutOpen" Text="• Ctrl+O / ⌘O : 📂 이미지 파일 열기" FontSize="11" Foreground="#CBD5E1" />
+                                <TextBlock x:Name="ShortcutPaste" Text="• Ctrl+V / ⌘V : 📋 클립보드 이미지 붙여넣기" FontSize="11" Foreground="#CBD5E1" />
+                                <TextBlock x:Name="ShortcutToggle" Text="• Ctrl+Shift+T / ⌘⇧T : 클릭 통과 토글" FontSize="11" Foreground="#CBD5E1" />
+                                <TextBlock x:Name="ShortcutEsc" Text="• Esc : 클릭 통과 해제 (일반 시 창 닫기)" FontSize="11" Foreground="#CBD5E1" />
+                                <TextBlock x:Name="ShortcutOpacity" Text="• 마우스 휠 / +, - : 투명도 조절" FontSize="11" Foreground="#CBD5E1" />
+                                <TextBlock x:Name="ShortcutResize" Text="• Ctrl + 휠 / ⌘ + 휠 : 창 크기 조절" FontSize="11" Foreground="#CBD5E1" />
+                                <TextBlock x:Name="ShortcutLock" Text="• Ctrl+L / ⌘L : 위치/크기 고정 토글" FontSize="11" Foreground="#CBD5E1" />
+                                <TextBlock x:Name="ShortcutReset" Text="• Ctrl+R / ⌘R : 원본 해상도 크기로 리셋" FontSize="11" Foreground="#CBD5E1" />
+                                <TextBlock x:Name="ShortcutSpace" Text="• Space : 체커보드 배경 토글" FontSize="11" Foreground="#CBD5E1" />
+                            </StackPanel>
+                        </ScrollViewer>
+
+                        <!-- Footer Links -->
+                        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="8">
+                            <Button x:Name="BlogBtn" Content="🌐 Blog" Padding="10,5" FontSize="11" Background="#3338BDF8" Foreground="#38BDF8" CornerRadius="5" Cursor="Hand" />
+                            <Button x:Name="BuyCoffeeBtn" Content="☕ Coffee Donation" Padding="10,5" FontSize="11" Background="#EAB308" Foreground="Black" FontWeight="Bold" CornerRadius="5" Cursor="Hand" />
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>

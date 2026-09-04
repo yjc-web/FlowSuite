@@ -11,9 +11,12 @@
 ## Temporary scripts & layouts
 Resources/convert_ico.ps1
 msix_layout/
-dist/*.pfx
-Packaging/*.secret
+dist/
+dist_crossplatform/
+Packaging/
 *.secret
+*.cer
+*.pfx
 
 ## OS generated files
 Thumbs.db

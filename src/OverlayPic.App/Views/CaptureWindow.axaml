@@ -1,0 +1,61 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="OverlayPic.App.Views.CaptureWindow"
+        Title="OverlayPic Snip"
+        SystemDecorations="None"
+        Background="Transparent"
+        Topmost="True"
+        ShowInTaskbar="False"
+        Cursor="Cross"
+        WindowState="FullScreen">
+
+    <Grid x:Name="RootGrid">
+        <!-- Background Dim Overlay -->
+        <Border Background="#77000000" />
+
+        <!-- Selection Canvas -->
+        <Canvas x:Name="SelectionCanvas">
+            <!-- Selection Box -->
+            <Border x:Name="SelectionBox"
+                    BorderBrush="#38BDF8"
+                    BorderThickness="2"
+                    Background="#2238BDF8"
+                    IsVisible="False">
+                <Border Background="#D90F172A"
+                        CornerRadius="4"
+                        Padding="6,3"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Top"
+                        Margin="4">
+                    <TextBlock x:Name="SizeLabel"
+                               Text="0 × 0"
+                               FontSize="11"
+                               FontWeight="Bold"
+                               Foreground="#38BDF8" />
+                </Border>
+            </Border>
+
+            <!-- Hint Banner -->
+            <Border x:Name="HintBanner"
+                    Background="#EE0F172A"
+                    BorderBrush="#38BDF8"
+                    BorderThickness="1"
+                    CornerRadius="6"
+                    Padding="14,8"
+                    Canvas.Top="40">
+                <StackPanel Orientation="Horizontal" Spacing="10">
+                    <TextBlock x:Name="HintMainText"
+                               Text="✂️ 캡처할 영역을 드래그하세요"
+                               FontSize="13"
+                               FontWeight="Bold"
+                               Foreground="White" />
+                    <TextBlock x:Name="HintSubText"
+                               Text="(취소: Esc / 마우스 우클릭)"
+                               FontSize="12"
+                               Foreground="#94A3B8"
+                               VerticalAlignment="Center" />
+                </StackPanel>
+            </Border>
+        </Canvas>
+    </Grid>
+</Window>

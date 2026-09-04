@@ -63,6 +63,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="FineTuningWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
@@ -71,6 +75,9 @@
     </Compile>
     <Compile Include="CaptureWindow.xaml.cs">
       <DependentUpon>CaptureWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="FineTuningWindow.xaml.cs">
+      <DependentUpon>FineTuningWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

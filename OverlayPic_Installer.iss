@@ -1,8 +1,8 @@
 ; Inno Setup Script for OverlayPic
-; Generated for v1.0.2
+; Generated for v1.0.4.0
 
 #define MyAppName "OverlayPic"
-#define MyAppVersion "1.0.2"
+#define MyAppVersion "1.0.4.0"
 #define MyAppPublisher "YJC"
 #define MyAppURL "https://blog.naver.com/nds-macro"
 #define MyAppExeName "OverlayPic.exe"
@@ -46,6 +46,8 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{
 [Files]
 Source: "bin\Release\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
 Source: "사용안내_및_단축키.txt"; DestDir: "{app}"; Flags: ignoreversion; DestName: "사용안내_및_단축키.txt"
+Source: "userManual.html"; DestDir: "{app}"; Flags: ignoreversion; DestName: "userManual.html"
+Source: "releasenotes.html"; DestDir: "{app}"; Flags: ignoreversion; DestName: "releasenotes.html"
 
 [Icons]
 Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"

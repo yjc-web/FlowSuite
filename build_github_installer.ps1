@@ -43,5 +43,5 @@ if ($LASTEXITCODE -ne 0) {
 
 Write-Host "`n========================================================" -ForegroundColor Green
 Write-Host "  [SUCCESS] GitHub Installer setup file created!" -ForegroundColor Green
-Write-Host "  Location: dist\OverlayPic_v1.0.2_Setup.exe" -ForegroundColor White
+Write-Host "  Location: dist\OverlayPic_v1.0.4.0_Setup.exe" -ForegroundColor White
 Write-Host "========================================================`n" -ForegroundColor Green

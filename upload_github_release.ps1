@@ -18,13 +18,13 @@ Write-Host " [OverlayPic] GitHub Release Uploader" -ForegroundColor Cyan
 Write-Host " Target: https://github.com/$Owner/$Repo/releases/tag/$Tag" -ForegroundColor Cyan
 Write-Host "============================================================" -ForegroundColor Cyan
 
-# 1. Prepare dist\OverlayPic_v1.0.2.exe
+# 1. Prepare dist\OverlayPic_v1.0.3.exe
 $distDir = Join-Path $ScriptDir "dist"
 if (-not (Test-Path $distDir)) {
     New-Item -ItemType Directory -Path $distDir | Out-Null
 }
 
-$targetExe = Join-Path $distDir "OverlayPic_v1.0.2.exe"
+$targetExe = Join-Path $distDir "OverlayPic_v1.0.3.exe"
 if (-not (Test-Path $targetExe)) {
     $srcExe = "bin\Release\OverlayPic.exe"
     if (Test-Path $srcExe) {
@@ -48,7 +48,7 @@ if ([string]::IsNullOrWhiteSpace($token) -and $env:GITHUB_TOKEN) {
     $token = $env:GITHUB_TOKEN.Trim()
 }
 if ([string]::IsNullOrWhiteSpace($token)) {
-    $altTokenFile = "I:\_MyProject\Program\FileFlowYJC\Packaging\github_token.secret"
+    $altTokenFile = Join-Path (Split-Path -Parent $ScriptDir) "Packaging\github_token.secret"
     if (Test-Path $altTokenFile) {
         $token = (Get-Content $altTokenFile -Raw).Trim()
     }
@@ -97,8 +97,8 @@ try {
     Write-Host " -> Created release for '$Tag' (ID: $($release.id))" -ForegroundColor Green
 }
 
-# 5. Upload OverlayPic_v1.0.2.exe
-Write-Host "`n[3/3] Uploading Asset 'OverlayPic_v1.0.2.exe'..." -ForegroundColor Yellow
+# 5. Upload OverlayPic_v1.0.3.exe
+Write-Host "`n[3/3] Uploading Asset 'OverlayPic_v1.0.3.exe'..." -ForegroundColor Yellow
 
 Add-Type -AssemblyName System.Net.Http
 $httpClient = New-Object System.Net.Http.HttpClient
@@ -107,7 +107,7 @@ $httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer $token")
 $httpClient.DefaultRequestHeaders.Add("Accept", "application/vnd.github+json")
 $httpClient.DefaultRequestHeaders.Add("User-Agent", "OverlayPic-Release-Uploader")
 
-$fileName = "OverlayPic_v1.0.2.exe"
+$fileName = "OverlayPic_v1.0.3.exe"
 $assetsUrl = "https://api.github.com/repos/$Owner/$Repo/releases/$($release.id)/assets"
 
 # Remove existing asset with the same name if present

@@ -219,6 +219,12 @@
                                              ToolTip="클릭 통과 모드 (뒤쪽 프로그램 클릭 가능 / 해제: Esc 또는 Ctrl+Shift+T)" Margin="0,0,3,0"
                                              Checked="ClickThrough_Changed" Unchecked="ClickThrough_Changed" />
                     
+                    <!-- 1-1. Fine Tuning (Jog) Toggle -->
+                    <Primitives:ToggleButton x:Name="JogModeToggle" xmlns:Primitives="clr-namespace:System.Windows.Controls.Primitives;assembly=PresentationFramework"
+                                             Content="🎯" Style="{StaticResource BarToggle}" 
+                                             ToolTip="🎯 미세 정렬 모드 (방향키 1px 이동, 조그 패드)" Margin="0,0,3,0"
+                                             Checked="JogMode_Changed" Unchecked="JogMode_Changed" />
+
                     <!-- 2. Screen Snip -->
                     <Button x:Name="SnipBtn" Content="✂" Style="{StaticResource BarBtn}" Click="Snip_Click" 
                             ToolTip="화면 영역 드래그 캡처 (Ctrl+Alt+X)" Margin="0,0,3,0" />
@@ -232,6 +238,7 @@
                                 <MenuItem x:Name="MenuSave" Header="💾 이미지 다른 이름으로 저장... (Ctrl+S)" Click="Save_Click" />
                                 <MenuItem x:Name="MenuPaste" Header="📋 클립보드 붙여넣기 (Ctrl+V)" Click="Paste_Click" />
                                 <Separator />
+                                <MenuItem x:Name="MenuJog" Header="🎯 미세 정렬 모드 (방향키 1px)" IsCheckable="True" Click="MenuJog_Click" />
                                 <MenuItem x:Name="MenuLock" Header="🔒 위치 및 크기 고정 (Ctrl+L)" IsCheckable="True" Click="MenuLock_Click" />
                                 <MenuItem x:Name="MenuChecker" Header="🏁 체커보드 배경 토글 (Space)" IsCheckable="True" Click="MenuChecker_Click" />
                                 <MenuItem x:Name="MenuReset" Header="↻ 1:1 원본 해상도로 리셋 (Ctrl+R)" Click="ResetSize_Click" />
@@ -297,6 +304,7 @@
                             <StackPanel x:Name="ShortcutsStackPanel">
                                 <TextBlock x:Name="ShortcutsTitle" Text="⌨️ 주요 단축키" FontWeight="Bold" FontSize="11" Foreground="#F1F5F9" Margin="0,0,0,6" />
                                 <TextBlock x:Name="ShortcutSnip" Text="• Ctrl+Alt+X : ✂️ 화면 영역 드래그 캡처" FontSize="10.5" Foreground="#38BDF8" FontWeight="SemiBold" Margin="0,1.5" />
+                                <TextBlock x:Name="ShortcutJog" Text="• 🎯 미세 정렬 : 방향키(1px 이동), Ctrl+방향키(1px 크기)" FontSize="10.5" Foreground="#38BDF8" Margin="0,1.5" />
                                 <TextBlock x:Name="ShortcutSave" Text="• Ctrl+S : 💾 현재 이미지 파일로 저장" FontSize="10.5" Foreground="#CBD5E1" Margin="0,1.5" />
                                 <TextBlock x:Name="ShortcutOpen" Text="• Ctrl+O : 📂 이미지 파일 열기" FontSize="10.5" Foreground="#CBD5E1" Margin="0,1.5" />
                                 <TextBlock x:Name="ShortcutPaste" Text="• Ctrl+V : 📋 클립보드 이미지/파일 붙여넣기" FontSize="10.5" Foreground="#CBD5E1" Margin="0,1.5" />

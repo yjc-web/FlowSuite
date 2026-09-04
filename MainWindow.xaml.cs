@@ -57,12 +57,16 @@ namespace OverlayPic
         private bool _hasImage;
         private bool _isEscHotKeyRegistered;
         private bool _isLocked = false;
+        private int _jogStep = 1;
+        private FineTuningWindow _fineTuningWindow;
         private AppLanguage _currentLanguage = AppLanguage.Korean;
 
         public MainWindow()
         {
             InitializeComponent();
             MouseWheel += MainWindow_MouseWheel;
+            LocationChanged += (s, ev) => UpdateInfoLabel();
+            SizeChanged += (s, ev) => UpdateInfoLabel();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -300,6 +304,10 @@ namespace OverlayPic
                 {
                     AboutModal.Visibility = Visibility.Collapsed;
                 }
+                else if (JogModeToggle?.IsChecked == true)
+                {
+                    JogModeToggle.IsChecked = false;
+                }
                 else if (ClickThroughToggle.IsChecked == true)
                 {
                     ClickThroughToggle.IsChecked = false;
@@ -385,6 +393,28 @@ namespace OverlayPic
                 OpacitySlider.Value = Math.Max(0.05, Math.Round(OpacitySlider.Value - 0.05, 2));
                 e.Handled = true;
             }
+            else if (JogModeToggle?.IsChecked == true && (e.Key == Key.Left || e.Key == Key.Right || e.Key == Key.Up || e.Key == Key.Down))
+            {
+                if (!_isLocked && ClickThroughToggle.IsChecked != true)
+                {
+                    int step = Keyboard.Modifiers.HasFlag(ModifierKeys.Shift) ? 10 : _jogStep;
+                    if (Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
+                    {
+                        if (e.Key == Key.Left) ResizeWindow(-step, 0);
+                        else if (e.Key == Key.Right) ResizeWindow(step, 0);
+                        else if (e.Key == Key.Up) ResizeWindow(0, -step);
+                        else if (e.Key == Key.Down) ResizeWindow(0, step);
+                    }
+                    else
+                    {
+                        if (e.Key == Key.Left) NudgeWindow(-step, 0);
+                        else if (e.Key == Key.Right) NudgeWindow(step, 0);
+                        else if (e.Key == Key.Up) NudgeWindow(0, -step);
+                        else if (e.Key == Key.Down) NudgeWindow(0, step);
+                    }
+                }
+                e.Handled = true;
+            }
         }
 
         #endregion
@@ -404,6 +434,12 @@ namespace OverlayPic
 
             if (ClickThroughToggle.IsChecked == true)
             {
+                // Disable jog mode when click-through is enabled
+                if (JogModeToggle?.IsChecked == true)
+                {
+                    JogModeToggle.IsChecked = false;
+                }
+
                 // Enable click-through: Mouse clicks pass through to windows beneath
                 NativeMethods.SetWindowLong(_hwnd, NativeMethods.GWL_EXSTYLE, _originalExStyle | NativeMethods.WS_EX_TRANSPARENT);
                 ControlBar.Opacity = 0.45;
@@ -436,6 +472,101 @@ namespace OverlayPic
             }
         }
 
+        #region Fine Tuning (Floating Jog Window)
+
+        private void JogMode_Changed(object sender, RoutedEventArgs e)
+        {
+            if (JogModeToggle.IsChecked == true)
+            {
+                if (_isLocked)
+                {
+                    JogModeToggle.IsChecked = false;
+                    return;
+                }
+                if (ClickThroughToggle?.IsChecked == true)
+                {
+                    JogModeToggle.IsChecked = false;
+                    return;
+                }
+
+                if (_fineTuningWindow == null)
+                {
+                    _fineTuningWindow = new FineTuningWindow(this);
+                    _fineTuningWindow.Closed += (s, ev) =>
+                    {
+                        _fineTuningWindow = null;
+                        if (JogModeToggle.IsChecked == true)
+                        {
+                            JogModeToggle.IsChecked = false;
+                        }
+                    };
+                }
+
+                _fineTuningWindow.UpdateLanguage(_currentLanguage == AppLanguage.English);
+
+                // Position the window to the right of MainWindow if possible, else left
+                double targetLeft = Left + Width + 8;
+                double targetTop = Top;
+                if (targetLeft + 195 > SystemParameters.VirtualScreenWidth)
+                {
+                    targetLeft = Math.Max(0, Left - 195);
+                }
+                _fineTuningWindow.Left = targetLeft;
+                _fineTuningWindow.Top = Math.Max(0, targetTop);
+
+                _fineTuningWindow.Show();
+                _fineTuningWindow.UpdateCoordinates((int)Left, (int)Top, (int)ActualWidth, (int)ActualHeight);
+
+                if (MenuJog != null) MenuJog.IsChecked = true;
+                OutlineBorder.BorderBrush = Brushes.DeepSkyBlue;
+                UpdateInfoLabel();
+            }
+            else
+            {
+                if (_fineTuningWindow != null)
+                {
+                    var win = _fineTuningWindow;
+                    _fineTuningWindow = null;
+                    if (!win.IsClosing)
+                    {
+                        try { win.Close(); } catch { }
+                    }
+                }
+
+                if (MenuJog != null) MenuJog.IsChecked = false;
+                OutlineBorder.BorderBrush = new SolidColorBrush(Color.FromArgb(0x66, 0x3B, 0x82, 0xF6));
+                UpdateInfoLabel();
+            }
+        }
+
+        private void MenuJog_Click(object sender, RoutedEventArgs e)
+        {
+            if (JogModeToggle != null)
+            {
+                JogModeToggle.IsChecked = MenuJog.IsChecked;
+            }
+        }
+
+        public void NudgeWindow(int dx, int dy)
+        {
+            if (_isLocked || ClickThroughToggle?.IsChecked == true) return;
+            Left += dx;
+            Top += dy;
+            UpdateInfoLabel();
+        }
+
+        public void ResizeWindow(int dw, int dh)
+        {
+            if (_isLocked || ClickThroughToggle?.IsChecked == true) return;
+            double newW = Math.Max(MinWidth, Math.Min(SystemParameters.PrimaryScreenWidth * 2.0, Width + dw));
+            double newH = Math.Max(MinHeight, Math.Min(SystemParameters.PrimaryScreenHeight * 2.0, Height + dh));
+            Width = newW;
+            Height = newH;
+            UpdateInfoLabel();
+        }
+
+        #endregion
+
         private void More_Click(object sender, RoutedEventArgs e)
         {
             if (MoreBtn.ContextMenu != null)
@@ -455,6 +586,10 @@ namespace OverlayPic
         {
             _isLocked = forceState ?? !_isLocked;
             if (MenuLock != null) MenuLock.IsChecked = _isLocked;
+            if (_isLocked && JogModeToggle?.IsChecked == true)
+            {
+                JogModeToggle.IsChecked = false;
+            }
 
             ResizeMode = _isLocked ? ResizeMode.NoResize : ResizeMode.CanResizeWithGrip;
             UpdateInfoLabel();
@@ -683,6 +818,7 @@ namespace OverlayPic
             OpacitySlider.ToolTip = isEn ? "Adjust opacity (Mouse Wheel supported)" : "투명도 조절 (마우스 휠로도 가능)";
 
             ClickThroughToggle.ToolTip = isEn ? "Click-Through Mode (Click windows beneath / Esc to exit)" : "클릭 통과 모드 (뒤쪽 프로그램 클릭 가능 / 해제: Esc 또는 Ctrl+Shift+T)";
+            JogModeToggle.ToolTip = isEn ? "🎯 Fine Tuning Mode (Arrow keys 1px move, Jog Pad)" : "🎯 미세 정렬 모드 (방향키 1px 이동, 조그 패드)";
             SnipBtn.ToolTip = isEn ? "Screen Snipping (Ctrl+Alt+X)" : "화면 영역 드래그 캡처 (Ctrl+Alt+X)";
             MoreBtn.ToolTip = isEn ? "More Options (Ctrl+O, Ctrl+V, Lock, etc.)" : "더보기 메뉴 (Ctrl+O, Ctrl+V, 고정, 설정 등)";
             AboutBtn.ToolTip = isEn ? "About / Shortcuts / Coffee Donation" : "프로그램 정보 / 단축키 / 개발자 후원";
@@ -693,6 +829,7 @@ namespace OverlayPic
             MenuOpen.Header = isEn ? "📂 Open Image File... (Ctrl+O)" : "📂 이미지 파일 열기... (Ctrl+O)";
             MenuSave.Header = isEn ? "💾 Save Image As... (Ctrl+S)" : "💾 이미지 다른 이름으로 저장... (Ctrl+S)";
             MenuPaste.Header = isEn ? "📋 Paste from Clipboard (Ctrl+V)" : "📋 클립보드 붙여넣기 (Ctrl+V)";
+            if (MenuJog != null) MenuJog.Header = isEn ? "🎯 Fine Tuning Mode (1px Nudge)" : "🎯 미세 정렬 모드 (방향키 1px)";
             MenuLock.Header = isEn ? "🔒 Lock Position & Size (Ctrl+L)" : "🔒 위치 및 크기 고정 (Ctrl+L)";
             MenuChecker.Header = isEn ? "🏁 Toggle Checkerboard Grid (Space)" : "🏁 체커보드 배경 토글 (Space)";
             MenuReset.Header = isEn ? "↻ Reset to 1:1 Native Resolution (Ctrl+R)" : "↻ 1:1 원본 해상도로 리셋 (Ctrl+R)";
@@ -707,6 +844,7 @@ namespace OverlayPic
             AboutSubtitle.Text = isEn ? "Screen Overlay Image Viewer | Made by YJC" : "화면 오버레이 투명 뷰어 | Made by YJC";
             ShortcutsTitle.Text = isEn ? "⌨️ Keyboard Shortcuts" : "⌨️ 주요 단축키";
             ShortcutSnip.Text = isEn ? "• Ctrl+Alt+X : ✂️ Screen Snipping" : "• Ctrl+Alt+X : ✂️ 화면 영역 드래그 캡처";
+            if (ShortcutJog != null) ShortcutJog.Text = isEn ? "• 🎯 Fine Tuning : Arrow keys (1px move), Ctrl+Arrow (1px resize)" : "• 🎯 미세 정렬 : 방향키(1px 이동), Ctrl+방향키(1px 크기)";
             ShortcutSave.Text = isEn ? "• Ctrl+S : 💾 Save Image to File" : "• Ctrl+S : 💾 현재 이미지 파일로 저장";
             ShortcutOpen.Text = isEn ? "• Ctrl+O : 📂 Open Image File" : "• Ctrl+O : 📂 이미지 파일 열기";
             ShortcutPaste.Text = isEn ? "• Ctrl+V : 📋 Paste Clipboard Image/File" : "• Ctrl+V : 📋 클립보드 이미지/파일 붙여넣기";
@@ -718,6 +856,9 @@ namespace OverlayPic
             ShortcutLock.Text = isEn ? "• Ctrl+L : Lock/Unlock Position & Size" : "• Ctrl+L : 위치/크기 고정 토글";
             ShortcutReset.Text = isEn ? "• Ctrl+R : Reset to 1:1 Native Resolution" : "• Ctrl+R : 원본 해상도 크기로 리셋";
             ShortcutSpace.Text = isEn ? "• Space : Toggle Checkerboard Grid" : "• Space : 체커보드 배경 토글";
+
+            // Fine Tuning Window
+            _fineTuningWindow?.UpdateLanguage(isEn);
 
             BlogBtn.Content = isEn ? "🌐 Official Website (Blog)" : "🌐 공식 블로그 방문 (nds-macro)";
 
@@ -860,6 +1001,8 @@ namespace OverlayPic
             {
                 InfoLabel.Text = $"{w}×{h} @ ({x},{y}){lockStatus}";
             }
+
+            _fineTuningWindow?.UpdateCoordinates(x, y, w, h);
         }
 
         #endregion
