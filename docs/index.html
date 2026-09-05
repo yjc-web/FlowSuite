@@ -606,6 +606,9 @@
           </div>
 
           <form id="commentForm" class="space-y-4">
+            <!-- Anti-Bot Honeypot (Hidden) -->
+            <input type="text" id="fbHp" name="_hp_check" style="position:absolute;left:-9999px;opacity:0;pointer-events:none;" tabindex="-1" autocomplete="off" />
+
             <!-- Category Pills -->
             <div>
               <label class="block text-xs font-semibold text-slate-300 mb-2" data-i18n="fb_cat_label">분류 선택</label>
@@ -955,65 +958,83 @@
       });
     });
 
-    // Default community feedback items
-    const defaultComments = [
-      {
-        nickname: "자동화매니아",
-        category: "기능제안",
-        time: "1시간 전",
-        message: "ImageFlow에서 순서도 실행 도중 특정 조건에서 단축키를 눌러 즉시 일시정지(Pause)하는 기능이 있으면 좋겠습니다!"
-      },
-      {
-        nickname: "퇴근원츄",
-        category: "사용후기",
-        time: "3시간 전",
-        message: "FileFlow 쓰고 있는데 다운로드 폴더 쌓이던 파일들이 알아서 날짜/프로젝트별로 쏙쏙 들어가서 너무 편해요. 개발자님 최고!"
-      },
-      {
-        nickname: "MacDev",
-        category: "이용문의",
-        time: "어제",
-        message: "OverlayPic 맥북 M3 Pro(Apple Silicon)에서도 완벽하게 투명도 조절되나요?"
-      }
-    ];
+    const FIREBASE_COMMENTS_URL = 'https://flowlink-yjc-default-rtdb.firebaseio.com/flowsuite_comments';
 
     function escapeHtml(str) {
       if (!str) return '';
       return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
     }
 
-    function renderComments() {
+    function formatTime(ts) {
+      if (!ts) return '방금 전';
+      const diff = Date.now() - ts;
+      if (diff < 60000) return '방금 전';
+      if (diff < 3600000) return `${Math.floor(diff / 60000)}분 전`;
+      if (diff < 86400000) return `${Math.floor(diff / 3600000)}시간 전`;
+      const d = new Date(ts);
+      return `${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}`;
+    }
+
+    async function fetchFirebaseComments() {
+      try {
+        const resp = await fetch(`${FIREBASE_COMMENTS_URL}.json?orderBy="$key"&limitToLast=50`);
+        if (!resp.ok) throw new Error('Firebase fetch failed');
+        const data = await resp.json();
+        if (!data) return [];
+        const list = Object.keys(data).map(key => ({
+          id: key,
+          ...data[key]
+        }));
+        list.sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+        return list;
+      } catch (err) {
+        console.warn('Firebase comments fetch warning:', err);
+        return null;
+      }
+    }
+
+    async function renderComments() {
       const listEl = document.getElementById('recentCommentsList');
       if (!listEl) return;
 
-      let stored = [];
-      try {
-        stored = JSON.parse(localStorage.getItem('flowsuite_user_comments') || '[]');
-      } catch (e) {
-        stored = [];
+      const serverComments = await fetchFirebaseComments();
+      let itemsToDisplay = serverComments;
+
+      if (!itemsToDisplay || itemsToDisplay.length === 0) {
+        itemsToDisplay = [
+          {
+            nickname: "FlowSuite팀",
+            category: "공지",
+            timestamp: Date.now() - 3600000,
+            message: "FlowSuite 공식 웹사이트를 찾아주셔서 감사합니다. 유틸리티 사용 중 궁금하신 점이나 추가를 원하는 기능을 자유롭게 남겨주세요!"
+          }
+        ];
       }
 
-      const all = [...stored, ...defaultComments];
       listEl.innerHTML = '';
 
-      all.forEach((item) => {
+      itemsToDisplay.forEach((item) => {
         const div = document.createElement('div');
         div.className = 'p-3 rounded-xl bg-white/[0.03] border border-white/[0.06] text-xs transition-all hover:bg-white/[0.05]';
         
         let badgeColor = 'text-cyan-400 bg-cyan-500/10 border-cyan-500/20';
-        if (item.category.includes('버그') || item.category.includes('Bug')) badgeColor = 'text-rose-400 bg-rose-500/10 border-rose-500/20';
-        else if (item.category.includes('후기') || item.category.includes('Review')) badgeColor = 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20';
-        else if (item.category.includes('문의') || item.category.includes('Inquiry')) badgeColor = 'text-amber-400 bg-amber-500/10 border-amber-500/20';
+        const cat = item.category || '의견';
+        if (cat.includes('공지')) badgeColor = 'text-sky-300 bg-sky-500/10 border-sky-500/20 font-black';
+        else if (cat.includes('버그') || cat.includes('Bug')) badgeColor = 'text-rose-400 bg-rose-500/10 border-rose-500/20';
+        else if (cat.includes('후기') || cat.includes('Review')) badgeColor = 'text-emerald-400 bg-emerald-500/10 border-emerald-500/20';
+        else if (cat.includes('문의') || cat.includes('Inquiry')) badgeColor = 'text-amber-400 bg-amber-500/10 border-amber-500/20';
+
+        const timeStr = item.time || formatTime(item.timestamp);
 
         div.innerHTML = `
           <div class="flex items-center justify-between mb-1.5">
             <div class="flex items-center gap-2">
-              <span class="px-2 py-0.5 rounded text-[10px] font-bold border ${badgeColor}">${escapeHtml(item.category)}</span>
-              <span class="font-bold text-white">${escapeHtml(item.nickname)}</span>
+              <span class="px-2 py-0.5 rounded text-[10px] font-bold border ${badgeColor}">${escapeHtml(cat)}</span>
+              <span class="font-bold text-white">${escapeHtml(item.nickname || '익명')}</span>
             </div>
-            <span class="text-[10px] text-slate-500 font-mono">${escapeHtml(item.time || '방금 전')}</span>
+            <span class="text-[10px] text-slate-500 font-mono">${escapeHtml(timeStr)}</span>
           </div>
-          <p class="text-slate-300 text-xs leading-relaxed whitespace-pre-wrap">${escapeHtml(item.message)}</p>
+          <p class="text-slate-300 text-xs leading-relaxed whitespace-pre-wrap break-words">${escapeHtml(item.message || '')}</p>
         `;
         listEl.appendChild(div);
       });
@@ -1024,6 +1045,14 @@
     if (commentForm) {
       commentForm.addEventListener('submit', async (e) => {
         e.preventDefault();
+
+        // 1. Honeypot check (Bots fill hidden inputs)
+        const hp = document.getElementById('fbHp');
+        if (hp && hp.value.trim().length > 0) {
+          console.warn('Bot detected via honeypot');
+          return;
+        }
+
         const nickname = document.getElementById('fbNickname').value.trim();
         const email = document.getElementById('fbEmail').value.trim();
         const message = document.getElementById('fbMessage').value.trim();
@@ -1032,18 +1061,53 @@
 
         if (!nickname || !message) return;
 
+        // 2. Rate Limit (15 seconds between posts)
+        const lastPost = localStorage.getItem('flowsuite_last_post_time');
+        const now = Date.now();
+        if (lastPost && now - parseInt(lastPost, 10) < 15000) {
+          alert('도배 방지를 위해 15초 후 다시 작성하실 수 있습니다.');
+          return;
+        }
+
+        // 3. Anti-Spam Link Filter (Prevent bot advertising)
+        const urlPattern = /(https?:\/\/|www\.|t\.me\/|bit\.ly\/|\.xyz|\.top|\.ru)/i;
+        if (urlPattern.test(message) || urlPattern.test(nickname)) {
+          alert('스팸 봇 방지를 위해 외부 링크(URL)는 포함하실 수 없습니다.');
+          return;
+        }
+
         submitBtn.disabled = true;
         const originalBtnHtml = submitBtn.innerHTML;
-        submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span>등록 중...</span>';
+        submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> <span>통합 서버 저장 중...</span>';
         if (statusEl) {
           statusEl.className = 'text-xs font-medium text-slate-400';
-          statusEl.textContent = '메시지를 전송하고 있습니다...';
+          statusEl.textContent = '통합 서버에 의견을 등록하고 있습니다...';
           statusEl.classList.remove('hidden');
         }
 
-        // Send via AJAX to formsubmit.co
+        const newCommentData = {
+          nickname: nickname,
+          category: selectedCategory,
+          message: message,
+          timestamp: now,
+          email: email || '미입력(익명)'
+        };
+
+        // 4. Save to Firebase Realtime Database
         try {
-          await fetch('https://formsubmit.co/ajax/yunjichang86@gmail.com', {
+          await fetch(`${FIREBASE_COMMENTS_URL}.json`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newCommentData)
+          });
+          localStorage.setItem('flowsuite_last_post_time', now.toString());
+        } catch (err) {
+          console.error('Firebase save error:', err);
+        }
+
+        // 5. Notify developer email in background via FormSubmit
+        try {
+          fetch('https://formsubmit.co/ajax/yunjichang86@gmail.com', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -1062,23 +1126,8 @@
           console.warn('FormSubmit notify warning:', err);
         }
 
-        // Save locally to display immediately in live feed
-        const newComment = {
-          nickname: nickname,
-          category: selectedCategory,
-          time: '방금 전',
-          message: message
-        };
-
-        try {
-          const stored = JSON.parse(localStorage.getItem('flowsuite_user_comments') || '[]');
-          stored.unshift(newComment);
-          localStorage.setItem('flowsuite_user_comments', JSON.stringify(stored));
-        } catch (e) {
-          console.error(e);
-        }
-
-        renderComments();
+        // 6. Reload live comments from server
+        await renderComments();
 
         // Reset form & show success
         document.getElementById('fbMessage').value = '';
@@ -1087,7 +1136,7 @@
 
         if (statusEl) {
           statusEl.className = 'text-xs font-medium text-emerald-400';
-          statusEl.innerHTML = '<i class="fa-solid fa-circle-check mr-1"></i> 소중한 의견이 등록되었습니다!';
+          statusEl.innerHTML = '<i class="fa-solid fa-circle-check mr-1"></i> 통합 서버에 등록되어 모든 사용자에게 실시간 반영되었습니다!';
           setTimeout(() => {
             statusEl.classList.add('hidden');
           }, 6000);
