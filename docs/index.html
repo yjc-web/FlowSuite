@@ -394,9 +394,9 @@
               </a>
             </div>
           </div>
-          <div class="lg:col-span-5">
-            <div class="rounded-2xl overflow-hidden border border-white/10 shadow-2xl">
-              <img src="assets/BoxArt_1080x1080.png" alt="ImageFlow Artwork" class="w-full h-auto object-cover hover:scale-105 transition-transform duration-500" />
+          <div class="lg:col-span-5 flex justify-center">
+            <div class="rounded-2xl overflow-hidden border border-white/10 shadow-2xl max-w-sm sm:max-w-md w-full">
+              <img id="imageflowPosterImg" src="assets/ImageFlow_PosterArt_KO.png" alt="ImageFlow Poster Art" class="w-full h-auto object-cover hover:scale-105 transition-transform duration-500" />
             </div>
           </div>
         </div>
@@ -1016,6 +1016,11 @@
       const label = document.getElementById('currentLangLabel');
       if (label) {
         label.textContent = lang === 'ko' ? 'EN' : 'KO';
+      }
+
+      const ifPoster = document.getElementById('imageflowPosterImg');
+      if (ifPoster) {
+        ifPoster.src = lang === 'ko' ? 'assets/ImageFlow_PosterArt_KO.png' : 'assets/ImageFlow_PosterArt_EN.png';
       }
 
       localStorage.setItem('flowsuite_lang', lang);
